@@ -52,7 +52,7 @@ export function Careers() {
         {/* Section Header */}
         <div className="max-w-3xl mx-auto text-center mb-16">
           <div className="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-swarp-accent/10 border border-swarp-accent/20 mb-6">
-            <span className="text-sm text-swarp-accent font-medium">We're Hiring!</span>
+            <span className="text-sm text-swarp-accent font-medium">We&apos;re Hiring!</span>
           </div>
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
             <span className="text-white">Join the</span>{" "}
@@ -125,7 +125,7 @@ export function Careers() {
             <div className="p-6 rounded-xl bg-gradient-to-br from-swarp-blue/10 to-swarp-purple/10 border border-swarp-blue/20">
               <h3 className="text-xl font-bold text-white mb-2">Our Culture</h3>
               <p className="text-sm text-gray-400 mb-4">
-                We're a team of builders who value innovation, ownership, and continuous learning. Work from anywhere, collaborate globally.
+                We&apos;re a team of builders who value innovation, ownership, and continuous learning. Work from anywhere, collaborate globally.
               </p>
               <Link href="#about">
                 <Button variant="ghost" size="sm" className="group">
@@ -139,7 +139,7 @@ export function Careers() {
 
         {/* CTA */}
         <div className="text-center">
-          <p className="text-gray-400 mb-4">Don't see a role that fits? We're always looking for talented people.</p>
+          <p className="text-gray-400 mb-4">Don&apos;t see a role that fits? We&apos;re always looking for talented people.</p>
           <Link href="#contact">
             <Button size="lg" variant="outline">
               Send Us Your Resume

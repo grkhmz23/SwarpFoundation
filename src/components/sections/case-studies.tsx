@@ -62,7 +62,7 @@ export function CaseStudies() {
             <span className="text-gradient">Results</span>
           </h2>
           <p className="text-lg text-gray-400">
-            Real projects, real outcomes. See how we've helped clients scale, optimize, and innovate.
+            Real projects, real outcomes. See how we&apos;ve helped clients scale, optimize, and innovate.
           </p>
         </div>
 

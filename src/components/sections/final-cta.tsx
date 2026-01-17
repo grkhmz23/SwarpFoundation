@@ -46,14 +46,14 @@ export function FinalCTA() {
           {/* Header */}
           <div className="text-center mb-12">
             <div className="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-swarp-blue/10 border border-swarp-blue/20 mb-6">
-              <span className="text-sm text-swarp-cyan font-medium">Let's Talk</span>
+              <span className="text-sm text-swarp-cyan font-medium">Let&apos;s Talk</span>
             </div>
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
               <span className="text-white">Launch with</span>{" "}
               <span className="text-gradient">Swarp</span>
             </h2>
             <p className="text-lg text-gray-400 max-w-2xl mx-auto">
-              Ready to build something amazing? Whether you need a full product, specific infrastructure, or just want to explore possibilities, we're here to help.
+              Ready to build something amazing? Whether you need a full product, specific infrastructure, or just want to explore possibilities, we&apos;re here to help.
             </p>
           </div>
 
@@ -68,7 +68,7 @@ export function FinalCTA() {
                     <CheckCircle className="w-8 h-8 text-green-400" />
                   </div>
                   <h3 className="text-2xl font-bold text-white mb-2">Message Sent!</h3>
-                  <p className="text-gray-400">We'll get back to you within 24 hours.</p>
+                  <p className="text-gray-400">We&apos;ll get back to you within 24 hours.</p>
                 </div>
               ) : (
                 // Contact Form
@@ -133,7 +133,7 @@ export function FinalCTA() {
                       value={formData.message}
                       onChange={handleChange}
                       className="w-full px-4 py-3 rounded-lg bg-swarp-darker border border-swarp-blue/20 text-white placeholder-gray-500 focus:outline-none focus:border-swarp-cyan transition-colors resize-none"
-                      placeholder="I'm looking to build..."
+                      placeholder="I&apos;m looking to build..."
                     />
                   </div>
 

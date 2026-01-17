@@ -58,7 +58,7 @@ export function TextScramble({
     }, speed * 1000);
 
     return () => clearInterval(interval);
-  }, [trigger]);
+  }, [trigger, children, duration, speed, characterSet, isAnimating]);
 
   return <MotionComponent className={className}>{displayText}</MotionComponent>;
 }
