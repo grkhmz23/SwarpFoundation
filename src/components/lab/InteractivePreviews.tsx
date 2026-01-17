@@ -221,19 +221,19 @@ function AuthSection() {
             onClick={handleLogin}
             disabled={loading}
             className="w-full py-2.5 rounded-lg bg-gradient-to-r from-swarp-blue to-swarp-cyan text-white font-medium hover:scale-105 transition disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {loading ? "Signing in..." : "Sign In"}
-          </button>
-        </div>
+            >
+                        {loading ? "Signing in..." : "Sign In"}
+                      </button>
+                    </div>
 
-        <div className="text-center text-xs text-gray-500">
-          Don't have an account?{" "}
-          <button className="text-swarp-cyan hover:underline">Sign up</button>
-        </div>
-      </div>
-    </motion.div>
-  );
-}
+                    <div className="text-center text-xs text-gray-500">
+                      Don&apos;t have an account?{" "}
+                      <button className="text-swarp-cyan hover:underline">Sign up</button>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            }
 
 function CheckoutSection() {
   const [cardNumber, setCardNumber] = useState("");
