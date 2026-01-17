@@ -23,11 +23,6 @@ import {
 } from "lucide-react";
 import { LiveWebsitePreview, LiveToolsPreview, LiveSoftwarePreview } from "@/components/lab/InteractivePreviews";
 
-/**
- * Swarp Build Lab – Interactive playground for building systems
- * Adapted to Swarp Foundation theme with REAL working demos
- */
-
 const MODES = {
   website: {
     key: "website",
@@ -427,185 +422,6 @@ function PreviewTabs({ tab, setTab }: { tab: string; setTab: (v: string) => void
   );
 }
 
-function WebsitePreview({ buildPulse, enabled }: { buildPulse: number; enabled: Set<string> }) {
-  const sections = [
-    { key: "hero", label: "Hero" },
-    { key: "features", label: "Features" },
-    { key: "pricing", label: "Pricing" },
-    { key: "faq", label: "FAQ" },
-  ];
-  return (
-    <div className="space-y-3">
-      <div className="rounded-2xl border border-swarp-blue/30 bg-swarp-darker/80 p-4">
-        <div className="flex items-center justify-between">
-          <div className="text-swarp-cyan font-medium">Landing page</div>
-          <span className="text-[11px] text-gray-500 border border-swarp-blue/20 bg-swarp-dark/50 rounded-full px-2 py-0.5">Demo preview</span>
-        </div>
-        <div className="mt-3 space-y-2">
-          {sections.map((s, i) => (
-            <motion.div
-              key={s.key}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.06 * i + 0.02 * buildPulse, duration: 0.25 }}
-              className="rounded-xl border border-swarp-blue/30 bg-swarp-dark/50 p-3"
-            >
-              <div className="flex items-center justify-between">
-                <div className="text-sm text-swarp-cyan">{s.label}</div>
-                <div className="text-xs text-gray-500">snap-in</div>
-              </div>
-              <div className="mt-2 h-2 w-full rounded-full bg-swarp-dark/80 overflow-hidden border border-swarp-blue/20">
-                <motion.div
-                  className="h-full bg-gradient-to-r from-swarp-blue to-swarp-cyan"
-                  initial={{ width: "0%" }}
-                  animate={{ width: `${40 + (i * 12) % 60}%` }}
-                  transition={{ duration: 0.35 }}
-                />
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-
-      <div className="grid grid-cols-2 gap-3">
-        <div className="rounded-2xl border border-swarp-blue/30 bg-swarp-darker/80 p-4">
-          <div className="text-xs text-gray-500">Modules</div>
-          <div className="mt-2 text-sm text-swarp-cyan">
-            {enabled.size ? Array.from(enabled).join(" • ") : "none"}
-          </div>
-        </div>
-        <div className="rounded-2xl border border-swarp-blue/30 bg-swarp-darker/80 p-4">
-          <div className="text-xs text-gray-500">Perf panel</div>
-          <div className="mt-2 text-sm text-swarp-cyan">LCP ~ 1.2s • TTFB ~ 120ms</div>
-          <div className="text-[11px] text-gray-600 mt-1">Demo metrics</div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function ToolsPreview({ buildPulse, enabled }: { buildPulse: number; enabled: Set<string> }) {
-  const widgets = [
-    { key: "pipeline", label: "Automation pipeline" },
-    { key: "alerts", label: "Alert stream" },
-    { key: "integrations", label: "Integrations" },
-    { key: "bot", label: "Bot control" },
-  ];
-  return (
-    <div className="space-y-3">
-      <div className="rounded-2xl border border-swarp-blue/30 bg-swarp-darker/80 p-4">
-        <div className="flex items-center justify-between">
-          <div className="text-swarp-cyan font-medium">Ops dashboard</div>
-          <span className="text-[11px] text-gray-500 border border-swarp-blue/20 bg-swarp-dark/50 rounded-full px-2 py-0.5">Live-ish</span>
-        </div>
-
-        <div className="mt-3 grid grid-cols-2 gap-3">
-          {widgets.map((w, i) => (
-            <motion.div
-              key={w.key}
-              initial={{ opacity: 0, scale: 0.98, y: 6 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              transition={{ delay: 0.06 * i + 0.02 * buildPulse, duration: 0.25 }}
-              className="rounded-xl border border-swarp-blue/30 bg-swarp-dark/50 p-3"
-            >
-              <div className="text-sm text-swarp-cyan">{w.label}</div>
-              <div className="mt-2 h-16 rounded-lg bg-swarp-darker/80 border border-swarp-blue/20 overflow-hidden relative">
-                <motion.div
-                  className="absolute inset-y-0 left-0 bg-swarp-blue/30"
-                  initial={{ width: "10%" }}
-                  animate={{ width: `${30 + ((i + buildPulse) * 17) % 60}%` }}
-                  transition={{ duration: 0.5 }}
-                />
-                <div className="absolute inset-0 grid place-items-center text-[11px] text-gray-600">render</div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-
-      <div className="rounded-2xl border border-swarp-blue/30 bg-swarp-darker/80 p-4">
-        <div className="text-xs text-gray-500">Enabled modules</div>
-        <div className="mt-2 text-sm text-swarp-cyan">
-          {enabled.size ? Array.from(enabled).join(" • ") : "none"}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function SoftwarePreview({ buildPulse, enabled }: { buildPulse: number; enabled: Set<string> }) {
-  const nodes = [
-    { key: "frontend", label: "Frontend" },
-    { key: "api", label: "API" },
-    { key: "db", label: "DB" },
-    { key: "queue", label: "Queue" },
-    { key: "obs", label: "Observability" },
-  ];
-
-  const apiLines = [
-    "GET /health 200",
-    "POST /jobs 202",
-    "GET /metrics 200",
-    "TRACE span=deploy:ok",
-  ];
-
-  return (
-    <div className="space-y-3">
-      <div className="rounded-2xl border border-swarp-blue/30 bg-swarp-darker/80 p-4">
-        <div className="flex items-center justify-between">
-          <div className="text-swarp-cyan font-medium">System blueprint</div>
-          <span className="text-[11px] text-gray-500 border border-swarp-blue/20 bg-swarp-dark/50 rounded-full px-2 py-0.5">Hologram</span>
-        </div>
-
-        <div className="mt-3 grid grid-cols-5 gap-2">
-          {nodes.map((n, i) => (
-            <motion.div
-              key={n.key}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.05 * i + 0.02 * buildPulse, duration: 0.25 }}
-              className="col-span-1 rounded-xl border border-swarp-blue/30 bg-swarp-dark/50 p-2 text-center"
-            >
-              <div className="text-[11px] text-swarp-cyan">{n.label}</div>
-              <div className="mt-2 h-1.5 rounded-full bg-swarp-dark/80 overflow-hidden border border-swarp-blue/20">
-                <motion.div
-                  className="h-full bg-gradient-to-r from-swarp-blue to-swarp-cyan"
-                  initial={{ width: "0%" }}
-                  animate={{ width: `${25 + ((i + buildPulse) * 13) % 70}%` }}
-                  transition={{ duration: 0.45 }}
-                />
-              </div>
-            </motion.div>
-          ))}
-        </div>
-
-        <div className="mt-3 rounded-xl border border-swarp-blue/30 bg-swarp-darker/90 p-3">
-          <div className="text-[11px] text-gray-500 mb-2">API responses</div>
-          <div className="font-mono text-[11px] text-swarp-cyan space-y-1">
-            {apiLines.map((l, i) => (
-              <motion.div
-                key={l}
-                initial={{ opacity: 0, x: -8 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.05 * i + 0.02 * buildPulse, duration: 0.2 }}
-              >
-                {formatNow()} {l}
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <div className="rounded-2xl border border-swarp-blue/30 bg-swarp-darker/80 p-4">
-        <div className="text-xs text-gray-500">Enabled modules</div>
-        <div className="mt-2 text-sm text-swarp-cyan">
-          {enabled.size ? Array.from(enabled).join(" • ") : "none"}
-        </div>
-      </div>
-    </div>
-  );
-}
-
 function SecurityPanel({ mode }: { mode: ModeKey }) {
   const items = useMemo(() => {
     if (mode === "website") {
@@ -889,6 +705,7 @@ export default function SwarpBuildLabPage() {
     setEnabled(defaultModules(next));
     setTab("ui");
     setCopied(false);
+    setHold(0); // FIX: Reset hold state
     setBuildPulse((p) => p + 1);
     setState({ phase: "selecting" });
     pushToast({ title: "Mode selected", detail: MODES[next].title, tone: "info" }, 1400);
@@ -926,8 +743,8 @@ export default function SwarpBuildLabPage() {
   useInterval(
     () => {
       if (state.phase !== "building") return;
-      const next = state.stepIndex + 1;
-      if (next >= STEPS.length) {
+      const next = Math.min(state.stepIndex + 1, STEPS.length - 1); // FIX: Bounds check
+      if (next >= STEPS.length - 1 && state.stepIndex === STEPS.length - 1) {
         setState({ phase: "complete" });
         pushToast({ title: "Build complete", detail: "Blueprint generated", tone: "ok" }, 2200);
         return;
@@ -964,6 +781,7 @@ export default function SwarpBuildLabPage() {
     pushToast({ title: "Swarp Build Lab online", detail: "Select a mode to begin", tone: "info" }, 2200);
   }, []);
 
+  // FIX: Improved copy function with fallback
   async function copyScope() {
     try {
       await navigator.clipboard.writeText(brief.copyText);
@@ -971,7 +789,22 @@ export default function SwarpBuildLabPage() {
       pushToast({ title: "Copied", detail: "Scope copied to clipboard", tone: "ok" }, 1600);
       window.setTimeout(() => setCopied(false), 1800);
     } catch {
-      pushToast({ title: "Copy failed", detail: "Clipboard permission blocked", tone: "warn" }, 2200);
+      // Fallback for older browsers
+      try {
+        const textarea = document.createElement('textarea');
+        textarea.value = brief.copyText;
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        setCopied(true);
+        pushToast({ title: "Copied", detail: "Scope copied to clipboard", tone: "ok" }, 1600);
+        window.setTimeout(() => setCopied(false), 1800);
+      } catch {
+        pushToast({ title: "Copy failed", detail: "Clipboard permission blocked", tone: "warn" }, 2200);
+      }
     }
   }
 
@@ -981,7 +814,6 @@ export default function SwarpBuildLabPage() {
     <div className="min-h-screen bg-swarp-darker">
       <ToastStack toasts={toasts} />
 
-      {/* Background */}
       <div className="pointer-events-none fixed inset-0">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_10%,rgba(0,212,255,0.08),transparent_45%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_30%,rgba(157,78,221,0.06),transparent_45%)]" />
@@ -989,7 +821,6 @@ export default function SwarpBuildLabPage() {
       </div>
 
       <div className="relative mx-auto max-w-6xl px-4 py-24 md:py-32">
-        {/* Header / Hero */}
         <div className="flex flex-col gap-6">
           <div className="flex items-start justify-between gap-6">
             <div>
@@ -1017,7 +848,6 @@ export default function SwarpBuildLabPage() {
               </div>
             </div>
 
-            {/* Robot Core */}
             <div className="hidden md:block">
               <motion.div
                 className="relative h-32 w-32 rounded-[32px] border border-swarp-cyan/40 bg-gradient-to-b from-swarp-dark/90 to-swarp-darker/95 backdrop-blur-xl glow-cyan"
@@ -1037,14 +867,12 @@ export default function SwarpBuildLabPage() {
             </div>
           </div>
 
-          {/* Mode selector */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {(Object.keys(MODES) as ModeKey[]).map((k) => (
               <ModeCard key={k} mode={MODES[k]} selected={mode === k} onClick={() => setModeAndDefaults(k)} />
             ))}
           </div>
 
-          {/* Modules */}
           <div className="rounded-3xl border border-swarp-blue/30 bg-swarp-dark/50 backdrop-blur-xl p-5">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
               <div>
@@ -1070,9 +898,7 @@ export default function SwarpBuildLabPage() {
             </div>
           </div>
 
-          {/* Factory Stage */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-            {/* Left: Assembly / timeline */}
             <div className="lg:col-span-4 rounded-3xl border border-swarp-blue/30 bg-gradient-to-b from-swarp-dark/90 to-swarp-darker/95 backdrop-blur-xl p-5">
               <div className="flex items-center justify-between">
                 <div>
@@ -1157,7 +983,6 @@ export default function SwarpBuildLabPage() {
               </div>
             </div>
 
-            {/* Right: Output preview */}
             <div className="lg:col-span-8 rounded-3xl border border-swarp-blue/30 bg-gradient-to-b from-swarp-dark/90 to-swarp-darker/95 backdrop-blur-xl p-5">
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
                 <div>
@@ -1234,7 +1059,6 @@ export default function SwarpBuildLabPage() {
                   </div>
                 </div>
 
-                {/* Capabilities + CTA */}
                 <div className="xl:col-span-5 space-y-4">
                   <div className="rounded-3xl border border-swarp-blue/30 bg-swarp-darker/90 p-4">
                     <div className="flex items-center gap-2 text-swarp-cyan">
@@ -1308,7 +1132,6 @@ export default function SwarpBuildLabPage() {
                 </div>
               </div>
 
-              {/* Results / Blueprint */}
               <AnimatePresence>
                 {state.phase === "complete" && (
                   <motion.div
@@ -1325,7 +1148,6 @@ export default function SwarpBuildLabPage() {
             </div>
           </div>
 
-          {/* Footer */}
           <div className="mt-8 text-center text-xs text-gray-600">
             Demo preview component • Replace alerts/CTAs with your real routes/forms
           </div>
