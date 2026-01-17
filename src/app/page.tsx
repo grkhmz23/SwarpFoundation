@@ -3,12 +3,12 @@ import dynamic from 'next/dynamic';
 import { Hero } from "@/components/sections/hero";
 
 const Projects = dynamic(() => 
-  import('@/components/sections/projects').then(mod => mod.Projects || mod.default), 
+  import('@/components/sections/projects').then(mod => ({ default: mod.Projects })), 
   { loading: () => <div className="h-screen" /> }
 );
 
 const WhatWeBuild = dynamic(() => 
-  import('@/components/sections/what-we-build').then(mod => mod.WhatWeBuild || mod.default)
+  import('@/components/sections/what-we-build').then(mod => ({ default: mod.WhatWeBuild }))
 );
 
 export default function Home() {
