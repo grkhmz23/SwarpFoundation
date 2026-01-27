@@ -1,5 +1,5 @@
-import { FinalCTA } from "@/components/sections/final-cta";
+import { ContactPage } from "@/components/ui/contact-page";
 
-export default function ContactPage() {
-  return <FinalCTA />;
+export default function Contact() {
+  return <ContactPage />;
 }

@@ -1,0 +1,173 @@
+"use client";
+import { cn } from "@/lib/utils";
+import React, { useEffect, useRef, useState } from "react";
+import { IoMdCheckmark } from "react-icons/io";
+import { motion } from "framer-motion";
+
+type SecurityCardProps = {
+  delay?: number;
+  name?: string;
+  email?: string;
+};
+
+const SecurityCard = ({
+  delay = 5000,
+  name = "Liam Parker",
+  email = "liam.parker@example.com",
+}: SecurityCardProps) => {
+  const [animationKey, setAnimationKey] = useState(0);
+  const delayTime = Math.max(delay, 5000);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setAnimationKey((prev) => prev + 1);
+    }, delayTime);
+
+    return () => clearInterval(interval);
+  }, [delayTime]);
+
+  return <Securitycard name={name} email={email} key={animationKey} />;
+};
+export default SecurityCard;
+
+const Securitycard = ({ name, email }: { name: string; email: string }) => {
+  return (
+    <div
+      className={cn(
+        "relative overflow-hidden",
+        "flex h-[27rem] w-full max-w-[350px] items-center justify-center",
+        "rounded-3xl border border-swarp-blue/30 bg-swarp-dark/80",
+        "glow-cyan",
+      )}
+    >
+      <InfiniteScrambler />
+      <ContainerMask />
+      <div
+        className={cn(
+          "absolute bottom-0 h-1/2 w-[150%] rounded-t-[60%]",
+          "bg-gradient-to-b from-swarp-dark/80 to-swarp-darker shadow-[0_0_900px_rgba(0,212,255,0.2)]",
+        )}
+      />
+      <div className="absolute top-[70%] flex h-12 w-full flex-col items-center justify-center gap-1">
+        <div className="flex items-center justify-center text-xs text-swarp-cyan">
+          <motion.p
+            initial={{ x: 8 }}
+            animate={{ x: -2 }}
+            transition={{ duration: 0.4, ease: "easeInOut", delay: 1.8 }}
+          >
+            {name}
+          </motion.p>
+          <CheckCircle />
+        </div>
+        <div className="text-[10px] text-gray-500">{email}</div>
+      </div>
+      <div className="relative rounded-[2px] bg-swarp-dark/50 px-[3px] py-[3.2px]">
+        <div className="relative h-32 w-24 rounded-[2px] bg-gradient-to-br from-swarp-dark to-swarp-darker border border-swarp-blue/20">
+          <FaceCard />
+        </div>
+      </div>
+      <div className="absolute left-0 top-0 h-[200px] w-full [background-image:linear-gradient(to_bottom,rgb(5,7,20)_30%,transparent_100%)]" />
+      <div className="absolute left-0 top-4 w-full px-3">
+        <h3 className="text-sm font-semibold text-swarp-cyan">
+          Smart Access Control
+        </h3>
+        <p className="mt-2 text-xs text-gray-400">
+          Evaluate each login based on real-time signals like IP, device
+          history, and context before allowing access intelligently.
+        </p>
+      </div>
+    </div>
+  );
+};
+
+const FaceCard = () => {
+  return (
+    <svg
+      viewBox="0 0 80 96"
+      fill="none"
+      className="absolute inset-0 h-full w-full"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="1.5"
+    >
+      <path
+        d="M26.22 78.25c2.679-3.522 1.485-17.776 1.485-17.776-1.084-2.098-1.918-4.288-2.123-5.619-3.573 0-3.7-8.05-3.827-9.937-.102-1.509 1.403-1.383 2.169-1.132-.298-1.3-.92-5.408-1.021-11.446C22.775 24.794 30.94 17.75 40 17.75h.005c9.059 0 17.225 7.044 17.097 14.59-.102 6.038-.723 10.147-1.021 11.446.765-.251 2.271-.377 2.169 1.132-.128 1.887-.254 9.937-3.827 9.937-.205 1.331-1.039 3.521-2.123 5.619 0 0-1.194 14.254 1.485 17.776"
+        className="stroke-swarp-blue/40"
+      />
+      <path
+        d="M27.705 60.474a26.884 26.884 0 0 0 1.577 2.682c1.786 2.642 5.36 6.792 10.718 6.792h.005c5.358 0 8.932-4.15 10.718-6.792a26.884 26.884 0 0 0 1.577-2.682"
+        className="stroke-swarp-blue/40"
+      />
+      <path
+        d="M26.22 78.25c2.679-3.522 1.485-17.776 1.485-17.776-1.084-2.098-1.918-4.288-2.123-5.619-3.573 0-3.7-8.05-3.827-9.937-.102-1.509 1.403-1.383 2.169-1.132-.298-1.3-.92-5.408-1.021-11.446C22.775 24.794 30.94 17.75 40 17.75h.005c9.059 0 17.225 7.044 17.097 14.59-.102 6.038-.723 10.147-1.021 11.446.765-.251 2.271-.377 2.169 1.132-.128 1.887-.254 9.937-3.827 9.937-.205 1.331-1.039 3.521-2.123 5.619 0 0-1.194 14.254 1.485 17.776"
+        className="animate-draw-outline stroke-swarp-cyan [filter:drop-shadow(0_0_6px_#00D4FF)]"
+      />
+      <path
+        d="M27.705 60.474a26.884 26.884 0 0 0 1.577 2.682c1.786 2.642 5.36 6.792 10.718 6.792h.005c5.358 0 8.932-4.15 10.718-6.792a26.884 26.884 0 0 0 1.577-2.682"
+        className="animate-draw stroke-swarp-cyan [filter:drop-shadow(0_0_6px_#00D4FF)]"
+      />
+    </svg>
+  );
+};
+
+const CheckCircle = () => {
+  return (
+    <div className="relative">
+      <svg width="18" height="18">
+        <motion.circle
+          cx="9"
+          cy="9"
+          r="6"
+          fill="#00D4FF"
+          className="rounded-full [filter:drop-shadow(0_0_1px_#00D4FF)]"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3, delay: 2.3 }}
+        />
+      </svg>
+      <motion.div
+        className="absolute left-[5px] top-[5px] flex items-center justify-center text-swarp-darker"
+        initial={{ opacity: 0, scale: 0 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.3, delay: 2.4 }}
+      >
+        <IoMdCheckmark className="size-2" />
+      </motion.div>
+    </div>
+  );
+};
+
+const SCRAMBLED_STRINGS = [
+  "6*7A0^!HIETD@6XS749%2$4L4RO$SH*8W#6OPLLF%WSKVI^PTT1PJUOS60EQL$*K53*Y#AK5GDM6XIWX79XR^DQOMEJF$F1ZNL*L0Z&#LJ4B$E97Q76VF0U#HY!37J5$GKCI0RMK$2P1F9JJYGVR@IAHYPZALXQMJ!519!GZTQSA$#BEXUYPSZ302Z*&DDWW!NI61S#!MAHJ0Y&3J8*EBIMM$#X%46NJ0*9P3L@UW5A8NCZX&98CQ75NL9XEH11NBB^E&LQ1YPZALMJ3DSUXBS9*DADQ7ND0SCI#HY!37J5$GKKAUGDYE@#8CBDUFA9#3EYGVR@IAHZCUKIYPZALX#3EYZX&98CQ75NL9XJ4B$E97Q76VF0LKU8S5KVSD9$#BEX2Z9HSABIU#CSDK@SN!",
+  "Y4#!I*ZO1QCFU07QJFDVW#6$17$WW^#7MR5Q50I^2FFKJQW1&1%94ABU&$TX$RRTXT3P!4JPK3^A12&DQ15S08%Q^X*GUE761@6S5DA*HACX9@AS3B04YQ5*VD1*$XX9ECF4B9%O^^LGNDKT%FT2Y2SDC0M!GCNSPVWVNBAWEPT3Q2XK6M877&Q838ZWKGW8*SVG241H51EB2SU1QZL56OR44Q$95ZEDFOVS#AL@C%FEYKZEPI*F&EQUT^65O68J3Q9O^YACNTNVMAK4S#MRM!V@GOKPV0HO2IN$3501P^Y9K3UJ9%LFHMQTJK49A@&84HNFS9IYB@KMEBHIWPSD06$XL8@1A*5OMD!XW8#N7F&MM9R%6E&V&L$^J$8YMANP2TSIP3POYC!I!EER#JBFF",
+];
+
+const InfiniteScrambler = () => {
+  const [text, setText] = useState(SCRAMBLED_STRINGS[0]);
+  const index = useRef(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      index.current = (index.current + 1) % SCRAMBLED_STRINGS.length;
+      setText(SCRAMBLED_STRINGS[index.current]);
+    }, 500);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="absolute top-[15%] max-w-[322px]">
+      <p className="leading-2 whitespace-normal break-words font-mono text-[13px] text-swarp-blue/30 opacity-35">
+        {text}
+      </p>
+    </div>
+  );
+};
+
+const ContainerMask = () => {
+  return (
+    <>
+      <div className="absolute left-0 top-0 h-full w-[80px] [background-image:linear-gradient(to_right,rgb(5,7,20)_20%,transparent_100%)]" />
+      <div className="absolute right-0 top-0 h-full w-[80px] [background-image:linear-gradient(to_left,rgb(5,7,20)_20%,transparent_100%)]" />
+    </>
+  );
+};
