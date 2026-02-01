@@ -330,3 +330,33 @@
   .delay-1000 {
     animation-delay: 1s;
   }
+@keyframes scan {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+.animate-scan {
+  animation: scan 4s linear infinite;
+}
+
+@keyframes scan {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+
+.animate-scan {
+  animation: scan 4s linear infinite;
+}
+
+.btn-glow {
+  box-shadow: 0 0 20px rgba(0, 255, 240, 0.3);
+  transition: all 0.3s ease;
+}
+
+.btn-glow:hover {
+  box-shadow: 0 0 30px rgba(0, 255, 240, 0.5);
+}
