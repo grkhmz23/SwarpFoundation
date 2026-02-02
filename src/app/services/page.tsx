@@ -1,8 +1,28 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { PlatformPreview, TerminalPreview, AIPreview, CryptoPreview, DefaultPreview } from "@/components/services/service-previews";
-const SERVICES = [
+import { motion, AnimatePresence } from "framer-motion";
+import { Calendar, Clock } from "lucide-react";
+import { KeyboardLink } from "@/components/ui/keyboard-button";
+import { IMacFrame } from "@/components/ui/imac-frame";
+import { SoftwareToolsContent } from "@/components/services/content/software-tools-content";
+import { HardwareContent } from "@/components/services/content/hardware-content";
+import { WebMobileContent } from "@/components/services/content/web-mobile-content";
+import { BlockchainContent } from "@/components/services/content/blockchain-content";
+
+interface Service {
+  id: string;
+  title: string;
+  short: string;
+  desc: string;
+  proof: string[];
+  deliverables: string[];
+  process: string[];
+  timeline: string;
+  type: string;
+}
+
+const SERVICES: Service[] = [
   {
     id: "web-mobile",
     title: "Web Platforms & Mobile Apps",
@@ -12,7 +32,7 @@ const SERVICES = [
     deliverables: ["Responsive Web App", "iOS & Android Builds", "Admin Dashboard", "Analytics Integration", "Payment Gateway"],
     process: ["Discovery", "UX Wireframes", "High-fi Design", "Sprint Dev", "QA & Launch"],
     timeline: "8-12 Weeks",
-    type: "platform"
+    type: "platform",
   },
   {
     id: "software-tools",
@@ -23,7 +43,7 @@ const SERVICES = [
     deliverables: ["Binary Executables", "Install Scripts", "Documentation Site", "CI/CD Release Pipeline", "Signing Certs"],
     process: ["Arch Spec", "Core Logic", "Interface Layer", "Packaging", "Distribution"],
     timeline: "6-10 Weeks",
-    type: "terminal"
+    type: "terminal",
   },
   {
     id: "ai-systems",
@@ -34,7 +54,7 @@ const SERVICES = [
     deliverables: ["Chat Widget", "Vector Database", "Prompt Engineering", "Guardrails System", "Usage Analytics"],
     process: ["Data Audit", "Model Select", "Vector Ingest", "App Integration", "Tuning"],
     timeline: "4-8 Weeks",
-    type: "ai"
+    type: "ai",
   },
   {
     id: "blockchain",
@@ -45,7 +65,7 @@ const SERVICES = [
     deliverables: ["Smart Contracts", "dApp Frontend", "Indexer API", "Wallet Connect", "Mainnet Deploy"],
     process: ["Tokenomics", "Contract Dev", "Testnet", "Security Audit", "Mainnet Launch"],
     timeline: "10-14 Weeks",
-    type: "crypto"
+    type: "crypto",
   },
   {
     id: "security",
@@ -56,7 +76,7 @@ const SERVICES = [
     deliverables: ["Audit Report", "Remediation Plan", "Static Analysis", "Dependency Scan", "Monitoring Alerts"],
     process: ["Reconnaissance", "Scanning", "Exploitation", "Reporting", "Re-test"],
     timeline: "2-4 Weeks",
-    type: "audit"
+    type: "audit",
   },
   {
     id: "hardware",
@@ -67,7 +87,7 @@ const SERVICES = [
     deliverables: ["CAD Models", "BOM", "Functional Prototype", "Firmware", "Fabrication Docs"],
     process: ["Concept", "EVT", "DVT", "PVT", "Pilot Run"],
     timeline: "12-24 Weeks",
-    type: "hardware"
+    type: "hardware",
   },
   {
     id: "cloud",
@@ -78,7 +98,7 @@ const SERVICES = [
     deliverables: ["IaC Scripts", "CI/CD Pipeline", "K8s Cluster", "Monitoring Stack", "Disaster Recovery"],
     process: ["Audit", "Architecture", "Migration", "Automation", "Handoff"],
     timeline: "4-8 Weeks",
-    type: "cloud"
+    type: "cloud",
   },
   {
     id: "retainer",
@@ -89,7 +109,7 @@ const SERVICES = [
     deliverables: ["Dedicated Pod", "Weekly Sprints", "Roadmap Execution", "Daily Standups", "Jira/Linear Mgmt"],
     process: ["Onboarding", "Backlog Groom", "Sprint 1", "Review", "Iterate"],
     timeline: "Monthly Retainer",
-    type: "team"
+    type: "team",
   },
   {
     id: "integrations",
@@ -100,7 +120,7 @@ const SERVICES = [
     deliverables: ["REST/GraphQL API", "Webhooks", "SDK Generation", "Postman Collection", "Test Suite"],
     process: ["Spec (OpenAPI)", "Mock Server", "Implementation", "Load Test", "Docs"],
     timeline: "3-6 Weeks",
-    type: "api"
+    type: "api",
   },
   {
     id: "data",
@@ -111,7 +131,7 @@ const SERVICES = [
     deliverables: ["Tracking Plan", "ETL Pipeline", "Data Warehouse", "BI Dashboards", "Data Dictionary"],
     process: ["Mapping", "Instrumentation", "Pipeline Build", "Visualization", "Training"],
     timeline: "6-10 Weeks",
-    type: "data"
+    type: "data",
   },
   {
     id: "qa",
@@ -122,7 +142,7 @@ const SERVICES = [
     deliverables: ["E2E Suite", "Load Test Report", "Incident Runbooks", "SLO/SLA Definition", "On-call Setup"],
     process: ["Strategy", "Scripting", "CI Integration", "Stress Test", "Monitoring"],
     timeline: "3-5 Weeks",
-    type: "qa"
+    type: "qa",
   },
   {
     id: "design",
@@ -133,177 +153,215 @@ const SERVICES = [
     deliverables: ["Figma Files", "Design Tokens", "Component Library", "Storybook", "Brand Guidelines"],
     process: ["Audit", "Visual Language", "Component Build", "Documentation", "Handoff"],
     timeline: "4-8 Weeks",
-    type: "design"
-  }
+    type: "design",
+  },
 ];
 
+// Typing animation for default screen
 function TypingText() {
   const [text, setText] = useState("");
-  const fullText = "// Select a service to initialize preview...";
+  const fullText = "// Select a service to preview...";
 
   useEffect(() => {
     let index = 0;
-    const timer = setInterval(() => {
-      if (index <= fullText.length) {
-        setText(fullText.slice(0, index));
-        index++;
-      } else {
-        clearInterval(timer);
+    const interval = setInterval(() => {
+      setText(fullText.slice(0, index));
+      index++;
+      if (index > fullText.length) {
+        index = 0;
       }
-    }, 50);
-    return () => clearInterval(timer);
+    }, 100);
+    return () => clearInterval(interval);
   }, []);
 
   return (
-    <div className="font-mono text-gray-500 text-lg">
-      {text}<span className="inline-block w-2 h-5 bg-swarp-cyan ml-1 animate-pulse"></span>
+    <div className="font-mono text-cyan-500/70 text-lg">
+      {text}
+      <span className="inline-block w-3 h-5 ml-1 bg-cyan-500 animate-pulse" />
     </div>
   );
 }
 
+// Default screen content
+function DefaultScreen() {
+  return (
+    <div className="min-h-[500px] bg-black flex items-center justify-center">
+      <div className="text-center">
+        <div className="mb-8">
+          <div className="inline-flex items-center justify-center w-24 h-24 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 mb-4">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" className="text-cyan-400">
+              <rect x="2" y="3" width="20" height="14" rx="2" stroke="currentColor" strokeWidth="2"/>
+              <path d="M8 21h8" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+              <path d="M12 17v4" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+            </svg>
+          </div>
+        </div>
+        <TypingText />
+        <p className="text-gray-600 text-sm mt-4">Click any service from the sidebar</p>
+      </div>
+    </div>
+  );
+}
+
+// Coming Soon screen for services without custom content
+function ComingSoonScreen({ service }: { service: Service }) {
+  return (
+    <div className="min-h-[500px] bg-gradient-to-br from-black via-gray-900 to-black flex items-center justify-center">
+      <div className="text-center px-8">
+        <div className="mb-6">
+          <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 mb-4">
+            <Clock className="w-10 h-10 text-cyan-400" />
+          </div>
+        </div>
+        
+        <h2 className="text-2xl font-bold text-white mb-2">{service.title}</h2>
+        <p className="text-gray-400 mb-6 max-w-md">{service.desc}</p>
+        
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/30">
+          <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+          <span className="text-sm text-cyan-400 font-medium">Coming Soon</span>
+        </div>
+        
+        <div className="mt-8 grid grid-cols-3 gap-4 max-w-lg mx-auto">
+          {service.proof.map((item, i) => (
+            <div key={i} className="px-3 py-2 rounded-lg bg-white/5 border border-white/10">
+              <span className="text-xs text-gray-400">{item}</span>
+            </div>
+          ))}
+        </div>
+        
+        <p className="text-gray-600 text-xs mt-8">
+          Timeline: {service.timeline}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+// Get content component for a service
+function ServiceContent({ service }: { service: Service }) {
+  switch (service.id) {
+    case "software-tools":
+      return <SoftwareToolsContent />;
+    case "web-mobile":
+      return <WebMobileContent />;
+    case "blockchain":
+      return <BlockchainContent />;
+    case "hardware":
+      return <HardwareContent />;
+    default:
+      return <ComingSoonScreen service={service} />;
+  }
+}
+
 export default function ServicesPage() {
   const [selectedService, setSelectedService] = useState<string | null>(null);
-  const service = selectedService ? SERVICES.find(s => s.id === selectedService) : null;
+  const service = SERVICES.find((s) => s.id === selectedService);
 
   return (
-    <div className="min-h-screen bg-swarp-darker pt-24" style={{ backgroundImage: "linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px)", backgroundSize: "40px 40px" }}>
-      {!service ? (
-        <div className="grid lg:grid-cols-[280px_1fr] gap-6 p-6">
-          <nav className="bg-swarp-dark/90 backdrop-blur-sm border border-swarp-cyan/20 rounded-lg p-4 h-fit">
-            <ul className="space-y-1">
-              {SERVICES.map(s => (
-                <li key={s.id} onClick={() => setSelectedService(s.id)} className="px-4 py-3 cursor-pointer border-l-2 border-transparent hover:border-swarp-cyan hover:bg-swarp-cyan/10 transition-all text-sm text-gray-400 hover:text-white">{s.title}</li>
+    <div className="min-h-screen bg-swarp-darker pt-24 pb-12">
+      {/* Background pattern */}
+      <div className="fixed inset-0 opacity-30 pointer-events-none">
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `radial-gradient(circle at 1px 1px, rgba(0,255,240,0.15) 1px, transparent 0)`,
+            backgroundSize: "40px 40px",
+          }}
+        />
+      </div>
+
+      <div className="relative z-10 max-w-[1600px] mx-auto px-4 lg:px-8">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <h1 className="text-4xl md:text-5xl font-bold mb-3">
+            <span className="text-white">Services</span>{" "}
+            <span className="text-cyan-400">Hub</span>
+          </h1>
+          <p className="text-gray-400 max-w-xl mx-auto">
+            Explore our full range of development services. Select a service to preview it inside our interactive workspace.
+          </p>
+        </div>
+
+        {/* Main Layout */}
+        <div className="grid lg:grid-cols-[280px_1fr] gap-6">
+          {/* Sidebar */}
+          <nav className="bg-swarp-dark/80 backdrop-blur-sm border border-swarp-cyan/20 rounded-xl p-4 h-fit lg:sticky lg:top-24">
+            <div className="flex items-center justify-between mb-4">
+              <span className="text-xs uppercase tracking-wider text-gray-500 font-semibold">Services</span>
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 font-mono">
+                {SERVICES.length} Available
+              </span>
+            </div>
+
+            <ul className="space-y-1 max-h-[50vh] overflow-y-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-cyan-500/20">
+              {SERVICES.map((s) => (
+                <li key={s.id}>
+                  <button
+                    onClick={() => setSelectedService(s.id)}
+                    className={`w-full px-3 py-2.5 text-left rounded-lg transition-all text-sm ${
+                      selectedService === s.id
+                        ? "bg-cyan-500/20 text-cyan-400 border-l-2 border-cyan-400"
+                        : "text-gray-400 hover:text-white hover:bg-white/5"
+                    }`}
+                  >
+                    <span className="block font-medium truncate">{s.title}</span>
+                    <span className="block text-[10px] text-gray-500 truncate">{s.short}</span>
+                  </button>
+                </li>
               ))}
             </ul>
-            <button className="w-full mt-6 pt-6 border-t border-swarp-cyan/20 px-6 py-3 bg-swarp-darker border-2 border-swarp-cyan text-white rounded-lg font-semibold shadow-[0_0_20px_rgba(0,255,240,0.3)] hover:shadow-[0_0_30px_rgba(0,255,240,0.5)] transition-all text-center">Book Consultation</button>
+
+            <div className="mt-4 pt-4 border-t border-cyan-500/20">
+              <KeyboardLink
+                href="/contact"
+                variant="primary"
+                size="md"
+                fullWidth
+                icon={<Calendar className="w-4 h-4" />}
+              >
+                Book Consultation
+              </KeyboardLink>
+            </div>
           </nav>
 
-          <main className="bg-swarp-dark/90 backdrop-blur-sm border border-swarp-cyan/20 rounded-lg p-8 flex flex-col gap-6">
-            <div className="flex justify-between items-center">
-              <h2 className="text-3xl font-bold text-swarp-cyan">Services Hub</h2>
-              <span className="px-3 py-1 rounded-full border border-swarp-cyan/30 text-xs font-mono text-gray-400">v2.4.0 Live</span>
-            </div>
-
-            <div className="relative flex-1 min-h-[500px]">
-              <div className="absolute -inset-2 bg-gradient-to-r from-swarp-cyan via-swarp-blue to-swarp-purple rounded-3xl blur-xl opacity-30 animate-pulse"></div>
-
-              <div className="relative rounded-2xl border-4 border-swarp-cyan/50 bg-swarp-darker/90 backdrop-blur-sm shadow-2xl shadow-swarp-cyan/20 overflow-hidden h-full">
-                <div className="bg-gradient-to-r from-swarp-dark to-swarp-darker border-b border-swarp-cyan/30 px-4 py-3 flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
-                    <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                    <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                    <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                  </div>
-                  <div className="text-xs text-gray-500 font-mono">services-hub.ts</div>
-                  <div className="text-xs text-swarp-cyan">●</div>
-                </div>
-
-                <div className="p-12 h-[400px] overflow-hidden font-mono text-sm relative flex items-center justify-center">
-                  <div className="absolute inset-0 bg-gradient-to-b from-transparent via-swarp-cyan/5 to-transparent animate-scan"></div>
-                  <div className="relative z-10 text-center">
-                    <TypingText />
-                  </div>
-                </div>
-
-                <div className="bg-swarp-dark/80 border-t border-swarp-cyan/20 px-4 py-2 flex items-center justify-between text-xs">
-                  <span className="text-gray-500">12 Services Available</span>
-                  <span className="text-swarp-cyan">Ready</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-3 gap-4 pt-4 border-t border-swarp-cyan/20">
-              <div>
-                <span className="text-xs uppercase tracking-wide text-gray-500 block mb-2">Architecture</span>
-                <h4 className="text-sm font-semibold mb-1">Microservices & Monoliths</h4>
-                <p className="text-xs text-gray-400">We build for scale from day one.</p>
-              </div>
-              <div>
-                <span className="text-xs uppercase tracking-wide text-gray-500 block mb-2">Stack</span>
-                <h4 className="text-sm font-semibold mb-1">Modern & Type-safe</h4>
-                <p className="text-xs text-gray-400">TypeScript, Rust, Go, Python.</p>
-              </div>
-              <div>
-                <span className="text-xs uppercase tracking-wide text-gray-500 block mb-2">Speed</span>
-                <h4 className="text-sm font-semibold mb-1">Rapid Prototyping</h4>
-                <p className="text-xs text-gray-400">MVP in weeks, not months.</p>
-              </div>
-            </div>
-          </main>
+          {/* iMac Display */}
+          <div className="flex items-start justify-center">
+            <IMacFrame
+              title={service ? service.title : "Swarp Services"}
+              onClose={() => setSelectedService(null)}
+              className="w-full max-w-4xl"
+            >
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={selectedService || "default"}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  {service ? <ServiceContent service={service} /> : <DefaultScreen />}
+                </motion.div>
+              </AnimatePresence>
+            </IMacFrame>
+          </div>
         </div>
-      ) : (
-        <div className="grid lg:grid-cols-[350px_1fr]">
-          <aside className="bg-swarp-dark border-r border-swarp-cyan/20 p-6 space-y-6 overflow-y-auto max-h-[calc(100vh-6rem)]">
-            <button onClick={() => setSelectedService(null)} className="px-4 py-2 text-sm border border-swarp-cyan/30 rounded hover:bg-swarp-cyan/10 transition-all">← Back to Hub</button>
-            <div>
-              <h1 className="text-3xl font-bold mb-2">{service.title}</h1>
-              <p className="text-gray-400">{service.desc}</p>
-            </div>
-            <div className="flex gap-2 flex-wrap">
-              {service.proof.map((p, i) => <span key={i} className="px-3 py-1 rounded-full bg-swarp-cyan/10 border border-swarp-cyan/30 text-xs text-swarp-cyan font-semibold">{p}</span>)}
-            </div>
-            <hr className="border-swarp-cyan/20" />
-            <div>
-              <span className="text-xs uppercase tracking-wide text-swarp-purple block mb-2">What You Get</span>
-              <ul className="font-mono text-sm text-gray-400 space-y-1 list-disc list-inside">
-                {service.deliverables.map((d, i) => <li key={i}>{d}</li>)}
-              </ul>
-            </div>
-            <div>
-              <span className="text-xs uppercase tracking-wide text-green-400 block mb-2">Process</span>
-              <div className="space-y-2">
-                {service.process.map((step, i) => (
-                  <div key={i} className="flex items-center gap-3 text-sm text-gray-500">
-                    <div className="w-5 h-5 rounded-full border border-swarp-cyan/40 flex items-center justify-center text-xs">{i+1}</div>
-                    <span>{step}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="pt-6 space-y-4">
-              <div>
-                <span className="text-xs uppercase tracking-wide text-gray-500 block mb-1">Est. Timeline</span>
-                <h3 className="text-xl font-mono font-bold">{service.timeline}</h3>
-              </div>
-              <div className="grid grid-cols-2 gap-3">
-                <button className="px-4 py-3 bg-swarp-darker border-2 border-swarp-cyan text-white rounded-lg font-semibold shadow-[0_0_20px_rgba(0,255,240,0.3)] hover:shadow-[0_0_30px_rgba(0,255,240,0.5)] text-sm">Request Proposal</button>
-                <a href="mailto:info@swarppay.com" className="px-4 py-3 border border-swarp-cyan/30 rounded-lg text-center hover:bg-swarp-cyan/10 transition-all text-sm">Email Us</a>
-              </div>
-            </div>
-          </aside>
 
-          <main className="p-8 space-y-8 overflow-y-auto max-h-[calc(100vh-6rem)]">
-            <div className="bg-black border-2 border-swarp-cyan/30 rounded-lg overflow-hidden min-h-[500px] shadow-[0_0_40px_rgba(0,255,240,0.2)]">
-              <div className="h-10 bg-swarp-dark/80 border-b border-swarp-cyan/20 flex items-center px-4 gap-2">
-                <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                <span className="ml-auto font-mono text-xs text-gray-500">Interactive Demo: {service.type.toUpperCase()}</span>
-              </div>
-              <div className="h-[450px]">
-                {service.type === 'platform' && <PlatformPreview />}
-                {service.type === 'terminal' && <TerminalPreview />}
-                {service.type === 'ai' && <AIPreview />}
-                {service.type === 'crypto' && <CryptoPreview />}
-                {!['platform', 'terminal', 'ai', 'crypto'].includes(service.type) && <DefaultPreview type={service.type} />}
-              </div>
+        {/* Bottom info */}
+        <div className="mt-12 grid grid-cols-3 gap-4 max-w-3xl mx-auto">
+          {[
+            { label: "Architecture", title: "Microservices & Monoliths", desc: "Built for scale from day one" },
+            { label: "Stack", title: "Modern & Type-safe", desc: "TypeScript, Rust, Go, Python" },
+            { label: "Speed", title: "Rapid Prototyping", desc: "MVP in weeks, not months" },
+          ].map((item) => (
+            <div key={item.label} className="text-center p-4 rounded-xl bg-swarp-dark/50 border border-cyan-500/10">
+              <span className="text-[10px] uppercase tracking-wider text-gray-500">{item.label}</span>
+              <h4 className="text-sm font-semibold text-white mt-1">{item.title}</h4>
+              <p className="text-[11px] text-gray-500 mt-0.5">{item.desc}</p>
             </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div className="bg-swarp-dark/90 border border-swarp-cyan/20 rounded-lg p-4">
-                <span className="text-xs uppercase tracking-wide text-gray-500 block mb-3">Technology</span>
-                <div className="flex gap-2 flex-wrap">
-                  {["React", "Node.js", "Python", "AWS"].map(t => <span key={t} className="px-3 py-1 rounded-full border border-swarp-cyan/20 text-xs font-mono text-gray-400">{t}</span>)}
-                </div>
-              </div>
-              <div className="bg-swarp-dark/90 border border-swarp-cyan/20 rounded-lg p-4">
-                <span className="text-xs uppercase tracking-wide text-gray-500 block mb-3">Engagement Mode</span>
-                <div className="font-mono text-sm">Fixed Scope <span className="text-gray-500">or</span> Monthly Retainer</div>
-              </div>
-            </div>
-          </main>
+          ))}
         </div>
-      )}
+      </div>
     </div>
   );
 }

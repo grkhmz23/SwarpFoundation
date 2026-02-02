@@ -1,4 +1,3 @@
-
 "use client";
 import React from 'react';
 import { cn } from '@/lib/utils';
@@ -15,6 +14,7 @@ import {
 } from 'lucide-react';
 import { Button, ButtonProps } from '@/components/ui/button';
 import { LocationMap } from '@/components/ui/expand-map';
+import { SecureMessageGateway } from '@/components/ui/secure-message-gateway';
 
 const APP_EMAIL = 'contact@swarp.foundation';
 const APP_PHONE = '+971 4 123 4567';
@@ -170,6 +170,38 @@ export function ContactPage() {
 								</a>
 							))}
 						</div>
+					</div>
+				</div>
+
+				<BorderSeparator />
+
+				{/* Secure Message Gateway Section */}
+				<div className="relative flex h-full min-h-[400px] items-center justify-center py-16">
+					<div
+						className={cn(
+							'z--10 absolute inset-0 size-full',
+							'bg-[radial-gradient(rgba(157,78,221,0.2)_1px,transparent_1px)]',
+							'bg-[size:32px_32px]',
+							'[mask-image:radial-gradient(ellipse_at_center,black_40%,transparent)]',
+						)}
+					/>
+
+					<div className="relative z-1 w-full max-w-3xl px-4">
+						<div className="text-center mb-8">
+							<p className="text-gray-500 text-xs font-medium tracking-[0.2em] uppercase mb-4">
+								Direct Line
+							</p>
+							<h2 className="text-2xl font-bold text-gradient mb-2">
+								Send a Message
+							</h2>
+							<p className="text-gray-400 text-sm">
+								Encrypted channel for direct communication with our team
+							</p>
+						</div>
+						<SecureMessageGateway 
+							title="Secure Message Gateway"
+							subtitle="Your message will be delivered to our team directly"
+						/>
 					</div>
 				</div>
 			</div>

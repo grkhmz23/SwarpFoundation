@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { KeyboardLink } from "@/components/ui/keyboard-button";
+import { ArrowRight, MessageCircle } from "lucide-react";
 
 const codeLines = [
   "// Initializing Swarp Foundation...",
@@ -91,12 +93,22 @@ export function Hero() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
-              <a href="#projects" className="px-8 py-4 bg-swarp-darker border-2 border-swarp-cyan text-white rounded-xl font-semibold shadow-[0_0_20px_rgba(0,255,240,0.3)] hover:shadow-[0_0_30px_rgba(0,255,240,0.5)] hover:border-swarp-blue transition-all duration-300 text-center">
+              <KeyboardLink 
+                href="/works"
+                variant="primary" 
+                size="lg"
+                icon={<ArrowRight className="w-4 h-4" />}
+              >
                 Explore Projects
-              </a>
-              <a href="/contact" className="px-8 py-4 bg-transparent border-2 border-swarp-cyan/50 text-swarp-cyan rounded-xl font-semibold hover:bg-swarp-cyan/10 hover:border-swarp-cyan hover:shadow-[0_0_15px_rgba(0,255,240,0.3)] transition-all duration-300 text-center">
+              </KeyboardLink>
+              <KeyboardLink 
+                href="/contact"
+                variant="ghost" 
+                size="lg"
+                icon={<MessageCircle className="w-4 h-4" />}
+              >
                 Get in Touch
-              </a>
+              </KeyboardLink>
             </div>
           </div>
 

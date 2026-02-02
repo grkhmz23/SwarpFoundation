@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Github, Twitter, Linkedin, Mail } from "lucide-react";
 import swarpLogo from "@/assets/swarplogo.png";
+import { SocialCard } from "./social-card";
 
 const footerSections = [
   {
@@ -43,13 +43,6 @@ const footerSections = [
   },
 ];
 
-const socialLinks = [
-  { icon: Github, href: "https://github.com/swarp-foundation", label: "GitHub" },
-  { icon: Twitter, href: "https://twitter.com/swarpfoundation", label: "Twitter" },
-  { icon: Linkedin, href: "https://linkedin.com/company/swarp-foundation", label: "LinkedIn" },
-  { icon: Mail, href: "mailto:info@swarppay.com", label: "Email" },
-];
-
 export function Footer() {
   return (
     <footer className="relative bg-swarp-darker border-t border-swarp-cyan/20 mt-16 w-full overflow-hidden">
@@ -62,8 +55,8 @@ export function Footer() {
 
       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-6">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-          <div>
-            <Link href="/" className="flex items-center space-x-3 group mb-4">
+          <div className="space-y-6">
+            <Link href="/" className="flex items-center space-x-3 group">
               <Image 
                 src={swarpLogo} 
                 alt="Swarp Foundation" 
@@ -73,23 +66,19 @@ export function Footer() {
               />
               <span className="text-xl font-bold text-swarp-cyan">Swarp Foundation</span>
             </Link>
-            <p className="text-sm text-gray-400 mb-6 max-w-xs">
+            <p className="text-sm text-gray-400 max-w-xs">
               Building the future of blockchain infrastructure and AI-powered solutions. Enterprise-grade software for the decentralized web.
             </p>
-            <div className="flex space-x-4">
-              {socialLinks.map((social) => (
-                <a
-                  key={social.label}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-2 text-gray-400 hover:text-swarp-cyan hover:bg-swarp-cyan/10 rounded-lg transition-all duration-300"
-                  aria-label={social.label}
-                >
-                  <social.icon size={20} />
-                </a>
-              ))}
-            </div>
+
+            {/* Social Card */}
+            <SocialCard 
+              title="Follow Us"
+              instagramUrl="https://instagram.com/swarpfoundation"
+              twitterUrl="https://x.com/swarpfoundation"
+              discordUrl="https://discord.gg/swarp"
+              telegramUrl="https://t.me/swarpfoundation"
+              githubUrl="https://github.com/swarp-foundation"
+            />
           </div>
 
           <div className="grid grid-cols-2 gap-8 lg:col-span-2 lg:grid-cols-4">
