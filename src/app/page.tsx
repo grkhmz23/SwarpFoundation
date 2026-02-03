@@ -1,12 +1,11 @@
-import { Hero } from "@/components/sections/hero";
-import { IdeaSection } from "@/components/sections/idea-section";
-import { AetherBackground } from "@/components/ui/aether-hero";
+import { Hero } from "@/components/hero";
+import { IdeaSection } from "@/components/idea-section";
 
-export default function Home() {
+export default function HomePage() {
   return (
-    <AetherBackground>
+    <main>
       <Hero />
       <IdeaSection />
-    </AetherBackground>
+    </main>
   );
 }

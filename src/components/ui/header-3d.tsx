@@ -67,18 +67,21 @@ export function NavPill3D() {
       style={{
         width: pillWidth,
         height: "56px",
+        // Semi-transparent background to let AetherBackground show through
         background: `
           linear-gradient(135deg, 
-            #0d1520 0%, 
-            #0b1218 15%, 
-            #091015 30%, 
-            #070d12 45%, 
-            #060a0f 60%, 
-            #050910 75%, 
-            #04080c 90%, 
-            #060a10 100%
+            rgba(13, 21, 32, 0.85) 0%, 
+            rgba(11, 18, 24, 0.85) 15%, 
+            rgba(9, 16, 21, 0.85) 30%, 
+            rgba(7, 13, 18, 0.85) 45%, 
+            rgba(6, 10, 15, 0.85) 60%, 
+            rgba(5, 9, 16, 0.85) 75%, 
+            rgba(4, 8, 12, 0.85) 90%, 
+            rgba(6, 10, 16, 0.85) 100%
           )
         `,
+        backdropFilter: "blur(12px)",
+        WebkitBackdropFilter: "blur(12px)",
         boxShadow: expanded
           ? `
             0 2px 4px rgba(0, 0, 0, 0.3),

@@ -1,17 +1,8 @@
 "use client";
 
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { KeyboardLink } from "@/components/ui/keyboard-button";
 import { ArrowRight, MessageCircle, Shield, Zap, Cpu, Sparkles } from "lucide-react";
-
-/**
- * Hero — “magical software / IDE + telemetry” upgrade
- * - Cursor-tracked aurora + subtle grid + vignette
- * - Circuit frame border trace (like footer/idea section)
- * - Premium badge row (live, SOC-like)
- * - Upgraded code panel: scanlines, trace rails, live status chips
- * - Keeps your typing effect (but adds reduced-motion support & stability)
- */
 
 const codeLines = [
   "// Initializing Swarp Foundation...",
@@ -93,7 +84,6 @@ function CircuitFrame({ active, reducedMotion }: { active: boolean; reducedMotio
           opacity={active ? 1 : 0.45}
         />
 
-        {/* corner pads */}
         <g opacity={active ? 0.85 : 0.55}>
           {[
             { x: 9, y: 9 },
@@ -218,37 +208,7 @@ function MetricChip({
 
 export function Hero() {
   const reducedMotion = usePrefersReducedMotion();
-  const heroRef = useRef<HTMLElement | null>(null);
 
-  // Cursor-tracked aurora
-  useEffect(() => {
-    const el = heroRef.current;
-    if (!el) return;
-
-    const onMove = (e: PointerEvent) => {
-      const r = el.getBoundingClientRect();
-      const x = ((e.clientX - r.left) / r.width) * 100;
-      const y = ((e.clientY - r.top) / r.height) * 100;
-      el.style.setProperty("--mx", `${x}%`);
-      el.style.setProperty("--my", `${y}%`);
-    };
-
-    const onLeave = () => {
-      el.style.setProperty("--mx", "55%");
-      el.style.setProperty("--my", "30%");
-    };
-
-    el.addEventListener("pointermove", onMove);
-    el.addEventListener("pointerleave", onLeave);
-    onLeave();
-
-    return () => {
-      el.removeEventListener("pointermove", onMove);
-      el.removeEventListener("pointerleave", onLeave);
-    };
-  }, []);
-
-  // Typing effect (stabilized + reduced-motion support)
   const [displayedLines, setDisplayedLines] = useState<string[]>([]);
   const [currentLineIndex, setCurrentLineIndex] = useState(0);
   const [currentText, setCurrentText] = useState("");
@@ -262,12 +222,10 @@ export function Hero() {
       setCharIndex(0);
       return;
     }
-    // restart cleanly once on mount
     setDisplayedLines([]);
     setCurrentLineIndex(0);
     setCurrentText("");
     setCharIndex(0);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reducedMotion]);
 
   useEffect(() => {
@@ -304,24 +262,14 @@ export function Hero() {
 
   return (
     <section
-      ref={(n) => {
-        heroRef.current = n as unknown as HTMLElement | null;
-      }}
-      className="hero relative min-h-screen flex items-center justify-center pt-24 px-4 overflow-hidden"
+      className="relative min-h-screen flex items-center justify-center pt-24 px-4 overflow-hidden"
       aria-label="Swarp hero"
     >
-      {/* Backdrop */}
-      <div className="pointer-events-none absolute inset-0">
-        <div className="aurora" />
-        <div className="grid" />
-        <div className="vignette" />
-      </div>
-
+      {/* Main content */}
       <div className="w-full max-w-6xl mx-auto relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left */}
           <div className="space-y-6">
-            {/* “Live” badge */}
             <div className="badge">
               <span className="badge__dot" aria-hidden="true" />
               <span className="badge__text">Enterprise Software Solutions</span>
@@ -340,14 +288,12 @@ export function Hero() {
               infrastructure to security audits — delivered with engineering discipline and speed.
             </p>
 
-            {/* Metrics row */}
             <div className="flex flex-wrap gap-3 pt-1">
               {metrics.map((m) => (
                 <MetricChip key={m.label} icon={m.icon} label={m.label} value={m.value} />
               ))}
             </div>
 
-            {/* CTAs */}
             <div className="flex flex-col sm:flex-row gap-4 pt-2">
               <div className="cta-primary">
                 <KeyboardLink
@@ -372,7 +318,6 @@ export function Hero() {
               </div>
             </div>
 
-            {/* Sub hint */}
             <div className="hint">
               <Sparkles className="w-4 h-4 text-cyan-300/80" />
               <span>
@@ -383,19 +328,16 @@ export function Hero() {
 
           {/* Right — IDE/Telemetry panel */}
           <div className="relative">
-            {/* Glow */}
             <div className="absolute -inset-5 glow" aria-hidden="true" />
 
             <div className="panel relative rounded-2xl border border-white/10 bg-black/40 backdrop-blur-xl shadow-2xl overflow-hidden">
               <CircuitFrame active={true} reducedMotion={reducedMotion} />
 
-              {/* Rails */}
               <div className="pointer-events-none absolute inset-0">
                 <div className={`rail rail--top ${reducedMotion ? "" : "on"}`} />
                 <div className={`rail rail--bottom ${reducedMotion ? "" : "on"}`} />
               </div>
 
-              {/* Window bar */}
               <div className="winbar">
                 <div className="flex items-center space-x-2">
                   <div className="w-3 h-3 rounded-full bg-red-500/80" />
@@ -411,7 +353,6 @@ export function Hero() {
                 </div>
               </div>
 
-              {/* Code */}
               <div className="codewrap">
                 <div className="code">
                   {displayedLines.map((line, i) => (
@@ -432,11 +373,9 @@ export function Hero() {
                   )}
                 </div>
 
-                {/* Scanlines */}
                 <div className="scan" aria-hidden="true" />
               </div>
 
-              {/* Footer bar */}
               <div className="footbar">
                 <span className="footbar__left">Web • Mobile • AI • Blockchain • Security</span>
                 <span className="footbar__right">
@@ -458,44 +397,6 @@ export function Hero() {
       </div>
 
       <style jsx>{`
-        .hero {
-          --mx: 55%;
-          --my: 30%;
-        }
-
-        /* Backdrop */
-        .aurora {
-          position: absolute;
-          inset: -20%;
-          background:
-            radial-gradient(900px 520px at var(--mx) var(--my), rgba(0, 255, 240, 0.16), transparent 55%),
-            radial-gradient(780px 460px at calc(var(--mx) + 18%) calc(var(--my) - 10%),
-              rgba(140, 80, 255, 0.14),
-              transparent 58%),
-            radial-gradient(700px 420px at calc(var(--mx) - 18%) calc(var(--my) + 12%),
-              rgba(154, 255, 90, 0.10),
-              transparent 60%);
-          filter: blur(26px);
-          opacity: 0.9;
-          transition: opacity 240ms ease;
-        }
-        .grid {
-          position: absolute;
-          inset: 0;
-          opacity: 0.22;
-          background-image:
-            linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
-          background-size: 54px 54px;
-          mask-image: radial-gradient(70% 70% at 50% 30%, black, transparent 84%);
-        }
-        .vignette {
-          position: absolute;
-          inset: 0;
-          background: radial-gradient(80% 70% at 50% 30%, transparent, rgba(0, 0, 0, 0.72));
-          opacity: 0.95;
-        }
-
         /* Badge */
         .badge {
           display: inline-flex;
@@ -772,6 +673,7 @@ export function Hero() {
           align-items: center;
           gap: 10px;
           opacity: 0.9;
+          z-index: 10;
         }
         .bounce {
           animation: ${reducedMotion ? "none" : "bounce 1.9s ease-in-out infinite"};
