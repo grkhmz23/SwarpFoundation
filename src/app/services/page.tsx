@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Calendar, Clock } from "lucide-react";
+import { Calendar, Clock, ChevronRight } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { KeyboardLink } from "@/components/ui/keyboard-button";
 import { IMacFrame } from "@/components/ui/imac-frame";
 import { SoftwareToolsContent } from "@/components/services/content/software-tools-content";
@@ -20,6 +21,7 @@ interface Service {
   process: string[];
   timeline: string;
   type: string;
+  hasContent?: boolean;
 }
 
 const SERVICES: Service[] = [
@@ -33,6 +35,7 @@ const SERVICES: Service[] = [
     process: ["Discovery", "UX Wireframes", "High-fi Design", "Sprint Dev", "QA & Launch"],
     timeline: "8-12 Weeks",
     type: "platform",
+    hasContent: true,
   },
   {
     id: "software-tools",
@@ -44,6 +47,7 @@ const SERVICES: Service[] = [
     process: ["Arch Spec", "Core Logic", "Interface Layer", "Packaging", "Distribution"],
     timeline: "6-10 Weeks",
     type: "terminal",
+    hasContent: true,
   },
   {
     id: "ai-systems",
@@ -66,6 +70,7 @@ const SERVICES: Service[] = [
     process: ["Tokenomics", "Contract Dev", "Testnet", "Security Audit", "Mainnet Launch"],
     timeline: "10-14 Weeks",
     type: "crypto",
+    hasContent: true,
   },
   {
     id: "security",
@@ -88,6 +93,7 @@ const SERVICES: Service[] = [
     process: ["Concept", "EVT", "DVT", "PVT", "Pilot Run"],
     timeline: "12-24 Weeks",
     type: "hardware",
+    hasContent: true,
   },
   {
     id: "cloud",
@@ -213,15 +219,15 @@ function ComingSoonScreen({ service }: { service: Service }) {
             <Clock className="w-10 h-10 text-cyan-400" />
           </div>
         </div>
-        
+
         <h2 className="text-2xl font-bold text-white mb-2">{service.title}</h2>
         <p className="text-gray-400 mb-6 max-w-md">{service.desc}</p>
-        
+
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/30">
           <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
           <span className="text-sm text-cyan-400 font-medium">Coming Soon</span>
         </div>
-        
+
         <div className="mt-8 grid grid-cols-3 gap-4 max-w-lg mx-auto">
           {service.proof.map((item, i) => (
             <div key={i} className="px-3 py-2 rounded-lg bg-white/5 border border-white/10">
@@ -229,12 +235,90 @@ function ComingSoonScreen({ service }: { service: Service }) {
             </div>
           ))}
         </div>
-        
+
         <p className="text-gray-600 text-xs mt-8">
           Timeline: {service.timeline}
         </p>
       </div>
     </div>
+  );
+}
+
+// 3D Keyboard-style Service Button
+function ServiceButton({ 
+  service, 
+  isSelected, 
+  onClick 
+}: { 
+  service: Service; 
+  isSelected: boolean; 
+  onClick: () => void;
+}) {
+  const [isPressed, setIsPressed] = useState(false);
+
+  return (
+    <button
+      onClick={onClick}
+      onMouseDown={() => setIsPressed(true)}
+      onMouseUp={() => setIsPressed(false)}
+      onMouseLeave={() => setIsPressed(false)}
+      className={cn(
+        "group relative w-full select-none rounded-lg transition-all duration-75 ease-out",
+        isPressed ? "translate-y-0.5" : "translate-y-0",
+      )}
+    >
+      {/* Shadow/depth layer */}
+      <span
+        className={cn(
+          "absolute inset-0 rounded-lg transition-all duration-75",
+          isSelected ? "bg-cyan-700" : "bg-gray-800",
+          isPressed ? "translate-y-0" : "translate-y-1",
+        )}
+      />
+
+      {/* Main button surface */}
+      <span
+        className={cn(
+          "relative flex flex-col items-start rounded-lg border p-3 transition-all duration-75",
+          isSelected 
+            ? "border-cyan-400/50 bg-gradient-to-b from-cyan-500/20 to-cyan-600/10" 
+            : "border-gray-700 bg-gradient-to-b from-gray-800 to-gray-900 hover:border-gray-600",
+        )}
+      >
+        {/* Shine effect */}
+        <span
+          className={cn(
+            "absolute inset-x-2 top-1 h-px rounded-full bg-gradient-to-r from-transparent to-transparent transition-opacity duration-75",
+            isSelected ? "via-cyan-400/30" : "via-white/10",
+            isPressed ? "opacity-0" : "opacity-100",
+          )}
+        />
+
+        {/* Content */}
+        <div className="relative z-10 w-full text-left">
+          <div className="flex items-center justify-between mb-1">
+            <span className={cn(
+              "text-sm font-bold tracking-wide transition-colors",
+              isSelected ? "text-cyan-400" : "text-gray-200 group-hover:text-white"
+            )}>
+              {service.title}
+            </span>
+            <ChevronRight className={cn(
+              "w-4 h-4 transition-all",
+              isSelected ? "text-cyan-400 translate-x-0" : "text-gray-600 -translate-x-1 opacity-0 group-hover:opacity-100 group-hover:translate-x-0"
+            )} />
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-[10px] text-gray-500 font-mono">{service.short}</span>
+            {service.hasContent && (
+              <span className="text-[8px] px-1.5 py-0.5 rounded bg-cyan-500/20 text-cyan-400 font-semibold uppercase">
+                Live
+              </span>
+            )}
+          </div>
+        </div>
+      </span>
+    </button>
   );
 }
 
@@ -271,62 +355,97 @@ export default function ServicesPage() {
         />
       </div>
 
+      {/* Gradient orbs */}
+      <div className="fixed top-20 left-1/4 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="fixed bottom-20 right-1/4 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl pointer-events-none" />
+
       <div className="relative z-10 max-w-[1600px] mx-auto px-4 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl md:text-5xl font-bold mb-3">
+        <div className="text-center mb-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/30 mb-4"
+          >
+            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+            <span className="text-xs font-semibold text-cyan-400 uppercase tracking-wider">Service Catalog</span>
+          </motion.div>
+
+          <motion.h1 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="text-4xl md:text-5xl font-bold mb-3"
+          >
             <span className="text-white">Services</span>{" "}
-            <span className="text-cyan-400">Hub</span>
-          </h1>
-          <p className="text-gray-400 max-w-xl mx-auto">
+            <span className="text-gradient">Hub</span>
+          </motion.h1>
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="text-gray-400 max-w-xl mx-auto"
+          >
             Explore our full range of development services. Select a service to preview it inside our interactive workspace.
-          </p>
+          </motion.p>
         </div>
 
         {/* Main Layout */}
-        <div className="grid lg:grid-cols-[280px_1fr] gap-6">
+        <div className="grid lg:grid-cols-[320px_1fr] gap-6">
           {/* Sidebar */}
-          <nav className="bg-swarp-dark/80 backdrop-blur-sm border border-swarp-cyan/20 rounded-xl p-4 h-fit lg:sticky lg:top-24">
-            <div className="flex items-center justify-between mb-4">
-              <span className="text-xs uppercase tracking-wider text-gray-500 font-semibold">Services</span>
-              <span className="text-[10px] px-2 py-0.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 font-mono">
-                {SERVICES.length} Available
+          <motion.nav 
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.3 }}
+            className="space-y-4"
+          >
+            {/* Service count badge */}
+            <div className="flex items-center justify-between px-1 mb-2">
+              <span className="text-xs uppercase tracking-wider text-gray-500 font-semibold">Available Services</span>
+              <span className="text-[10px] px-2 py-1 rounded-md bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 font-mono font-bold">
+                {SERVICES.length}
               </span>
             </div>
 
-            <ul className="space-y-1 max-h-[50vh] overflow-y-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-cyan-500/20">
-              {SERVICES.map((s) => (
-                <li key={s.id}>
-                  <button
+            {/* Service buttons */}
+            <div className="space-y-2 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar">
+              {SERVICES.map((s, i) => (
+                <motion.div
+                  key={s.id}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.3 + i * 0.03 }}
+                >
+                  <ServiceButton
+                    service={s}
+                    isSelected={selectedService === s.id}
                     onClick={() => setSelectedService(s.id)}
-                    className={`w-full px-3 py-2.5 text-left rounded-lg transition-all text-sm ${
-                      selectedService === s.id
-                        ? "bg-cyan-500/20 text-cyan-400 border-l-2 border-cyan-400"
-                        : "text-gray-400 hover:text-white hover:bg-white/5"
-                    }`}
-                  >
-                    <span className="block font-medium truncate">{s.title}</span>
-                    <span className="block text-[10px] text-gray-500 truncate">{s.short}</span>
-                  </button>
-                </li>
+                  />
+                </motion.div>
               ))}
-            </ul>
+            </div>
 
-            <div className="mt-4 pt-4 border-t border-cyan-500/20">
+            {/* CTA */}
+            <div className="pt-4 border-t border-cyan-500/20">
               <KeyboardLink
                 href="/contact"
                 variant="primary"
-                size="md"
+                size="lg"
                 fullWidth
                 icon={<Calendar className="w-4 h-4" />}
               >
                 Book Consultation
               </KeyboardLink>
             </div>
-          </nav>
+          </motion.nav>
 
           {/* iMac Display */}
-          <div className="flex items-start justify-center">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="flex items-start justify-center"
+          >
             <IMacFrame
               title={service ? service.title : "Swarp Services"}
               onClose={() => setSelectedService(null)}
@@ -344,23 +463,39 @@ export default function ServicesPage() {
                 </motion.div>
               </AnimatePresence>
             </IMacFrame>
-          </div>
+          </motion.div>
         </div>
 
         {/* Bottom info */}
-        <div className="mt-12 grid grid-cols-3 gap-4 max-w-3xl mx-auto">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+          className="mt-12 grid grid-cols-3 gap-4 max-w-3xl mx-auto"
+        >
           {[
             { label: "Architecture", title: "Microservices & Monoliths", desc: "Built for scale from day one" },
             { label: "Stack", title: "Modern & Type-safe", desc: "TypeScript, Rust, Go, Python" },
             { label: "Speed", title: "Rapid Prototyping", desc: "MVP in weeks, not months" },
-          ].map((item) => (
-            <div key={item.label} className="text-center p-4 rounded-xl bg-swarp-dark/50 border border-cyan-500/10">
-              <span className="text-[10px] uppercase tracking-wider text-gray-500">{item.label}</span>
-              <h4 className="text-sm font-semibold text-white mt-1">{item.title}</h4>
-              <p className="text-[11px] text-gray-500 mt-0.5">{item.desc}</p>
-            </div>
+          ].map((item, i) => (
+            <motion.div 
+              key={item.label} 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 + i * 0.1 }}
+              className="group relative"
+            >
+              {/* Shadow */}
+              <div className="absolute inset-0 rounded-xl bg-gray-800 translate-y-1" />
+              {/* Surface */}
+              <div className="relative text-center p-4 rounded-xl bg-gradient-to-b from-gray-800/80 to-gray-900/80 border border-cyan-500/10 group-hover:border-cyan-500/30 transition-colors">
+                <span className="text-[10px] uppercase tracking-wider text-gray-500">{item.label}</span>
+                <h4 className="text-sm font-semibold text-white mt-1">{item.title}</h4>
+                <p className="text-[11px] text-gray-500 mt-0.5">{item.desc}</p>
+              </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </div>
   );

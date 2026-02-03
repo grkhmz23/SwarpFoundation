@@ -103,6 +103,13 @@ export const KeyboardButton = forwardRef<HTMLButtonElement, KeyboardButtonProps>
         )}
         {...props}
       >
+        {/* Invisible spacer for height */}
+        <span className="invisible flex items-center gap-2 px-6 py-3 text-sm font-bold uppercase tracking-wider">
+          {icon && iconPosition === "left" && <span>{icon}</span>}
+          {children}
+          {icon && iconPosition === "right" && <span>{icon}</span>}
+        </span>
+
         {/* Shadow/depth layer */}
         <span
           className={cn(
@@ -238,14 +245,21 @@ export function KeyboardLink({
       onTouchStart={() => setIsPressed(true)}
       onTouchEnd={() => setIsPressed(false)}
       className={cn(
-        "group relative inline-flex select-none rounded-lg transition-all duration-75 ease-out focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2 focus-visible:ring-offset-black",
+        "group relative inline-flex items-center justify-center select-none rounded-lg transition-all duration-75 ease-out focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2 focus-visible:ring-offset-black",
         sizeClasses[size],
         fullWidth && "w-full",
         isPressed ? "translate-y-0.5" : "translate-y-0",
         className,
       )}
     >
-      {/* Shadow/depth layer */}
+      {/* Invisible spacer for height */}
+        <span className="invisible flex items-center gap-2 px-6 py-3 text-sm font-bold uppercase tracking-wider">
+          {icon && iconPosition === "left" && <span>{icon}</span>}
+          {children}
+          {icon && iconPosition === "right" && <span>{icon}</span>}
+        </span>
+
+        {/* Shadow/depth layer */}
       <span
         className={cn(
           "absolute inset-0 rounded-lg transition-all duration-75",
