@@ -9,6 +9,7 @@ import Image from "next/image";
 interface NavItem {
   label: string;
   href: string;
+  badge?: string;
 }
 
 const navItems: NavItem[] = [
@@ -18,6 +19,7 @@ const navItems: NavItem[] = [
   { label: "Works", href: "/works" },
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
+  { label: "Swarp AI", href: "/swarp-ai", badge: "Beta" },
 ];
 
 export function NavPill3D() {
@@ -33,7 +35,7 @@ export function NavPill3D() {
   useEffect(() => {
     if (hovering) {
       setExpanded(true);
-      pillWidth.set(620);
+      pillWidth.set(720);
       if (hoverTimeoutRef.current) {
         clearTimeout(hoverTimeoutRef.current);
       }
@@ -233,7 +235,7 @@ export function NavPill3D() {
                   <Link
                     href={item.href}
                     onClick={() => handleNavClick(item.label)}
-                    className="relative cursor-pointer transition-all duration-200 px-3 py-2"
+                    className="relative cursor-pointer transition-all duration-200 px-3 py-2 flex items-center gap-1.5"
                     style={{
                       fontSize: isActive ? "15px" : "14px",
                       fontWeight: isActive ? 600 : 500,
@@ -260,6 +262,19 @@ export function NavPill3D() {
                     }}
                   >
                     {item.label}
+                    {item.badge && (
+                      <span
+                        className="rounded-full px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wider"
+                        style={{
+                          background: "linear-gradient(135deg, rgba(0,212,255,0.25) 0%, rgba(157,78,221,0.25) 100%)",
+                          border: "1px solid rgba(0,212,255,0.4)",
+                          color: "#00fff0",
+                          textShadow: "0 0 10px rgba(0, 255, 240, 0.5)",
+                        }}
+                      >
+                        {item.badge}
+                      </span>
+                    )}
                   </Link>
                 </motion.div>
               );

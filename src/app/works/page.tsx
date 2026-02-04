@@ -2,8 +2,10 @@
 
 import React from "react";
 import Link from "next/link";
-import { ArrowLeft, Sparkles } from "lucide-react";
+import { Sparkles, ArrowRight } from "lucide-react";
 import { AnimatedFolder, Project } from "@/components/ui/portfolio-folder";
+import { AetherBackground } from "@/components/ui/aether-background";
+import { KeyboardLink } from "@/components/ui/keyboard-button";
 
 // Swarp Foundation Portfolio Data
 const portfolioData: Array<{
@@ -219,36 +221,9 @@ const portfolioData: Array<{
 
 export default function WorksPage() {
   return (
-    <div className="min-h-screen bg-black text-white">
-      {/* Background */}
-      <div
-        className="fixed inset-0 pointer-events-none opacity-30"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(0,255,240,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,255,240,0.03) 1px, transparent 1px)",
-          backgroundSize: "40px 40px",
-        }}
-      />
-
-      {/* Header */}
-      <header className="sticky top-0 z-40 w-full bg-black/80 backdrop-blur-xl border-b border-cyan-500/20">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <Link 
-            href="/"
-            className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span className="text-sm">Back</span>
-          </Link>
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
-            <span className="text-xs font-mono text-gray-500">PORTFOLIO_v2.4</span>
-          </div>
-        </div>
-      </header>
-
+    <AetherBackground className="min-h-screen">
       {/* Hero */}
-      <div className="relative z-10 max-w-7xl mx-auto pt-20 px-6 text-center">
+      <div className="relative z-10 max-w-7xl mx-auto pt-32 px-6 text-center">
         <div className="inline-flex items-center gap-2 px-4 py-2 bg-cyan-500/10 border border-cyan-500/30 rounded-full mb-6">
           <Sparkles className="w-4 h-4 text-cyan-400" />
           <span className="text-xs font-semibold text-cyan-400 uppercase tracking-wider">Our Work</span>
@@ -260,23 +235,6 @@ export default function WorksPage() {
           Explore our completed projects across web development, blockchain, AI, and hardware. 
           Hover over folders to preview work samples.
         </p>
-      </div>
-
-      {/* Stats */}
-      <div className="relative z-10 max-w-4xl mx-auto mt-12 px-6">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {[
-            { label: "Projects", value: "150+" },
-            { label: "Clients", value: "80+" },
-            { label: "Countries", value: "25" },
-            { label: "Years", value: "5+" },
-          ].map((stat) => (
-            <div key={stat.label} className="text-center p-4 bg-gray-900/50 border border-cyan-500/20 rounded-xl">
-              <div className="text-2xl font-bold text-cyan-400">{stat.value}</div>
-              <div className="text-xs text-gray-500 uppercase tracking-wider">{stat.label}</div>
-            </div>
-          ))}
-        </div>
       </div>
 
       {/* Portfolio Grid */}
@@ -302,18 +260,20 @@ export default function WorksPage() {
       </section>
 
       {/* CTA */}
-      <section className="relative z-10 border-t border-cyan-500/20 py-20 px-6">
+      <section className="relative z-10 py-20 px-6">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl font-bold text-white mb-4">Have a Project in Mind?</h2>
           <p className="text-gray-400 mb-8">
             Let&apos;s discuss how we can bring your vision to life with cutting-edge technology.
           </p>
-          <Link
+          <KeyboardLink
             href="/contact"
-            className="inline-flex items-center gap-2 px-8 py-3 bg-cyan-500 hover:bg-cyan-400 text-black font-bold rounded-lg transition-all hover:shadow-[0_0_30px_rgba(0,255,240,0.4)]"
+            variant="primary"
+            size="lg"
+            icon={<ArrowRight className="w-5 h-5" />}
           >
             Start a Project
-          </Link>
+          </KeyboardLink>
         </div>
       </section>
 
@@ -330,6 +290,6 @@ export default function WorksPage() {
           }
         }
       `}</style>
-    </div>
+    </AetherBackground>
   );
 }

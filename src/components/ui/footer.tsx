@@ -247,7 +247,7 @@ function DotTelemetryCard({
         }
         .telemetry-card__inner {
           position: relative; width: 100%; height: 100%; border-radius: 14px;
-          border: 1px solid rgba(255, 255, 255, 0.07); background: rgba(255, 255, 255, 0.03);
+          border: 1px solid rgba(255, 255, 255, 0.12); background: rgba(0, 0, 0, 0.5);
           box-shadow: 0 14px 35px rgba(0, 0, 0, 0.35);
           display: flex; flex-direction: column; align-items: center; justify-content: center;
           transition: transform 260ms ease, border-color 260ms ease, background 260ms ease;
@@ -255,7 +255,7 @@ function DotTelemetryCard({
         }
         .group:hover .telemetry-card__inner {
           transform: translateY(-2px); border-color: rgba(0, 255, 240, 0.22);
-          background: rgba(0, 255, 240, 0.05);
+          background: rgba(0, 255, 240, 0.08);
         }
         .telemetry-card__hud {
           position: absolute; top: 8px; left: 8px; right: 8px;
@@ -270,17 +270,17 @@ function DotTelemetryCard({
         }
         .telemetry-card__ok {
           font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase;
-          color: rgba(200, 210, 220, 0.9);
+          color: rgba(220, 230, 240, 0.9);
         }
         .telemetry-card__ok.ok { color: rgba(154, 255, 90, 0.9); text-shadow: 0 0 12px rgba(154, 255, 90, 0.25); }
         .telemetry-card__value {
           position: relative; z-index: 1; font-size: 22px; font-weight: 800;
-          letter-spacing: -0.02em; color: rgba(255, 255, 255, 0.92);
+          letter-spacing: -0.02em; color: rgba(255, 255, 255, 0.98);
           text-shadow: 0 0 18px rgba(0, 255, 240, 0.12);
         }
         .telemetry-card__label {
           position: relative; z-index: 1; margin-top: 3px; font-size: 9px; font-weight: 650;
-          text-transform: uppercase; letter-spacing: 0.12em; color: rgba(200, 210, 220, 0.95);
+          text-transform: uppercase; letter-spacing: 0.12em; color: rgba(220, 230, 240, 0.95);
         }
         .telemetry-card__frame .line { position: absolute; background: rgba(0, 255, 240, 0.12); opacity: 0.8; }
         .telemetry-card__frame .line.top, .telemetry-card__frame .line.bottom { height: 1px; left: 14%; right: 14%; }
@@ -308,13 +308,13 @@ function KineticFooterLink({ href, children }: { href: string; children: React.R
       <style jsx>{`
         .klink {
           position: relative; display: inline-flex; align-items: baseline; gap: 6px;
-          font-size: 13px; color: rgba(200, 210, 220, 0.95);
+          font-size: 13px; color: rgba(220, 230, 240, 0.95);
           transition: transform 200ms ease, color 200ms ease; outline: none;
         }
         .klink__bracket { opacity: 0; transform: translateX(-6px); transition: opacity 200ms ease, transform 200ms ease; color: rgba(0, 255, 240, 0.9); }
         .klink__cursor { opacity: 0; transform: translateX(-3px); transition: opacity 200ms ease, transform 200ms ease; color: rgba(0, 255, 240, 0.9); animation: blink 1.1s step-end infinite; }
         @keyframes blink { 0%, 50% { opacity: 0; } 51%, 100% { opacity: 1; } }
-        .klink:hover { color: rgba(255, 255, 255, 0.92); transform: translateX(3px); }
+        .klink:hover { color: rgba(255, 255, 255, 0.98); transform: translateX(3px); }
         .klink:hover .klink__bracket { opacity: 1; transform: translateX(0); }
         .klink:hover .klink__cursor { opacity: 1; transform: translateX(0); }
         .klink:focus-visible { color: rgba(255, 255, 255, 0.96); }
@@ -341,7 +341,7 @@ function CircuitDivider({ reducedMotion, className }: { reducedMotion: boolean; 
           </linearGradient>
           <filter id="glow"><feGaussianBlur stdDeviation="2.2" result="b" /><feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge></filter>
         </defs>
-        <path d="M0 12 H420 C480 12, 520 4, 580 4 H740 C820 4, 840 20, 920 20 H1200" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="1" />
+        <path d="M0 12 H420 C480 12, 520 4, 580 4 H740 C820 4, 840 20, 920 20 H1200" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="1" />
         <path d="M0 12 H420 C480 12, 520 4, 580 4 H740 C820 4, 840 20, 920 20 H1200" fill="none" stroke="url(#wireGrad)" strokeWidth="2" filter="url(#glow)" className={reducedMotion ? "" : "trace"} strokeDasharray="120 680" strokeDashoffset="0" />
       </svg>
       <style jsx>{`
@@ -378,16 +378,16 @@ function DevConsole({ open, onClose, reducedMotion }: { open: boolean; onClose: 
       </div>
       <style jsx>{`
         .devconsole { position: absolute; right: 16px; bottom: 16px; z-index: 40; width: min(420px, calc(100% - 32px)); pointer-events: none; }
-        .devconsole__panel { pointer-events: auto; border-radius: 16px; border: 1px solid rgba(0, 255, 240, 0.16); background: rgba(8, 10, 14, 0.72); backdrop-filter: blur(14px); box-shadow: 0 18px 60px rgba(0, 0, 0, 0.6); overflow: hidden; transform: translateZ(0); animation: ${reducedMotion ? "none" : "pop 220ms ease-out"}; }
+        .devconsole__panel { pointer-events: auto; border-radius: 16px; border: 1px solid rgba(0, 255, 240, 0.16); background: rgba(8, 10, 14, 0.95); backdrop-filter: blur(14px); box-shadow: 0 18px 60px rgba(0, 0, 0, 0.6); overflow: hidden; transform: translateZ(0); animation: ${reducedMotion ? "none" : "pop 220ms ease-out"}; }
         @keyframes pop { from { opacity: 0; transform: translateY(10px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
-        .devconsole__top { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.06); background: rgba(255, 255, 255, 0.03); }
-        .devconsole__title { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 650; color: rgba(255, 255, 255, 0.9); letter-spacing: 0.02em; }
+        .devconsole__top { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); background: rgba(255, 255, 255, 0.04); }
+        .devconsole__title { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 650; color: rgba(255, 255, 255, 0.95); letter-spacing: 0.02em; }
         .devconsole__title .dot { width: 8px; height: 8px; border-radius: 999px; background: rgba(154, 255, 90, 0.9); box-shadow: 0 0 14px rgba(154, 255, 90, 0.25); }
-        .devconsole__title .muted { color: rgba(148, 163, 184, 0.7); font-weight: 600; }
-        .devconsole__close { width: 28px; height: 28px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.08); background: rgba(255, 255, 255, 0.04); color: rgba(255, 255, 255, 0.85); font-size: 18px; line-height: 1; display: grid; place-items: center; transition: transform 120ms ease, border-color 120ms ease; }
+        .devconsole__title .muted { color: rgba(180, 190, 200, 0.8); font-weight: 600; }
+        .devconsole__close { width: 28px; height: 28px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.12); background: rgba(255, 255, 255, 0.06); color: rgba(255, 255, 255, 0.9); font-size: 18px; line-height: 1; display: grid; place-items: center; transition: transform 120ms ease, border-color 120ms ease; }
         .devconsole__close:hover { transform: translateY(-1px); border-color: rgba(0, 255, 240, 0.2); }
-        .devconsole__body { margin: 0; padding: 12px 12px 10px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: 12px; line-height: 1.5; color: rgba(226, 232, 240, 0.88); white-space: pre-wrap; }
-        .devconsole__hint { padding: 0 12px 12px; font-size: 11px; color: rgba(148, 163, 184, 0.75); }
+        .devconsole__body { margin: 0; padding: 12px 12px 10px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: 12px; line-height: 1.5; color: rgba(240, 245, 250, 0.95); white-space: pre-wrap; }
+        .devconsole__hint { padding: 0 12px 12px; font-size: 11px; color: rgba(180, 190, 200, 0.85); }
       `}</style>
     </div>
   );
@@ -436,8 +436,8 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <div className="px-4 sm:px-8 lg:px-12 pb-6 mt-12">
-      <footer ref={(n) => { wrapRef.current = n as unknown as HTMLElement | null; }} className="footer-shell relative overflow-hidden rounded-3xl border border-white/6 bg-black/40 backdrop-blur-xl shadow-2xl">
+    <div className="px-4 sm:px-8 lg:px-12 pb-6 mt-12 relative z-20">
+      <footer ref={(n) => { wrapRef.current = n as unknown as HTMLElement | null; }} className="footer-shell relative overflow-hidden rounded-3xl border border-white/10 bg-black/90 backdrop-blur-xl shadow-2xl">
         {/* Backdrop effects - z-index 1 */}
         <div className="pointer-events-none absolute inset-0 z-[1]">
           <div className="aurora" />
@@ -463,7 +463,7 @@ export function Footer() {
 
         {/* Main content - z-index 10 */}
         <div className="relative z-10 container mx-auto px-6 lg:px-12 py-10">
-          <div className="mb-10 pb-10 border-b border-white/6">
+          <div className="mb-10 pb-10 border-b border-white/10">
             <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-12">
               {stats.map((stat, i) => (
                 <DotTelemetryCard key={i} target={stat.target} label={stat.label} duration={stat.duration} suffix={stat.suffix ?? ""} reducedMotion={reducedMotion} />
@@ -480,15 +480,15 @@ export function Footer() {
                   <span className="brand__ring" aria-hidden="true" />
                 </div>
                 <div className="flex flex-col leading-tight">
-                  <span className="text-lg font-semibold tracking-tight text-white/95">Swarp Foundation</span>
-                  <span className="text-[11px] tracking-[0.22em] uppercase text-slate-300">software-native infra</span>
+                  <span className="text-lg font-semibold tracking-tight text-white">Swarp Foundation</span>
+                  <span className="text-[11px] tracking-[0.22em] uppercase text-gray-300">software-native infra</span>
                 </div>
               </Link>
-              <p className="text-sm text-slate-300 leading-relaxed max-w-xs">Next-gen blockchain infrastructure and AI-driven solutions for the decentralized web.</p>
+              <p className="text-sm text-gray-200 leading-relaxed max-w-xs">Next-gen blockchain infrastructure and AI-driven solutions for the decentralized web.</p>
               <div className="pt-2">
                 <SocialCard title="" instagramUrl="https://instagram.com/swarpfoundation" twitterUrl="https://x.com/swarpfoundation" discordUrl="https://discord.gg/swarp" telegramUrl="https://t.me/swarpfoundation" githubUrl="https://github.com/swarp-foundation" />
               </div>
-              <div className="text-[11px] text-slate-500/80"><span className="font-mono">Tip:</span> press <span className="kbd">~</span> for system log</div>
+              <div className="text-[11px] text-gray-400"><span className="font-mono">Tip:</span> press <span className="kbd">~</span> for system log</div>
             </div>
 
             <div className="lg:col-span-8 grid grid-cols-2 sm:grid-cols-4 gap-8">
@@ -505,11 +505,11 @@ export function Footer() {
             </div>
           </div>
 
-          <div className="mt-12 pt-6 border-t border-white/6 flex flex-col sm:flex-row justify-between items-center gap-4">
-            <p className="text-[12px] text-slate-500 font-medium">© {year} Swarp Foundation.<span className="mx-2 text-slate-600">•</span><span className="font-mono text-slate-600">build: edge</span></p>
+          <div className="mt-12 pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <p className="text-[12px] text-gray-300 font-medium">© {year} Swarp Foundation.<span className="mx-2 text-gray-500">•</span><span className="font-mono text-gray-400">build: edge</span></p>
             <div className="flex items-center gap-6">
               {["Privacy", "Terms", "Security"].map((item) => (
-                <Link key={item} href={`#${item.toLowerCase()}`} className="text-[12px] text-slate-500 hover:text-swarp-cyan transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-swarp-cyan/30 focus-visible:ring-offset-0 rounded">{item}</Link>
+                <Link key={item} href={`#${item.toLowerCase()}`} className="text-[12px] text-gray-300 hover:text-cyan-400 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/30 focus-visible:ring-offset-0 rounded">{item}</Link>
               ))}
               <button type="button" onClick={() => setDevOpen((v) => !v)} className="devbtn" aria-label="Toggle system log">log</button>
             </div>
@@ -520,18 +520,18 @@ export function Footer() {
 
         <style jsx>{`
           .footer-shell { --mx: 50%; --my: 15%; }
-          .aurora { position: absolute; inset: -20%; background: radial-gradient(800px 400px at var(--mx) var(--my), rgba(0, 255, 240, 0.14), transparent 55%), radial-gradient(700px 380px at calc(var(--mx) + 16%) calc(var(--my) + 12%), rgba(140, 80, 255, 0.12), transparent 58%), radial-gradient(620px 360px at calc(var(--mx) - 14%) calc(var(--my) + 18%), rgba(154, 255, 90, 0.08), transparent 60%); filter: blur(24px); opacity: 0.9; transition: opacity 240ms ease; }
-          .grid { position: absolute; inset: 0; opacity: 0.25; background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px); background-size: 48px 48px; mask-image: radial-gradient(60% 60% at 50% 20%, black, transparent 80%); }
-          .vignette { position: absolute; inset: 0; background: radial-gradient(80% 70% at 50% 30%, transparent, rgba(0, 0, 0, 0.65)); opacity: 0.9; }
+          .aurora { position: absolute; inset: -20%; background: radial-gradient(800px 400px at var(--mx) var(--my), rgba(0, 255, 240, 0.08), transparent 55%), radial-gradient(700px 380px at calc(var(--mx) + 16%) calc(var(--my) + 12%), rgba(140, 80, 255, 0.06), transparent 58%), radial-gradient(620px 360px at calc(var(--mx) - 14%) calc(var(--my) + 18%), rgba(154, 255, 90, 0.04), transparent 60%); filter: blur(24px); opacity: 0.6; transition: opacity 240ms ease; }
+          .grid { position: absolute; inset: 0; opacity: 0.15; background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px); background-size: 48px 48px; mask-image: radial-gradient(60% 60% at 50% 20%, black, transparent 80%); }
+          .vignette { position: absolute; inset: 0; background: radial-gradient(80% 70% at 50% 30%, transparent, rgba(0, 0, 0, 0.4)); opacity: 0.7; }
           .circuit-border { position: absolute; inset: 10px; width: calc(100% - 20px); height: calc(100% - 20px); pointer-events: none; opacity: 0.9; }
           .border-trace { animation: border-run 7s linear infinite; }
           @keyframes border-run { 0% { stroke-dashoffset: 0; opacity: 0.55; } 50% { opacity: 0.95; } 100% { stroke-dashoffset: -220; opacity: 0.55; } }
-          .brand__mark { position: relative; width: 40px; height: 40px; display: grid; place-items: center; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.08); background: rgba(255, 255, 255, 0.03); overflow: hidden; }
+          .brand__mark { position: relative; width: 40px; height: 40px; display: grid; place-items: center; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.15); background: rgba(255, 255, 255, 0.06); overflow: hidden; }
           .brand__ring { position: absolute; inset: -40%; background: radial-gradient(circle at 30% 30%, rgba(0, 255, 240, 0.18), transparent 55%), radial-gradient(circle at 70% 70%, rgba(140, 80, 255, 0.14), transparent 58%); filter: blur(10px); opacity: 0.9; transform: translateZ(0); }
-          .section__title { font-size: 10px; font-weight: 800; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(0, 255, 240, 0.85); margin-bottom: 18px; opacity: 0.9; }
-          .kbd { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: 10px; padding: 2px 6px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.08); background: rgba(255, 255, 255, 0.04); color: rgba(226, 232, 240, 0.85); margin: 0 2px; }
-          .devbtn { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: 11px; padding: 4px 10px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.08); background: rgba(255, 255, 255, 0.04); color: rgba(200, 210, 220, 0.9); transition: transform 140ms ease, border-color 140ms ease, color 140ms ease; }
-          .devbtn:hover { transform: translateY(-1px); border-color: rgba(0, 255, 240, 0.18); color: rgba(226, 232, 240, 0.9); }
+          .section__title { font-size: 10px; font-weight: 800; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(0, 255, 240, 0.95); margin-bottom: 18px; }
+          .kbd { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: 10px; padding: 2px 6px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.15); background: rgba(255, 255, 255, 0.08); color: rgba(240, 245, 250, 0.95); margin: 0 2px; }
+          .devbtn { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: 11px; padding: 4px 10px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.15); background: rgba(255, 255, 255, 0.08); color: rgba(230, 235, 245, 0.95); transition: transform 140ms ease, border-color 140ms ease, color 140ms ease; }
+          .devbtn:hover { transform: translateY(-1px); border-color: rgba(0, 255, 240, 0.25); color: rgba(255, 255, 255, 0.98); }
           .devbtn:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(0, 255, 240, 0.18); }
         `}</style>
       </footer>
