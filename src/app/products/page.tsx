@@ -80,9 +80,6 @@ const PRODUCTS = [
       { icon: Lock, title: "Privacy Constraints", desc: "Subject to regulatory requirements and user privacy controls" },
     ],
     stats: [
-      { label: "Issuance Fee", value: "$3.50", desc: "per successful" },
-      { label: "API Check", value: "$0.02", desc: "per validation" },
-      { label: "Platform Min", value: "$2,500", desc: "per month" },
     ],
     cta: { label: "Learn More", href: "/contact" },
     hasDemo: true,
