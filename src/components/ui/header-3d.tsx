@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { motion, useSpring, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-
+import { Menu, X } from "lucide-react";
 
 interface NavItem {
   label: string;
@@ -22,16 +22,143 @@ const navItems: NavItem[] = [
   { label: "Swarp AI", href: "/swarp-ai", badge: "Beta" },
 ];
 
-export function NavPill3D() {
+// Mobile Menu Component
+function MobileMenu({ isOpen, onClose, activeLabel, setActiveLabel }: {
+  isOpen: boolean;
+  onClose: () => void;
+  activeLabel: string;
+  setActiveLabel: (label: string) => void;
+}) {
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <>
+          {/* Backdrop */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40"
+            onClick={onClose}
+          />
+
+          {/* Menu Panel */}
+          <motion.div
+            initial={{ opacity: 0, y: -20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -20, scale: 0.95 }}
+            transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
+            className="fixed top-4 left-4 right-4 z-50 rounded-2xl overflow-hidden"
+            style={{
+              background: `linear-gradient(135deg, 
+                rgba(13, 21, 32, 0.95) 0%, 
+                rgba(9, 16, 21, 0.95) 50%, 
+                rgba(6, 10, 16, 0.95) 100%
+              )`,
+              backdropFilter: "blur(20px)",
+              boxShadow: `
+                0 4px 30px rgba(0, 0, 0, 0.5),
+                0 0 40px rgba(0, 255, 240, 0.1),
+                inset 0 1px 1px rgba(0, 255, 240, 0.1)
+              `,
+              border: "1px solid rgba(0, 255, 240, 0.15)",
+            }}
+          >
+            {/* Top glow line */}
+            <div
+              className="absolute inset-x-0 top-0 h-px"
+              style={{
+                background: "linear-gradient(90deg, transparent, rgba(0, 255, 240, 0.5), transparent)",
+              }}
+            />
+
+            {/* Header */}
+            <div className="flex items-center justify-between p-4 border-b border-white/10">
+              <div className="flex items-center gap-3">
+                <Image
+                  src="/logo_transparent.png"
+                  alt="Swarp"
+                  width={28}
+                  height={28}
+                  className="object-contain"
+                />
+                <span className="text-lg font-semibold text-cyan-400">Swarp</span>
+              </div>
+              <button
+                onClick={onClose}
+                className="p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors"
+              >
+                <X className="w-5 h-5 text-gray-400" />
+              </button>
+            </div>
+
+            {/* Nav Items */}
+            <nav className="p-4 space-y-1">
+              {navItems.map((item, index) => {
+                const isActive = item.label === activeLabel;
+                return (
+                  <motion.div
+                    key={item.href}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.05 }}
+                  >
+                    <Link
+                      href={item.href}
+                      onClick={() => {
+                        setActiveLabel(item.label);
+                        onClose();
+                      }}
+                      className="flex items-center justify-between px-4 py-3 rounded-xl transition-all"
+                      style={{
+                        background: isActive ? "rgba(0, 255, 240, 0.1)" : "transparent",
+                        border: isActive ? "1px solid rgba(0, 255, 240, 0.2)" : "1px solid transparent",
+                      }}
+                    >
+                      <span
+                        className="text-base font-medium"
+                        style={{
+                          color: isActive ? "#00fff0" : "#9ca3af",
+                        }}
+                      >
+                        {item.label}
+                      </span>
+                      {item.badge && (
+                        <span
+                          className="rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider"
+                          style={{
+                            background: "linear-gradient(135deg, rgba(0,212,255,0.25) 0%, rgba(157,78,221,0.25) 100%)",
+                            border: "1px solid rgba(0,212,255,0.4)",
+                            color: "#00fff0",
+                          }}
+                        >
+                          {item.badge}
+                        </span>
+                      )}
+                    </Link>
+                  </motion.div>
+                );
+              })}
+            </nav>
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
+  );
+}
+
+// Desktop Navigation Pill
+function DesktopNavPill({ activeLabel, setActiveLabel }: {
+  activeLabel: string;
+  setActiveLabel: (label: string) => void;
+}) {
   const [expanded, setExpanded] = useState(false);
   const [hovering, setHovering] = useState(false);
-  const [activeLabel, setActiveLabel] = useState("Home");
   const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Spring animations for smooth motion
   const pillWidth = useSpring(160, { stiffness: 220, damping: 25, mass: 1 });
 
-  // Handle hover expansion
   useEffect(() => {
     if (hovering) {
       setExpanded(true);
@@ -69,7 +196,6 @@ export function NavPill3D() {
       style={{
         width: pillWidth,
         height: "56px",
-        // Semi-transparent background to let AetherBackground show through
         background: `
           linear-gradient(135deg, 
             rgba(13, 21, 32, 0.85) 0%, 
@@ -110,7 +236,7 @@ export function NavPill3D() {
         transition: "box-shadow 0.3s ease-out",
       }}
     >
-      {/* Top edge glow - cyan */}
+      {/* Top edge glow */}
       <div
         className="absolute inset-x-0 top-0 rounded-t-full pointer-events-none"
         style={{
@@ -286,6 +412,97 @@ export function NavPill3D() {
   );
 }
 
+// Mobile Navigation Button
+function MobileNavButton({ onClick, activeLabel }: { onClick: () => void; activeLabel: string }) {
+  return (
+    <button
+      onClick={onClick}
+      className="flex items-center gap-3 px-4 py-3 rounded-full"
+      style={{
+        background: `linear-gradient(135deg, 
+          rgba(13, 21, 32, 0.9) 0%, 
+          rgba(9, 16, 21, 0.9) 50%, 
+          rgba(6, 10, 16, 0.9) 100%
+        )`,
+        backdropFilter: "blur(12px)",
+        boxShadow: `
+          0 4px 20px rgba(0, 0, 0, 0.4),
+          inset 0 1px 1px rgba(0, 255, 240, 0.1),
+          0 0 20px rgba(0, 255, 240, 0.08)
+        `,
+        border: "1px solid rgba(0, 255, 240, 0.2)",
+      }}
+    >
+      <Image
+        src="/logo_transparent.png"
+        alt="Swarp"
+        width={24}
+        height={24}
+        className="object-contain"
+      />
+      <span
+        className="text-sm font-semibold text-cyan-400"
+        style={{ textShadow: "0 0 20px rgba(0, 255, 240, 0.5)" }}
+      >
+        {activeLabel}
+      </span>
+      <Menu className="w-5 h-5 text-gray-400" />
+    </button>
+  );
+}
+
+// Main NavPill3D Component - handles responsive switching
+export function NavPill3D() {
+  const [activeLabel, setActiveLabel] = useState("Home");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileMenuOpen]);
+
+  return (
+    <>
+      {isMobile ? (
+        <MobileNavButton 
+          onClick={() => setMobileMenuOpen(true)} 
+          activeLabel={activeLabel}
+        />
+      ) : (
+        <DesktopNavPill 
+          activeLabel={activeLabel} 
+          setActiveLabel={setActiveLabel}
+        />
+      )}
+
+      <MobileMenu
+        isOpen={mobileMenuOpen}
+        onClose={() => setMobileMenuOpen(false)}
+        activeLabel={activeLabel}
+        setActiveLabel={setActiveLabel}
+      />
+    </>
+  );
+}
+
 export function Header3D() {
   const [scrolled, setScrolled] = useState(false);
 
@@ -299,19 +516,12 @@ export function Header3D() {
 
   return (
     <header
-      className={`fixed top-8 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? "py-3" : "py-5"
+      className={`fixed top-4 md:top-8 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled ? "py-2 md:py-3" : "py-3 md:py-5"
       }`}
     >
-      <div className="container mx-auto px-4 flex items-center justify-between">
-
-        {/* Center Navigation Pill */}
-        <div className="absolute left-1/2 -translate-x-1/2">
-          <NavPill3D />
-        </div>
-
-        {/* Right side placeholder for balance */}
-        <div className="w-[200px]" />
+      <div className="container mx-auto px-4 flex items-center justify-center">
+        <NavPill3D />
       </div>
     </header>
   );

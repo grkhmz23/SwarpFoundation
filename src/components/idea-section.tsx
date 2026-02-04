@@ -38,12 +38,12 @@ function PipelineChip({
       initial={{ opacity: 0, y: 14 }}
       animate={active ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 }}
       transition={{ duration: 0.5, delay: reducedMotion ? 0 : 0.3 + index * 0.1 }}
-      className="relative rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm overflow-hidden px-4 py-3 flex gap-2.5 items-center shadow-lg"
+      className="relative rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm overflow-hidden px-3 py-2 sm:px-4 sm:py-3 flex gap-2 sm:gap-2.5 items-center shadow-lg"
     >
-      <div className="w-8 h-8 rounded-lg grid place-items-center border border-cyan-400/20 bg-cyan-400/5 text-cyan-300 shadow-lg flex-shrink-0">
+      <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg grid place-items-center border border-cyan-400/20 bg-cyan-400/5 text-cyan-300 shadow-lg flex-shrink-0">
         {icon}
       </div>
-      <span className="text-sm font-bold tracking-wide text-white/90">{title}</span>
+      <span className="text-xs sm:text-sm font-bold tracking-wide text-white/90">{title}</span>
     </motion.div>
   );
 }
@@ -52,12 +52,21 @@ export function IdeaSection() {
   const reducedMotion = usePrefersReducedMotion();
   const sectionRef = useRef<HTMLElement>(null);
   const lampRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Check for mobile
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   // Two-stage visibility:
   // 1. lampVisible: triggers when section enters view (shows dark lamp)
   // 2. lightOn: triggers when more of section is visible (turns light on + shows text)
   const lampVisible = useInView(sectionRef, { amount: 0.1, once: false });
-  const lightOn = useInView(sectionRef, { amount: 0.35, once: false });
+  const lightOn = useInView(sectionRef, { amount: isMobile ? 0.15 : 0.35, once: false });
 
   const [lamp, setLamp] = useState({ x: 30, y: 40 });
 
@@ -95,9 +104,9 @@ export function IdeaSection() {
 
   const chips = useMemo(
     () => [
-      { icon: <Zap className="w-4 h-4" />, title: "Idea" },
-      { icon: <Shield className="w-4 h-4" />, title: "Spec" },
-      { icon: <Rocket className="w-4 h-4" />, title: "Ship" },
+      { icon: <Zap className="w-3.5 h-3.5 sm:w-4 sm:h-4" />, title: "Idea" },
+      { icon: <Shield className="w-3.5 h-3.5 sm:w-4 sm:h-4" />, title: "Spec" },
+      { icon: <Rocket className="w-3.5 h-3.5 sm:w-4 sm:h-4" />, title: "Ship" },
     ],
     []
   );
@@ -111,7 +120,7 @@ export function IdeaSection() {
     <section
       ref={sectionRef}
       style={lightVars}
-      className="idea-section relative w-full overflow-hidden min-h-[650px] flex items-center justify-center py-16"
+      className="idea-section relative w-full overflow-hidden min-h-[500px] md:min-h-[650px] flex items-center justify-center py-12 md:py-16"
       aria-label="Got an idea section"
     >
       {/* Light cone effect - only visible when lightOn */}
@@ -121,12 +130,103 @@ export function IdeaSection() {
       </div>
 
       <div className="relative z-10 w-full max-w-6xl px-4 sm:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+        {/* Mobile Layout - Stacked */}
+        <div className="flex flex-col md:hidden items-center gap-6">
+          {/* Lamp - smaller on mobile */}
+          <motion.div
+            ref={isMobile ? lampRef : undefined}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={lampVisible ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }}
+            transition={{ duration: 0.6 }}
+            className="relative"
+          >
+            <div className={`lampHalo ${lightOn ? "on" : ""}`} aria-hidden="true" />
+            <BellNotify
+              size={180}
+              isOn={lightOn}
+              showButton={false}
+              rotationAmplitude={lightOn ? 0.65 : 0}
+              disableToggle={true}
+            />
+          </motion.div>
+
+          {/* Pipeline chips - horizontal on mobile */}
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            {chips.map((c, idx) => (
+              <PipelineChip
+                key={c.title}
+                icon={c.icon}
+                title={c.title}
+                index={idx}
+                active={lightOn}
+                reducedMotion={reducedMotion}
+              />
+            ))}
+          </div>
+
+          {/* Text content - centered on mobile */}
+          <AnimatePresence mode="wait">
+            {lightOn && (
+              <motion.div
+                key="copy-mobile"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.5, delay: reducedMotion ? 0 : 0.1 }}
+                className="text-center px-2"
+              >
+                <h2 className="text-3xl font-extrabold tracking-tight text-white">
+                  Got an <span className="text-cyan-400">Idea</span>?
+                </h2>
+
+                <p className="mt-3 text-slate-300 text-base leading-relaxed">
+                  Describe it. We build it. Production-ready software, fast.
+                </p>
+
+                <div className="mt-4 flex flex-wrap gap-3 justify-center text-xs text-slate-400">
+                  <span className="flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
+                    Scope in 24-48h
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
+                    Fast iterations
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
+                    Production quality
+                  </span>
+                </div>
+
+                <div className="mt-6 flex flex-col gap-3 items-center">
+                  <KeyboardLink
+                    href="/services"
+                    variant="primary"
+                    size="lg"
+                    icon={<ArrowRight className="w-4 h-4" />}
+                  >
+                    Explore Services
+                  </KeyboardLink>
+
+                  <Link
+                    href="/contact"
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-white/10 bg-white/5 text-slate-300 hover:text-white hover:border-cyan-400/30 transition-colors text-sm"
+                  >
+                    Send a message →
+                  </Link>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        {/* Desktop Layout - Grid */}
+        <div className="hidden md:grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           {/* LEFT: Lamp + pipeline chips */}
           <div className="lg:col-span-5 flex flex-col items-center lg:items-start">
             {/* Lamp - always visible when in view, but light state changes */}
             <motion.div
-              ref={lampRef}
+              ref={!isMobile ? lampRef : undefined}
               initial={{ opacity: 0, scale: 0.9 }}
               animate={lampVisible ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }}
               transition={{ duration: 0.6 }}
@@ -143,7 +243,7 @@ export function IdeaSection() {
             </motion.div>
 
             {/* Pipeline chips - well below lamp, only show when light is on */}
-            <div className="mt-44 w-full flex flex-wrap items-center justify-center lg:justify-start gap-3">
+            <div className="mt-32 lg:mt-44 w-full flex flex-wrap items-center justify-center lg:justify-start gap-3">
               {chips.map((c, idx) => (
                 <PipelineChip
                   key={c.title}

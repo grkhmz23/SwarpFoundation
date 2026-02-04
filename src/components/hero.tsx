@@ -150,12 +150,19 @@ function MetricChip({
           position: relative;
           display: inline-flex;
           align-items: center;
-          gap: 10px;
-          padding: 10px 12px;
-          border-radius: 16px;
+          gap: 8px;
+          padding: 8px 10px;
+          border-radius: 14px;
           border: 1px solid rgba(255, 255, 255, 0.08);
           background: rgba(255, 255, 255, 0.03);
           overflow: hidden;
+        }
+        @media (min-width: 640px) {
+          .mchip {
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 16px;
+          }
         }
         .mchip::before {
           content: "";
@@ -168,9 +175,9 @@ function MetricChip({
           pointer-events: none;
         }
         .mchip__icon {
-          width: 34px;
-          height: 34px;
-          border-radius: 12px;
+          width: 28px;
+          height: 28px;
+          border-radius: 10px;
           display: grid;
           place-items: center;
           border: 1px solid rgba(0, 255, 240, 0.16);
@@ -181,6 +188,13 @@ function MetricChip({
           z-index: 1;
           flex: 0 0 auto;
         }
+        @media (min-width: 640px) {
+          .mchip__icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 12px;
+          }
+        }
         .mchip__text {
           position: relative;
           z-index: 1;
@@ -190,16 +204,26 @@ function MetricChip({
           line-height: 1.1;
         }
         .mchip__label {
-          font-size: 10px;
+          font-size: 9px;
           letter-spacing: 0.18em;
           text-transform: uppercase;
           color: rgba(148, 163, 184, 0.85);
           font-weight: 800;
         }
+        @media (min-width: 640px) {
+          .mchip__label {
+            font-size: 10px;
+          }
+        }
         .mchip__value {
-          font-size: 12px;
+          font-size: 11px;
           font-weight: 800;
           color: rgba(255, 255, 255, 0.92);
+        }
+        @media (min-width: 640px) {
+          .mchip__value {
+            font-size: 12px;
+          }
         }
       `}</style>
     </div>
@@ -253,49 +277,49 @@ export function Hero() {
 
   const metrics = useMemo(
     () => [
-      { icon: <Zap className="w-4 h-4" />, label: "Delivery", value: "Fast iteration" },
-      { icon: <Shield className="w-4 h-4" />, label: "Quality", value: "Production-grade" },
-      { icon: <Cpu className="w-4 h-4" />, label: "Stack", value: "Web • AI • Web3" },
+      { icon: <Zap className="w-3.5 h-3.5 sm:w-4 sm:h-4" />, label: "Delivery", value: "Fast iteration" },
+      { icon: <Shield className="w-3.5 h-3.5 sm:w-4 sm:h-4" />, label: "Quality", value: "Production-grade" },
+      { icon: <Cpu className="w-3.5 h-3.5 sm:w-4 sm:h-4" />, label: "Stack", value: "Web • AI • Web3" },
     ],
     []
   );
 
   return (
     <section
-      className="relative min-h-screen flex items-center justify-center pt-24 px-4 overflow-hidden"
+      className="relative min-h-screen flex items-center justify-center pt-20 sm:pt-24 pb-24 sm:pb-12 px-4 overflow-hidden"
       aria-label="Swarp hero"
     >
       {/* Main content */}
       <div className="w-full max-w-6xl mx-auto relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Left */}
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6 text-center lg:text-left">
             <div className="badge">
               <span className="badge__dot" aria-hidden="true" />
               <span className="badge__text">Enterprise Software Solutions</span>
-              <span className="badge__sep">•</span>
-              <span className="badge__mono">build → ship → scale</span>
+              <span className="badge__sep hidden sm:inline">•</span>
+              <span className="badge__mono hidden sm:inline">build → ship → scale</span>
             </div>
 
-            <h1 className="text-5xl md:text-7xl font-extrabold leading-[1.02] tracking-tight">
+            <h1 className="text-4xl sm:text-5xl md:text-7xl font-extrabold leading-[1.02] tracking-tight">
               <span className="text-white">Swarp</span>
               <br />
               <span className="title-accent">Foundation</span>
             </h1>
 
-            <p className="text-lg md:text-xl text-slate-300/90 max-w-xl leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl text-slate-300/90 max-w-xl mx-auto lg:mx-0 leading-relaxed">
               Full-stack software development company. From web platforms to AI solutions, blockchain
               infrastructure to security audits — delivered with engineering discipline and speed.
             </p>
 
-            <div className="flex flex-wrap gap-3 pt-1">
+            <div className="flex flex-wrap gap-2 sm:gap-3 pt-1 justify-center lg:justify-start">
               {metrics.map((m) => (
                 <MetricChip key={m.label} icon={m.icon} label={m.label} value={m.value} />
               ))}
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4 pt-2">
-              <div className="cta-primary">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2 items-center lg:items-start">
+              <div className="cta-primary w-full sm:w-auto">
                 <KeyboardLink
                   href="/works"
                   variant="primary"
@@ -306,7 +330,7 @@ export function Hero() {
                 </KeyboardLink>
               </div>
 
-              <div className="cta-secondary">
+              <div className="cta-secondary w-full sm:w-auto">
                 <KeyboardLink
                   href="/contact"
                   variant="ghost"
@@ -319,15 +343,15 @@ export function Hero() {
             </div>
 
             <div className="hint">
-              <Sparkles className="w-4 h-4 text-cyan-300/80" />
+              <Sparkles className="w-4 h-4 text-cyan-300/80 flex-shrink-0" />
               <span>
                 Have an idea? We can spec it in 24–48h and start shipping immediately.
               </span>
             </div>
           </div>
 
-          {/* Right — IDE/Telemetry panel */}
-          <div className="relative">
+          {/* Right — IDE/Telemetry panel (hidden on mobile) */}
+          <div className="relative hidden lg:block">
             <div className="absolute -inset-5 glow" aria-hidden="true" />
 
             <div className="panel relative rounded-2xl border border-white/10 bg-black/40 backdrop-blur-xl shadow-2xl overflow-hidden">
@@ -388,8 +412,8 @@ export function Hero() {
         </div>
       </div>
 
-      {/* Scroll indicator */}
-      <div className={`scroll ${reducedMotion ? "" : "bounce"}`} aria-hidden="true">
+      {/* Scroll indicator - hidden on mobile */}
+      <div className={`scroll hidden sm:flex ${reducedMotion ? "" : "bounce"}`} aria-hidden="true">
         <span className="scroll__text">Scroll to explore</span>
         <div className="mouse">
           <div className="wheel" />
@@ -401,21 +425,40 @@ export function Hero() {
         .badge {
           display: inline-flex;
           align-items: center;
-          gap: 10px;
-          padding: 10px 12px;
+          gap: 6px;
+          padding: 8px 10px;
           border-radius: 999px;
           border: 1px solid rgba(255, 255, 255, 0.08);
           background: rgba(255, 255, 255, 0.03);
           color: rgba(226, 232, 240, 0.9);
           width: fit-content;
+          margin: 0 auto;
+        }
+        @media (min-width: 640px) {
+          .badge {
+            gap: 10px;
+            padding: 10px 12px;
+            margin: 0;
+          }
+        }
+        @media (min-width: 1024px) {
+          .badge {
+            margin: 0;
+          }
         }
         .badge__dot {
-          width: 8px;
-          height: 8px;
+          width: 6px;
+          height: 6px;
           border-radius: 999px;
           background: rgba(0, 255, 240, 0.9);
           box-shadow: 0 0 16px rgba(0, 255, 240, 0.25);
           animation: ${reducedMotion ? "none" : "pulse 2.8s ease-in-out infinite"};
+        }
+        @media (min-width: 640px) {
+          .badge__dot {
+            width: 8px;
+            height: 8px;
+          }
         }
         @keyframes pulse {
           0%,
@@ -429,10 +472,16 @@ export function Hero() {
           }
         }
         .badge__text {
-          font-size: 12px;
+          font-size: 10px;
           font-weight: 800;
-          letter-spacing: 0.14em;
+          letter-spacing: 0.12em;
           text-transform: uppercase;
+        }
+        @media (min-width: 640px) {
+          .badge__text {
+            font-size: 12px;
+            letter-spacing: 0.14em;
+          }
         }
         .badge__sep {
           opacity: 0.5;
@@ -455,10 +504,23 @@ export function Hero() {
         .hint {
           display: inline-flex;
           align-items: center;
-          gap: 10px;
-          font-size: 13px;
+          gap: 8px;
+          font-size: 12px;
           color: rgba(148, 163, 184, 0.82);
           padding-top: 4px;
+          text-align: left;
+          justify-content: center;
+        }
+        @media (min-width: 640px) {
+          .hint {
+            font-size: 13px;
+            gap: 10px;
+          }
+        }
+        @media (min-width: 1024px) {
+          .hint {
+            justify-content: flex-start;
+          }
         }
 
         /* Right panel */
@@ -668,7 +730,6 @@ export function Hero() {
           bottom: 28px;
           left: 50%;
           transform: translateX(-50%);
-          display: flex;
           flex-direction: column;
           align-items: center;
           gap: 10px;
