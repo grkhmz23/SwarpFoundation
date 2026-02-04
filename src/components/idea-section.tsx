@@ -151,7 +151,7 @@ export function IdeaSection() {
           </motion.div>
 
           {/* Pipeline chips - horizontal on mobile */}
-          <div className="flex flex-wrap items-center justify-center gap-2">
+          <div className="flex flex-wrap items-center justify-center gap-2 mt-16">
             {chips.map((c, idx) => (
               <PipelineChip
                 key={c.title}
@@ -173,7 +173,7 @@ export function IdeaSection() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.5, delay: reducedMotion ? 0 : 0.1 }}
-                className="text-center px-2"
+                className="text-center px-2 mt-16"
               >
                 <h2 className="text-3xl font-extrabold tracking-tight text-white">
                   Got an <span className="text-cyan-400">Idea</span>?
