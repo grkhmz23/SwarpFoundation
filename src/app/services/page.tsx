@@ -11,11 +11,21 @@ import { cn } from "@/lib/utils";
 import { KeyboardLink } from "@/components/ui/keyboard-button";
 import { AetherBackground } from "@/components/ui/aether-background";
 
-// Content components
-import { SoftwareToolsContent } from "@/components/services/content/software-tools-content";
-import { HardwareContent } from "@/components/services/content/hardware-content";
+// ═══════════════════════════════════════════════════════════════════════════
+// ALL 12 CONTENT COMPONENTS IMPORTED
+// ═══════════════════════════════════════════════════════════════════════════
 import { WebMobileContent } from "@/components/services/content/web-mobile-content";
+import { SoftwareToolsContent } from "@/components/services/content/software-tools-content";
+import { AISystemsContent } from "@/components/services/content/ai-systems-content";
 import { BlockchainContent } from "@/components/services/content/blockchain-content";
+import { SecurityContent } from "@/components/services/content/security-content";
+import { HardwareContent } from "@/components/services/content/hardware-content";
+import { CloudDevOpsContent } from "@/components/services/content/cloud-devops-content";
+import { EngineeringContent } from "@/components/services/content/engineering-content";
+import { IntegrationsContent } from "@/components/services/content/integrations-content";
+import { DataAnalyticsContent } from "@/components/services/content/data-analytics-content";
+import { QATestingContent } from "@/components/services/content/qa-testing-content";
+import { UIUXDesignContent } from "@/components/services/content/uiux-design-content";
 
 interface Service {
   id: string;
@@ -29,6 +39,9 @@ interface Service {
   color: string;
 }
 
+// ═══════════════════════════════════════════════════════════════════════════
+// ALL 12 SERVICES - ALL SET TO hasContent: true
+// ═══════════════════════════════════════════════════════════════════════════
 const SERVICES: Service[] = [
   {
     id: "web-mobile",
@@ -59,7 +72,7 @@ const SERVICES: Service[] = [
     desc: "Custom RAG pipelines, fine-tuned models, and conversational UI for Support, Sales, or Ops.",
     proof: ["Context-aware", "Secure Data", "Low Latency"],
     timeline: "4-8 Weeks",
-    hasContent: false,
+    hasContent: true,
     icon: <Bot className="w-5 h-5" />,
     color: "emerald"
   },
@@ -81,7 +94,7 @@ const SERVICES: Service[] = [
     desc: "Comprehensive security audits, vulnerability assessments, and automated monitoring setups.",
     proof: ["OWASP Top 10", "Whitehat", "Detailed Reports"],
     timeline: "2-4 Weeks",
-    hasContent: false,
+    hasContent: true,
     icon: <Shield className="w-5 h-5" />,
     color: "rose"
   },
@@ -103,7 +116,7 @@ const SERVICES: Service[] = [
     desc: "Scalable infrastructure as code. Kubernetes clusters, CI/CD pipelines, and cost optimization.",
     proof: ["Terraform", "Zero Downtime", "Auto-scaling"],
     timeline: "4-8 Weeks",
-    hasContent: false,
+    hasContent: true,
     icon: <Cloud className="w-5 h-5" />,
     color: "sky"
   },
@@ -114,7 +127,7 @@ const SERVICES: Service[] = [
     desc: "Augment your workforce with a dedicated pod of engineers, PMs, and designers.",
     proof: ["Agile", "Full Transparency", "Senior Talent"],
     timeline: "Monthly Retainer",
-    hasContent: false,
+    hasContent: true,
     icon: <Users className="w-5 h-5" />,
     color: "indigo"
   },
@@ -125,7 +138,7 @@ const SERVICES: Service[] = [
     desc: "Robust API development and third-party integrations (Stripe, Salesforce, Twilio).",
     proof: ["Idempotent", "Rate Limited", "Documented"],
     timeline: "3-6 Weeks",
-    hasContent: false,
+    hasContent: true,
     icon: <Plug className="w-5 h-5" />,
     color: "teal"
   },
@@ -136,7 +149,7 @@ const SERVICES: Service[] = [
     desc: "Modern data stack implementation. ETL pipelines, warehouses (Snowflake/BigQuery), and dashboards.",
     proof: ["Real-time", "Governance", "Actionable"],
     timeline: "6-10 Weeks",
-    hasContent: false,
+    hasContent: true,
     icon: <Database className="w-5 h-5" />,
     color: "violet"
   },
@@ -147,7 +160,7 @@ const SERVICES: Service[] = [
     desc: "End-to-end testing frameworks, load testing, and site reliability engineering (SRE).",
     proof: ["95% Coverage", "Auto-revert", "Chaos Testing"],
     timeline: "3-5 Weeks",
-    hasContent: false,
+    hasContent: true,
     icon: <TestTube className="w-5 h-5" />,
     color: "pink"
   },
@@ -158,7 +171,7 @@ const SERVICES: Service[] = [
     desc: "Complete design systems, component libraries, and accessible UI kits.",
     proof: ["Accessible (WCAG)", "Token-based", "Pixel Perfect"],
     timeline: "4-8 Weeks",
-    hasContent: false,
+    hasContent: true,
     icon: <Palette className="w-5 h-5" />,
     color: "fuchsia"
   },
@@ -238,7 +251,6 @@ function ServiceCard({
           <p className="text-xs text-gray-500 mt-0.5">{service.short}</p>
         </div>
 
-        {/* Arrow */}
         <ArrowRight className={cn(
           "w-4 h-4 shrink-0 transition-all duration-300",
           isSelected ? cn(colors.text, "translate-x-0 opacity-100") : "-translate-x-2 opacity-0 group-hover:translate-x-0 group-hover:opacity-50"
@@ -393,12 +405,22 @@ function ServicePreview({ service }: { service: Service | null }) {
               </div>
             </div>
 
-            {/* Dynamic Content */}
+            {/* ════════════════════════════════════════════════════════════ */}
+            {/* ALL 12 SERVICES WIRED HERE */}
+            {/* ════════════════════════════════════════════════════════════ */}
             <div className="bg-black/20 rounded-2xl border border-white/5 overflow-hidden">
               {service.id === "web-mobile" && <WebMobileContent />}
               {service.id === "software-tools" && <SoftwareToolsContent />}
+              {service.id === "ai-systems" && <AISystemsContent />}
               {service.id === "blockchain" && <BlockchainContent />}
+              {service.id === "security" && <SecurityContent />}
               {service.id === "hardware" && <HardwareContent />}
+              {service.id === "cloud" && <CloudDevOpsContent />}
+              {service.id === "retainer" && <EngineeringContent />}
+              {service.id === "integrations" && <IntegrationsContent />}
+              {service.id === "data" && <DataAnalyticsContent />}
+              {service.id === "qa" && <QATestingContent />}
+              {service.id === "design" && <UIUXDesignContent />}
             </div>
           </div>
         ) : (
