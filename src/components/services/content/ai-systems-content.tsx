@@ -1,216 +1,700 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { 
-  Bot, Brain, MessageSquare, Zap, Shield, 
-  Workflow, Database, LineChart, Sparkles, Cpu,
-  ChevronRight, CheckCircle2, FileText, Send,
-  Settings, Mic, Image as ImageIcon, Code,
-  Upload, X, Play, Pause, RefreshCw
+import {
+  Bot,
+  Database,
+  Shield,
+  LineChart,
+  Settings,
+  Sparkles,
+  Send,
+  Search,
+  FileText,
+  CheckCircle2,
+  AlertTriangle,
+  Play,
+  RefreshCw,
+  Zap,
+  ChevronRight,
+  Copy,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-// Types
-interface Message {
+type Tab = "assistant" | "knowledge" | "ops";
+type AgentMode = "support" | "analyst" | "dev";
+
+type PipelineStage =
+  | "intent"
+  | "retrieve"
+  | "generate"
+  | "guardrails"
+  | "log";
+
+interface ChatMessage {
   id: string;
   role: "user" | "assistant";
   content: string;
-  timestamp: Date;
+  ts: number;
+  citations?: { title: string; note: string }[];
   isStreaming?: boolean;
 }
 
-interface ModelConfig {
-  model: string;
-  temperature: number;
-  maxTokens: number;
-  systemPrompt: string;
+interface KBDoc {
+  id: string;
+  title: string;
+  category: "Product" | "Security" | "Platform" | "Pricing";
+  tags: string[];
+  body: string;
 }
 
-// Simulated Chat Hook
-function useSimulatedChat() {
-  const [messages, setMessages] = useState<Message[]>([
+const KB_DOCS: KBDoc[] = [
+  {
+    id: "platform-rag",
+    title: "RAG pipeline (index → retrieve → cite)",
+    category: "Platform",
+    tags: ["rag", "citations", "vector", "rerank"],
+    body:
+      "We ship Retrieval-Augmented Generation using chunking + embeddings + vector search, with optional re-ranking. Answers can include citations and confidence, and we log retrieval context for debugging.",
+  },
+  {
+    id: "security-guardrails",
+    title: "Guardrails: PII redaction + jailbreak filtering",
+    category: "Security",
+    tags: ["pii", "redaction", "safety", "policy"],
+    body:
+      "We add guardrails for production: PII detection/redaction, jailbreak detection, sensitive-topic policies, and audit logs. We can enforce tool permissions per role and environment.",
+  },
+  {
+    id: "product-agents",
+    title: "Agents: tools, actions, workflows",
+    category: "Product",
+    tags: ["agents", "tools", "workflow", "automation"],
+    body:
+      "Agents orchestrate multi-step actions: triage → lookup → draft → execute. We integrate tools (CRM, tickets, email, databases) with least-privilege access and structured outputs.",
+  },
+  {
+    id: "platform-observability",
+    title: "Observability: latency, cost, grounding, errors",
+    category: "Platform",
+    tags: ["metrics", "slo", "tracing", "cost"],
+    body:
+      "We instrument AI systems end-to-end: token usage, latency breakdown, model routing, fallback rates, grounding score, and error taxonomy. Dashboards + alerts + replay for regressions.",
+  },
+  {
+    id: "pricing-cost",
+    title: "Cost controls: caching, routing, fallbacks",
+    category: "Pricing",
+    tags: ["cache", "router", "fallback", "budget"],
+    body:
+      "We control cost with prompt caching, deterministic routing, and fallback strategies. You get per-route budgets, spend limits, and predictable unit economics.",
+  },
+];
+
+function clamp(n: number, a: number, b: number) {
+  return Math.max(a, Math.min(b, n));
+}
+
+function scoreDoc(query: string, doc: KBDoc) {
+  const q = query.trim().toLowerCase();
+  if (!q) return 0;
+  const hay = (doc.title + " " + doc.tags.join(" ") + " " + doc.body)
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, " ");
+  const parts = q.split(/\s+/).filter(Boolean);
+  let s = 0;
+  for (const p of parts) {
+    if (doc.title.toLowerCase().includes(p)) s += 6;
+    if (doc.tags.some((t) => t.toLowerCase().includes(p))) s += 4;
+    if (hay.includes(p)) s += 2;
+  }
+  // mild boost for shorter docs (easier to cite)
+  s += Math.max(0, 2 - doc.body.length / 400);
+  return s;
+}
+
+function excerpt(body: string, query: string) {
+  const q = query.trim().toLowerCase();
+  if (!q) return body.slice(0, 160) + (body.length > 160 ? "…" : "");
+  const idx = body.toLowerCase().indexOf(q.split(/\s+/)[0] ?? "");
+  if (idx === -1) return body.slice(0, 160) + (body.length > 160 ? "…" : "");
+  const start = clamp(idx - 40, 0, body.length);
+  const end = clamp(idx + 140, 0, body.length);
+  const head = start > 0 ? "…" : "";
+  const tail = end < body.length ? "…" : "";
+  return head + body.slice(start, end) + tail;
+}
+
+function Sparkline({
+  values,
+  className,
+}: {
+  values: number[];
+  className?: string;
+}) {
+  const w = 160;
+  const h = 36;
+  const pad = 4;
+  const min = Math.min(...values);
+  const max = Math.max(...values);
+  const range = Math.max(1e-6, max - min);
+
+  const points = values
+    .map((v, i) => {
+      const x = pad + (i * (w - pad * 2)) / Math.max(1, values.length - 1);
+      const y =
+        pad +
+        (h - pad * 2) -
+        ((v - min) * (h - pad * 2)) / range;
+      return `${x.toFixed(1)},${y.toFixed(1)}`;
+    })
+    .join(" ");
+
+  return (
+    <svg
+      width={w}
+      height={h}
+      viewBox={`0 0 ${w} ${h}`}
+      className={cn("block", className)}
+      aria-hidden="true"
+    >
+      <polyline
+        points={points}
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.75"
+        strokeLinejoin="round"
+        strokeLinecap="round"
+        opacity="0.9"
+      />
+      <polyline
+        points={`${pad},${h - pad} ${w - pad},${h - pad}`}
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1"
+        opacity="0.12"
+      />
+    </svg>
+  );
+}
+
+function Pill({
+  icon,
+  label,
+  active,
+  onClick,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  active?: boolean;
+  onClick?: () => void;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className={cn(
+        "inline-flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-[10px] font-medium transition-colors",
+        active
+          ? "bg-emerald-500/15 border-emerald-500/30 text-emerald-300"
+          : "bg-white/5 border-white/10 text-gray-400 hover:text-white hover:border-white/20"
+      )}
+    >
+      {icon}
+      {label}
+    </button>
+  );
+}
+
+function ToggleRow({
+  label,
+  desc,
+  enabled,
+  onChange,
+}: {
+  label: string;
+  desc: string;
+  enabled: boolean;
+  onChange: (v: boolean) => void;
+}) {
+  return (
+    <div className="flex items-center justify-between gap-3 rounded-lg border border-white/10 bg-white/5 px-3 py-2">
+      <div className="min-w-0">
+        <div className="text-[10px] font-semibold text-white">{label}</div>
+        <div className="text-[9px] text-gray-500">{desc}</div>
+      </div>
+      <button
+        onClick={() => onChange(!enabled)}
+        className={cn(
+          "relative h-6 w-11 shrink-0 rounded-full border transition-colors",
+          enabled
+            ? "bg-emerald-500/25 border-emerald-500/35"
+            : "bg-black/30 border-white/10"
+        )}
+        aria-pressed={enabled}
+        aria-label={label}
+      >
+        <span
+          className={cn(
+            "absolute top-1 h-4 w-4 rounded-full transition-all",
+            enabled ? "left-6 bg-emerald-300" : "left-1 bg-white/40"
+          )}
+        />
+      </button>
+    </div>
+  );
+}
+
+function PipelineBar({
+  stages,
+  activeIdx,
+  status,
+}: {
+  stages: { id: PipelineStage; label: string }[];
+  activeIdx: number;
+  status: "idle" | "running" | "done";
+}) {
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      {stages.map((s, i) => {
+        const done = status !== "idle" && i < activeIdx;
+        const active = status === "running" && i === activeIdx;
+        const finalDone = status === "done" && i === stages.length - 1;
+
+        return (
+          <div
+            key={s.id}
+            className={cn(
+              "inline-flex items-center gap-1.5 rounded-lg border px-2 py-1 text-[10px] font-medium",
+              done || finalDone
+                ? "bg-emerald-500/12 border-emerald-500/25 text-emerald-300"
+                : active
+                ? "bg-emerald-500/18 border-emerald-500/35 text-white"
+                : "bg-white/5 border-white/10 text-gray-500"
+            )}
+          >
+            {done || finalDone ? (
+              <CheckCircle2 className="h-3.5 w-3.5" />
+            ) : active ? (
+              <motion.span
+                className="h-2 w-2 rounded-full bg-emerald-400"
+                animate={{ opacity: [0.4, 1, 0.4] }}
+                transition={{ duration: 1.1, repeat: Infinity }}
+              />
+            ) : (
+              <span className="h-2 w-2 rounded-full bg-white/20" />
+            )}
+            {s.label}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function useClipboardToast() {
+  const [copied, setCopied] = useState(false);
+  const copy = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1200);
+    } catch {
+      // ignore
+    }
+  };
+  return { copied, copy };
+}
+
+/** Assistant demo: mode + optional KB + guardrails + realistic pipeline steps */
+function AssistantDemo({
+  kbQuerySeed,
+}: {
+  kbQuerySeed: string;
+}) {
+  const [mode, setMode] = useState<AgentMode>("support");
+  const [useKB, setUseKB] = useState(true);
+  const [guardrails, setGuardrails] = useState(true);
+
+  const [input, setInput] = useState("");
+  const [typing, setTyping] = useState(false);
+
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const [pipelineStatus, setPipelineStatus] = useState<
+    "idle" | "running" | "done"
+  >("idle");
+  const [pipelineIdx, setPipelineIdx] = useState(0);
+
+  const stages = useMemo(
+    () => [
+      { id: "intent" as const, label: "Intent" },
+      { id: "retrieve" as const, label: "Retrieve" },
+      { id: "generate" as const, label: "Generate" },
+      { id: "guardrails" as const, label: "Guardrails" },
+      { id: "log" as const, label: "Logs" },
+    ],
+    []
+  );
+
+  const [messages, setMessages] = useState<ChatMessage[]>([
     {
-      id: "1",
+      id: "m0",
       role: "assistant",
-      content: "Hello! I'm an AI assistant powered by Swarp's infrastructure. I can help with data analysis, document processing, and automated workflows. Try asking me about your Q3 sales data or upload a document for analysis.",
-      timestamp: new Date(),
+      ts: Date.now(),
+      content:
+        "Hey — pick a mode, then ask a real question. I’ll show the pipeline (retrieve → cite → guardrails) like it runs in production.",
     },
   ]);
-  const [isTyping, setIsTyping] = useState(false);
 
-  const sendMessage = (content: string) => {
-    const userMsg: Message = {
-      id: Date.now().toString(),
-      role: "user",
-      content,
-      timestamp: new Date(),
-    };
+  const retrieve = (q: string, topK: number) => {
+    const scored = KB_DOCS.map((d) => ({
+      doc: d,
+      score: scoreDoc(q, d),
+      note: excerpt(d.body, q),
+    }))
+      .filter((x) => x.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, topK);
 
-    setMessages((prev) => [...prev, userMsg]);
-    setIsTyping(true);
+    return scored;
+  };
 
-    // Simulate AI response
-    setTimeout(() => {
-      const responses = [
-        "I can analyze that data for you. Based on the patterns, I see a 24% increase in engagement metrics compared to last quarter. Would you like me to generate a detailed report?",
-        "I've processed your document. The key insights are: 1) Customer retention improved by 15%, 2) Average order value increased to $127, 3) Churn rate decreased to 4.2%.",
-        "Great question! I can help you set up an automated workflow for this. Based on your requirements, I recommend using our RAG pipeline with real-time vector search.",
-      ];
+  const genReply = (q: string) => {
+    const trimmed = q.trim();
+    const citations = useKB ? retrieve(trimmed || kbQuerySeed, 2) : [];
+    const citePayload =
+      citations.length > 0
+        ? citations.map((c) => ({ title: c.doc.title, note: c.note }))
+        : undefined;
 
-      const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+    const modePrefix =
+      mode === "support"
+        ? "Support"
+        : mode === "analyst"
+        ? "Analyst"
+        : "Dev";
 
-      const aiMsg: Message = {
-        id: (Date.now() + 1).toString(),
+    const base = (() => {
+      const lower = trimmed.toLowerCase();
+
+      if (mode === "support") {
+        if (lower.includes("refund") || lower.includes("charge")) {
+          return "I can draft a clean refund reply + policy excerpt and log the case. Want the short version or detailed steps for the user?";
+        }
+        if (lower.includes("integrat") || lower.includes("api")) {
+          return "Yep. We can ship an in-app assistant with citations + an agent to file tickets / update CRM. I’ll show the architecture in the right panel.";
+        }
+        return "Got it. I can summarize, draft a response, and (optionally) call tools like tickets/CRM. What channel is this for — email, chat, or helpdesk?";
+      }
+
+      if (mode === "analyst") {
+        if (lower.includes("kpi") || lower.includes("retention") || lower.includes("growth")) {
+          return "I can compute the KPI deltas and explain drivers. If you enable Knowledge, I’ll cite definitions and dashboards (so the report is consistent).";
+        }
+        return "I can turn that into an analysis: assumptions, metric definition, and a short executive summary. Want a 1-pager or a dashboard-style readout?";
+      }
+
+      // dev
+      if (lower.includes("latency") || lower.includes("timeout")) {
+        return "We’d instrument the full chain (retrieval + model + tools), add caching, and route by budget/SLO. The Ops tab shows how we ship this safely.";
+      }
+      if (lower.includes("rag")) {
+        return "For RAG, we chunk + embed + index with re-ranking, then generate answers with citations. You’ll get replayable traces for debugging.";
+      }
+      return "I can build this as a production-grade service: model routing, eval harness, guardrails, and monitoring. Tell me the target product surface (web app, mobile, internal tool).";
+    })();
+
+    // If KB is on, produce a short cited addendum.
+    const cited =
+      citations.length > 0
+        ? `\n\nFrom docs: ${citations
+            .map((c) => `• ${c.doc.title}`)
+            .join("\n")}`
+        : "";
+
+    // If guardrails on, mention briefly.
+    const safety =
+      guardrails
+        ? "\n\nSafety: PII redaction + jailbreak checks enabled."
+        : "";
+
+    const content = `[${modePrefix}] ${base}${cited}${safety}`;
+
+    return { content, citations: citePayload };
+  };
+
+  const runPipelineAndRespond = (q: string) => {
+    setTyping(true);
+    setPipelineStatus("running");
+    setPipelineIdx(0);
+
+    const stepMs = 380;
+    const totalSteps = stages.length;
+
+    let idx = 0;
+    const t = window.setInterval(() => {
+      idx += 1;
+      setPipelineIdx(clamp(idx, 0, totalSteps - 1));
+      if (idx >= totalSteps - 1) {
+        window.clearInterval(t);
+        window.setTimeout(() => {
+          setPipelineStatus("done");
+        }, 180);
+      }
+    }, stepMs);
+
+    window.setTimeout(() => {
+      const { content, citations } = genReply(q);
+
+      const aiId = `a-${Date.now()}`;
+      const aiMsg: ChatMessage = {
+        id: aiId,
         role: "assistant",
-        content: randomResponse,
-        timestamp: new Date(),
+        ts: Date.now(),
+        content,
+        citations,
         isStreaming: true,
       };
 
       setMessages((prev) => [...prev, aiMsg]);
-      setIsTyping(false);
 
-      // Simulate streaming effect
-      let charIndex = 0;
-      const streamInterval = setInterval(() => {
-        if (charIndex >= randomResponse.length) {
-          clearInterval(streamInterval);
-          setMessages((prev) =>
-            prev.map((m) => (m.id === aiMsg.id ? { ...m, isStreaming: false } : m))
-          );
-        }
-        charIndex += 3;
-      }, 20);
-    }, 1500);
+      // streaming feel: flip isStreaming off after a moment
+      window.setTimeout(() => {
+        setMessages((prev) =>
+          prev.map((m) => (m.id === aiId ? { ...m, isStreaming: false } : m))
+        );
+        setTyping(false);
+        window.setTimeout(() => setPipelineStatus("idle"), 600);
+      }, 750);
+    }, stepMs * 2.0);
   };
 
-  return { messages, isTyping, sendMessage };
-}
+  const send = () => {
+    const v = input.trim();
+    if (!v) return;
 
-// Chat Interface Component
-function ChatInterface() {
-  const { messages, isTyping, sendMessage } = useSimulatedChat();
-  const [input, setInput] = useState("");
-  const scrollRef = useRef<HTMLDivElement>(null);
+    const u: ChatMessage = {
+      id: `u-${Date.now()}`,
+      role: "user",
+      ts: Date.now(),
+      content: v,
+    };
+
+    setMessages((prev) => [...prev, u]);
+    setInput("");
+    runPipelineAndRespond(v);
+  };
 
   useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-    }
-  }, [messages]);
-
-  const handleSend = () => {
-    if (input.trim()) {
-      sendMessage(input);
-      setInput("");
-    }
-  };
+    const el = scrollRef.current;
+    if (!el) return;
+    el.scrollTop = el.scrollHeight;
+  }, [messages, typing]);
 
   return (
-    <div className="flex flex-col h-full bg-[#0c0e12] rounded-xl overflow-hidden border border-emerald-500/20">
+    <div className="h-full rounded-xl border border-emerald-500/20 bg-[#0c0e12] overflow-hidden">
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-emerald-500/20 bg-emerald-950/20">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center">
-            <Bot className="w-4 h-4 text-emerald-400" />
+      <div className="flex items-center justify-between gap-3 border-b border-emerald-500/15 bg-emerald-950/15 px-4 py-3">
+        <div className="flex items-center gap-3 min-w-0">
+          <div className="h-9 w-9 rounded-xl bg-emerald-500/18 border border-emerald-500/25 flex items-center justify-center">
+            <Bot className="h-4 w-4 text-emerald-300" />
           </div>
-          <div>
-            <h4 className="text-sm font-semibold text-white">AI Assistant</h4>
-            <div className="flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              <span className="text-[10px] text-emerald-400">Online</span>
+          <div className="min-w-0">
+            <div className="text-sm font-semibold text-white leading-tight">
+              AI Assistant Demo
+            </div>
+            <div className="text-[10px] text-emerald-300/80">
+              Mode + optional Knowledge + Guardrails
             </div>
           </div>
         </div>
-        <div className="flex items-center gap-2">
-          <button className="p-1.5 rounded-lg hover:bg-white/5 text-gray-500 hover:text-white transition-colors">
-            <Settings className="w-4 h-4" />
-          </button>
+
+        <div className="flex items-center gap-2 shrink-0">
+          <Pill
+            icon={<Sparkles className="h-3.5 w-3.5" />}
+            label="Support"
+            active={mode === "support"}
+            onClick={() => setMode("support")}
+          />
+          <Pill
+            icon={<LineChart className="h-3.5 w-3.5" />}
+            label="Analyst"
+            active={mode === "analyst"}
+            onClick={() => setMode("analyst")}
+          />
+          <Pill
+            icon={<Settings className="h-3.5 w-3.5" />}
+            label="Dev"
+            active={mode === "dev"}
+            onClick={() => setMode("dev")}
+          />
+        </div>
+      </div>
+
+      {/* Controls */}
+      <div className="px-4 py-3 border-b border-white/10 bg-black/25">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <PipelineBar
+            stages={stages}
+            activeIdx={pipelineIdx}
+            status={pipelineStatus}
+          />
+          <div className="flex items-center gap-2">
+            <Pill
+              icon={<Database className="h-3.5 w-3.5" />}
+              label={useKB ? "Knowledge: ON" : "Knowledge: OFF"}
+              active={useKB}
+              onClick={() => setUseKB((v) => !v)}
+            />
+            <Pill
+              icon={<Shield className="h-3.5 w-3.5" />}
+              label={guardrails ? "Guardrails: ON" : "Guardrails: OFF"}
+              active={guardrails}
+              onClick={() => setGuardrails((v) => !v)}
+            />
+          </div>
         </div>
       </div>
 
       {/* Messages */}
-      <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar">
-        {messages.map((msg) => (
+      <div
+        ref={scrollRef}
+        className="h-[calc(100%-176px)] overflow-y-auto px-4 py-4 space-y-3 custom-scrollbar"
+      >
+        {messages.map((m) => (
           <motion.div
-            key={msg.id}
-            initial={{ opacity: 0, y: 10 }}
+            key={m.id}
+            initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             className={cn(
               "flex gap-3",
-              msg.role === "user" ? "flex-row-reverse" : ""
+              m.role === "user" ? "flex-row-reverse" : "flex-row"
             )}
           >
-            <div className={cn(
-              "w-8 h-8 rounded-lg flex items-center justify-center shrink-0",
-              msg.role === "assistant" 
-                ? "bg-emerald-500/20 border border-emerald-500/30" 
-                : "bg-purple-500/20 border border-purple-500/30"
-            )}>
-              {msg.role === "assistant" ? (
-                <Bot className="w-4 h-4 text-emerald-400" />
+            <div
+              className={cn(
+                "h-8 w-8 rounded-lg border flex items-center justify-center shrink-0",
+                m.role === "assistant"
+                  ? "bg-emerald-500/15 border-emerald-500/25"
+                  : "bg-white/5 border-white/10"
+              )}
+            >
+              {m.role === "assistant" ? (
+                <Bot className="h-4 w-4 text-emerald-300" />
               ) : (
-                <span className="text-xs font-bold text-purple-400">You</span>
+                <span className="text-[10px] font-bold text-gray-200">You</span>
               )}
             </div>
-            <div className={cn(
-              "max-w-[80%] p-3 rounded-xl text-xs leading-relaxed",
-              msg.role === "assistant"
-                ? "bg-emerald-950/30 border border-emerald-500/20 text-gray-200"
-                : "bg-purple-950/30 border border-purple-500/20 text-gray-200"
-            )}>
-              {msg.isStreaming ? (
-                <span className="animate-pulse">{msg.content}▊</span>
-              ) : (
-                msg.content
+
+            <div
+              className={cn(
+                "max-w-[82%] rounded-xl border px-3 py-2.5 text-xs leading-relaxed",
+                m.role === "assistant"
+                  ? "bg-emerald-950/18 border-emerald-500/18 text-gray-200"
+                  : "bg-white/5 border-white/10 text-gray-200"
               )}
+            >
+              <div className="whitespace-pre-wrap">
+                {m.isStreaming ? (
+                  <span className="animate-pulse">{m.content}▊</span>
+                ) : (
+                  m.content
+                )}
+              </div>
+
+              {m.citations && m.citations.length > 0 && (
+                <div className="mt-2 pt-2 border-t border-white/10">
+                  <div className="text-[10px] font-semibold text-emerald-200/90">
+                    Citations
+                  </div>
+                  <div className="mt-1 space-y-1">
+                    {m.citations.map((c, idx) => (
+                      <div
+                        key={`${m.id}-c-${idx}`}
+                        className="rounded-lg border border-white/10 bg-black/20 px-2 py-1"
+                      >
+                        <div className="text-[10px] text-white font-medium">
+                          {c.title}
+                        </div>
+                        <div className="text-[9px] text-gray-500">
+                          {c.note}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <div className="mt-1.5 text-[9px] text-gray-600">
+                {new Date(m.ts).toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+              </div>
             </div>
           </motion.div>
         ))}
 
-        {isTyping && (
+        {typing && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             className="flex gap-3"
           >
-            <div className="w-8 h-8 rounded-lg bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center">
-              <Bot className="w-4 h-4 text-emerald-400" />
+            <div className="h-8 w-8 rounded-lg bg-emerald-500/15 border border-emerald-500/25 flex items-center justify-center">
+              <Bot className="h-4 w-4 text-emerald-300" />
             </div>
-            <div className="bg-emerald-950/30 border border-emerald-500/20 rounded-xl p-3 flex items-center gap-1">
-              <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
-              <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
-              <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
+            <div className="rounded-xl border border-emerald-500/18 bg-emerald-950/18 px-3 py-2 flex items-center gap-1.5">
+              <motion.span
+                className="h-1.5 w-1.5 rounded-full bg-emerald-300"
+                animate={{ y: [0, -3, 0] }}
+                transition={{ duration: 0.7, repeat: Infinity, delay: 0 }}
+              />
+              <motion.span
+                className="h-1.5 w-1.5 rounded-full bg-emerald-300"
+                animate={{ y: [0, -3, 0] }}
+                transition={{ duration: 0.7, repeat: Infinity, delay: 0.12 }}
+              />
+              <motion.span
+                className="h-1.5 w-1.5 rounded-full bg-emerald-300"
+                animate={{ y: [0, -3, 0] }}
+                transition={{ duration: 0.7, repeat: Infinity, delay: 0.24 }}
+              />
+              <span className="ml-1 text-[10px] text-emerald-200/80">
+                thinking…
+              </span>
             </div>
           </motion.div>
         )}
       </div>
 
       {/* Input */}
-      <div className="p-3 border-t border-emerald-500/20 bg-[#09090b]">
+      <div className="px-3 py-3 border-t border-white/10 bg-[#09090b]">
         <div className="flex items-center gap-2">
-          <button className="p-2 rounded-lg hover:bg-white/5 text-gray-500 hover:text-white transition-colors">
-            <Upload className="w-4 h-4" />
-          </button>
-          <button className="p-2 rounded-lg hover:bg-white/5 text-gray-500 hover:text-white transition-colors">
-            <Mic className="w-4 h-4" />
-          </button>
           <div className="flex-1 relative">
             <input
-              type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              onKeyPress={(e) => e.key === "Enter" && handleSend()}
-              placeholder="Type a message..."
-              className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500/50"
+              onKeyDown={(e) => {
+                if (e.key === "Enter") send();
+              }}
+              placeholder={
+                mode === "support"
+                  ? "Ask: “Draft a refund reply for a subscription charge”"
+                  : mode === "analyst"
+                  ? "Ask: “Summarize KPIs and what changed vs last month”"
+                  : "Ask: “How do we make RAG fast + debuggable?”"
+              }
+              className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-xs text-white placeholder:text-gray-600 focus:outline-none focus:border-emerald-500/35"
             />
           </div>
-          <button 
-            onClick={handleSend}
-            className="p-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors"
+          <button
+            onClick={send}
+            className="inline-flex items-center gap-1.5 rounded-lg border border-emerald-500/25 bg-emerald-500/15 px-3 py-2 text-xs font-semibold text-emerald-200 hover:bg-emerald-500/20 transition-colors"
           >
-            <Send className="w-4 h-4" />
+            <Send className="h-4 w-4" />
+            Send
           </button>
         </div>
       </div>
@@ -218,407 +702,787 @@ function ChatInterface() {
   );
 }
 
-// RAG Pipeline Visualization
-function RAGPipeline() {
-  const [stage, setStage] = useState<"idle" | "uploading" | "processing" | "indexing" | "ready">("idle");
-  const [progress, setProgress] = useState(0);
+/** Knowledge demo: search + topK + rerank + doc viewer */
+function KnowledgeDemo() {
+  const [query, setQuery] = useState("How do you ship guardrails in production?");
+  const [topK, setTopK] = useState(3);
+  const [rerank, setRerank] = useState(true);
+  const [selectedId, setSelectedId] = useState<string>("security-guardrails");
 
-  const startProcess = () => {
-    setStage("uploading");
-    setProgress(0);
+  const results = useMemo(() => {
+    const q = query.trim();
+    const scored = KB_DOCS.map((d) => ({
+      doc: d,
+      score: scoreDoc(q, d),
+      note: excerpt(d.body, q),
+    }))
+      .filter((x) => x.score > 0)
+      .sort((a, b) => b.score - a.score);
 
-    const stages = [
-      { stage: "uploading", duration: 1000, progress: 20 },
-      { stage: "processing", duration: 1500, progress: 50 },
-      { stage: "indexing", duration: 1500, progress: 80 },
-      { stage: "ready", duration: 500, progress: 100 },
-    ];
+    const sliced = scored.slice(0, topK);
 
-    let currentStage = 0;
-    const runStage = () => {
-      if (currentStage >= stages.length) return;
+    if (!rerank) return sliced;
 
-      const s = stages[currentStage];
-      setStage(s.stage as any);
+    // pseudo rerank: slightly boost Security + Platform for safety queries
+    const qLower = q.toLowerCase();
+    const wantsSafety =
+      qLower.includes("pii") ||
+      qLower.includes("guard") ||
+      qLower.includes("jailbreak") ||
+      qLower.includes("policy") ||
+      qLower.includes("security");
 
-      const interval = setInterval(() => {
-        setProgress((p) => {
-          if (p >= s.progress) {
-            clearInterval(interval);
-            currentStage++;
-            setTimeout(runStage, 200);
-            return p;
-          }
-          return p + 1;
-        });
-      }, s.duration / (s.progress - (stages[currentStage - 1]?.progress || 0)));
-    };
+    return sliced
+      .map((x) => {
+        const boost =
+          wantsSafety && (x.doc.category === "Security" || x.doc.category === "Platform")
+            ? 2.2
+            : 0;
+        return { ...x, score: x.score + boost };
+      })
+      .sort((a, b) => b.score - a.score);
+  }, [query, topK, rerank]);
 
-    runStage();
-  };
+  useEffect(() => {
+    if (results.length > 0 && !results.some((r) => r.doc.id === selectedId)) {
+      setSelectedId(results[0]!.doc.id);
+    }
+  }, [results, selectedId]);
+
+  const selected = useMemo(
+    () => KB_DOCS.find((d) => d.id === selectedId) ?? KB_DOCS[0]!,
+    [selectedId]
+  );
 
   return (
-    <div className="bg-[#0c0e12] rounded-xl border border-emerald-500/20 p-4">
-      <div className="flex items-center justify-between mb-4">
-        <h4 className="text-sm font-semibold text-white flex items-center gap-2">
-          <Database className="w-4 h-4 text-emerald-400" />
-          RAG Pipeline
-        </h4>
-        <button
-          onClick={startProcess}
-          disabled={stage !== "idle" && stage !== "ready"}
-          className="px-3 py-1.5 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 text-xs font-medium hover:bg-emerald-500/30 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-1.5"
-        >
-          {stage === "ready" ? <RefreshCw className="w-3 h-3" /> : <Play className="w-3 h-3" />}
-          {stage === "ready" ? "Restart" : "Start Demo"}
-        </button>
+    <div className="h-full rounded-xl border border-emerald-500/20 bg-[#0c0e12] overflow-hidden">
+      {/* Header */}
+      <div className="border-b border-white/10 bg-black/25 px-4 py-3">
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            <div className="text-sm font-semibold text-white flex items-center gap-2">
+              <Database className="h-4 w-4 text-emerald-300" />
+              Knowledge Search (RAG)
+            </div>
+            <div className="text-[10px] text-gray-500">
+              Search docs → retrieve top-K → (optional) rerank → cite sources
+            </div>
+          </div>
+          <div className="flex items-center gap-2 shrink-0">
+            <Pill
+              icon={<CheckCircle2 className="h-3.5 w-3.5" />}
+              label={`top-K: ${topK}`}
+              active
+            />
+            <Pill
+              icon={<Zap className="h-3.5 w-3.5" />}
+              label={rerank ? "Rerank: ON" : "Rerank: OFF"}
+              active={rerank}
+              onClick={() => setRerank((v) => !v)}
+            />
+          </div>
+        </div>
+
+        <div className="mt-3 flex items-center gap-2">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-600" />
+            <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              className="w-full rounded-lg border border-white/10 bg-white/5 pl-9 pr-3 py-2 text-xs text-white placeholder:text-gray-600 focus:outline-none focus:border-emerald-500/35"
+              placeholder="Search the knowledge base…"
+            />
+          </div>
+
+          <div className="w-40">
+            <input
+              type="range"
+              min={2}
+              max={5}
+              step={1}
+              value={topK}
+              onChange={(e) => setTopK(parseInt(e.target.value, 10))}
+              className="w-full accent-emerald-500"
+              aria-label="Top K"
+            />
+            <div className="mt-1 flex justify-between text-[9px] text-gray-600">
+              <span>2</span>
+              <span>5</span>
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* Pipeline Stages */}
-      <div className="space-y-3">
-        {[
-          { id: "uploading", label: "Document Upload", icon: FileText },
-          { id: "processing", label: "Text Extraction", icon: Cpu },
-          { id: "indexing", label: "Vector Indexing", icon: Database },
-          { id: "ready", label: "Query Ready", icon: CheckCircle2 },
-        ].map((step, idx) => {
-          const isActive = stage === step.id;
-          const isCompleted = [
-            "processing", "indexing", "ready"
-          ].includes(stage) && ["uploading"].includes(step.id) ||
-          ["indexing", "ready"].includes(stage) && ["processing"].includes(step.id) ||
-          stage === "ready" && step.id !== "ready";
-
-          return (
-            <motion.div
-              key={step.id}
-              initial={false}
-              animate={{
-                opacity: isActive || isCompleted ? 1 : 0.4,
-                scale: isActive ? 1.02 : 1,
-              }}
-              className={cn(
-                "flex items-center gap-3 p-3 rounded-lg border transition-colors",
-                isActive
-                  ? "bg-emerald-950/30 border-emerald-500/30"
-                  : isCompleted
-                  ? "bg-emerald-950/20 border-emerald-500/20"
-                  : "bg-white/5 border-white/10"
+      {/* Body */}
+      <div className="h-[calc(100%-116px)] grid grid-cols-1 lg:grid-cols-2 gap-0">
+        {/* Results */}
+        <div className="border-r border-white/10 overflow-y-auto custom-scrollbar">
+          <div className="p-3">
+            <div className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider">
+              Retrieved
+            </div>
+            <div className="mt-2 space-y-2">
+              {results.length === 0 ? (
+                <div className="rounded-lg border border-white/10 bg-white/5 p-3 text-xs text-gray-400">
+                  No matches yet — try “RAG citations”, “guardrails”, or “observability”.
+                </div>
+              ) : (
+                results.map((r) => {
+                  const active = r.doc.id === selectedId;
+                  return (
+                    <button
+                      key={r.doc.id}
+                      onClick={() => setSelectedId(r.doc.id)}
+                      className={cn(
+                        "w-full rounded-lg border px-3 py-2 text-left transition-colors",
+                        active
+                          ? "bg-emerald-500/12 border-emerald-500/25"
+                          : "bg-white/5 border-white/10 hover:border-white/20"
+                      )}
+                    >
+                      <div className="flex items-center justify-between gap-2">
+                        <div className="min-w-0">
+                          <div className="text-xs font-semibold text-white truncate">
+                            {r.doc.title}
+                          </div>
+                          <div className="text-[9px] text-gray-500">
+                            {r.doc.category} • score {r.score.toFixed(1)}
+                          </div>
+                        </div>
+                        <ChevronRight className="h-4 w-4 text-gray-600" />
+                      </div>
+                      <div className="mt-1 text-[10px] text-gray-400">
+                        {r.note}
+                      </div>
+                      <div className="mt-2 flex flex-wrap gap-1.5">
+                        {r.doc.tags.slice(0, 3).map((t) => (
+                          <span
+                            key={`${r.doc.id}-${t}`}
+                            className="rounded-full border border-white/10 bg-black/20 px-2 py-0.5 text-[9px] text-gray-400"
+                          >
+                            {t}
+                          </span>
+                        ))}
+                      </div>
+                    </button>
+                  );
+                })
               )}
-            >
-              <div className={cn(
-                "w-8 h-8 rounded-lg flex items-center justify-center transition-colors",
-                isActive
-                  ? "bg-emerald-500/20 text-emerald-400"
-                  : isCompleted
-                  ? "bg-emerald-500/10 text-emerald-500/60"
-                  : "bg-white/5 text-gray-500"
-              )}>
-                {isCompleted ? (
-                  <CheckCircle2 className="w-4 h-4" />
-                ) : (
-                  <step.icon className="w-4 h-4" />
-                )}
-              </div>
-              <div className="flex-1">
-                <div className="text-xs font-medium text-white">{step.label}</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Viewer */}
+        <div className="overflow-y-auto custom-scrollbar">
+          <div className="p-4">
+            <div className="flex items-start justify-between gap-3">
+              <div className="min-w-0">
+                <div className="text-sm font-semibold text-white">
+                  {selected.title}
+                </div>
                 <div className="text-[10px] text-gray-500">
-                  {isActive ? "Processing..." : isCompleted ? "Complete" : "Waiting"}
+                  {selected.category} • {selected.tags.join(" · ")}
                 </div>
               </div>
-              {isActive && (
-                <motion.div
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                >
-                  <RefreshCw className="w-4 h-4 text-emerald-400" />
-                </motion.div>
-              )}
-            </motion.div>
-          );
-        })}
-      </div>
+              <span className="inline-flex items-center gap-1.5 rounded-lg border border-emerald-500/22 bg-emerald-500/12 px-2.5 py-1 text-[10px] font-semibold text-emerald-200">
+                <FileText className="h-3.5 w-3.5" />
+                source
+              </span>
+            </div>
 
-      {/* Progress Bar */}
-      <div className="mt-4">
-        <div className="flex justify-between text-[10px] text-gray-500 mb-1">
-          <span>Progress</span>
-          <span>{progress}%</span>
-        </div>
-        <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
-          <motion.div
-            className="h-full bg-gradient-to-r from-emerald-500 to-cyan-400"
-            initial={{ width: 0 }}
-            animate={{ width: `${progress}%` }}
-            transition={{ duration: 0.3 }}
-          />
-        </div>
-      </div>
-    </div>
-  );
-}
+            <div className="mt-3 rounded-xl border border-white/10 bg-white/5 p-3 text-xs text-gray-200 leading-relaxed whitespace-pre-wrap">
+              {selected.body}
+            </div>
 
-// Model Configurator
-function ModelConfigurator() {
-  const [config, setConfig] = useState<ModelConfig>({
-    model: "gpt-4",
-    temperature: 0.7,
-    maxTokens: 2048,
-    systemPrompt: "You are a helpful AI assistant specialized in data analysis.",
-  });
-
-  const models = [
-    { id: "gpt-4", name: "GPT-4", provider: "OpenAI", color: "emerald" },
-    { id: "claude-3", name: "Claude 3", provider: "Anthropic", color: "amber" },
-    { id: "llama-3", name: "Llama 3", provider: "Meta", color: "purple" },
-    { id: "mistral", name: "Mistral", provider: "Mistral AI", color: "cyan" },
-  ];
-
-  return (
-    <div className="bg-[#0c0e12] rounded-xl border border-emerald-500/20 p-4">
-      <h4 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
-        <Settings className="w-4 h-4 text-emerald-400" />
-        Model Configuration
-      </h4>
-
-      {/* Model Selection */}
-      <div className="space-y-3 mb-4">
-        <label className="text-[10px] text-gray-500 uppercase tracking-wider font-semibold">
-          Model
-        </label>
-        <div className="grid grid-cols-2 gap-2">
-          {models.map((model) => (
-            <button
-              key={model.id}
-              onClick={() => setConfig({ ...config, model: model.id })}
-              className={cn(
-                "p-2.5 rounded-lg border text-left transition-all",
-                config.model === model.id
-                  ? `bg-${model.color}-500/10 border-${model.color}-500/30`
-                  : "bg-white/5 border-white/10 hover:border-white/20"
-              )}
-            >
-              <div className={cn(
-                "text-xs font-semibold",
-                config.model === model.id ? `text-${model.color}-400` : "text-white"
-              )}>
-                {model.name}
+            <div className="mt-4 rounded-xl border border-white/10 bg-black/25 p-3">
+              <div className="text-xs font-semibold text-white">
+                Answer preview (with citations)
               </div>
-              <div className="text-[9px] text-gray-500">{model.provider}</div>
-            </button>
-          ))}
-        </div>
-      </div>
+              <div className="mt-1 text-[10px] text-gray-500">
+                This is how the assistant answers when Knowledge is enabled.
+              </div>
 
-      {/* Temperature Slider */}
-      <div className="space-y-2 mb-4">
-        <div className="flex justify-between">
-          <label className="text-[10px] text-gray-500 uppercase tracking-wider font-semibold">
-            Temperature
-          </label>
-          <span className="text-[10px] text-emerald-400 font-mono">{config.temperature}</span>
-        </div>
-        <input
-          type="range"
-          min="0"
-          max="2"
-          step="0.1"
-          value={config.temperature}
-          onChange={(e) => setConfig({ ...config, temperature: parseFloat(e.target.value) })}
-          className="w-full h-1 bg-white/10 rounded-full appearance-none cursor-pointer accent-emerald-500"
-        />
-        <div className="flex justify-between text-[9px] text-gray-600">
-          <span>Precise</span>
-          <span>Creative</span>
-        </div>
-      </div>
+              <div className="mt-3 rounded-lg border border-emerald-500/18 bg-emerald-950/18 p-3">
+                <div className="text-xs text-gray-200 leading-relaxed">
+                  We implement production RAG with retrieval + re-ranking and
+                  attach citations for trust and debugging. For safety, we add
+                  guardrails and keep audit logs so you can reproduce answers.
+                </div>
+                <div className="mt-2 text-[10px] font-semibold text-emerald-200">
+                  Citations
+                </div>
+                <div className="mt-1 space-y-1">
+                  {[selected, ...KB_DOCS.filter((d) => d.id !== selected.id).slice(0, 1)].map(
+                    (d) => (
+                      <div
+                        key={`cite-${d.id}`}
+                        className="rounded-lg border border-white/10 bg-black/20 px-2 py-1"
+                      >
+                        <div className="text-[10px] text-white font-medium">
+                          {d.title}
+                        </div>
+                        <div className="text-[9px] text-gray-500">
+                          {excerpt(d.body, query)}
+                        </div>
+                      </div>
+                    )
+                  )}
+                </div>
+              </div>
 
-      {/* Max Tokens */}
-      <div className="space-y-2 mb-4">
-        <div className="flex justify-between">
-          <label className="text-[10px] text-gray-500 uppercase tracking-wider font-semibold">
-            Max Tokens
-          </label>
-          <span className="text-[10px] text-emerald-400 font-mono">{config.maxTokens}</span>
+              <div className="mt-3 text-[9px] text-gray-600">
+                Tip: we can plug this into your docs, help center, tickets, CRM, or internal tools.
+              </div>
+            </div>
+          </div>
         </div>
-        <input
-          type="range"
-          min="256"
-          max="4096"
-          step="256"
-          value={config.maxTokens}
-          onChange={(e) => setConfig({ ...config, maxTokens: parseInt(e.target.value) })}
-          className="w-full h-1 bg-white/10 rounded-full appearance-none cursor-pointer accent-emerald-500"
-        />
-      </div>
-
-      {/* System Prompt */}
-      <div className="space-y-2">
-        <label className="text-[10px] text-gray-500 uppercase tracking-wider font-semibold">
-          System Prompt
-        </label>
-        <textarea
-          value={config.systemPrompt}
-          onChange={(e) => setConfig({ ...config, systemPrompt: e.target.value })}
-          rows={2}
-          className="w-full bg-white/5 border border-white/10 rounded-lg p-2.5 text-xs text-gray-300 placeholder-gray-600 focus:outline-none focus:border-emerald-500/50 resize-none"
-        />
       </div>
     </div>
   );
 }
 
-// Main Component
-export function AISystemsContent() {
-  const [activeTab, setActiveTab] = useState<"chat" | "rag" | "config">("chat");
+/** Ops demo: live metrics + config toggles (router, fallback, budgets, SLO) */
+function OpsDemo() {
+  const [live, setLive] = useState(true);
+
+  const [fallback, setFallback] = useState(true);
+  const [cache, setCache] = useState(true);
+  const [pii, setPii] = useState(true);
+  const [jailbreak, setJailbreak] = useState(true);
+
+  const [lat, setLat] = useState(182);
+  const [cost, setCost] = useState(0.014);
+  const [ground, setGround] = useState(0.86);
+  const [err, setErr] = useState(0.7);
+  const [tps, setTps] = useState(24.2);
+
+  const [latSeries, setLatSeries] = useState<number[]>([165, 172, 181, 177, 191, 184, 178, 182, 176, 188, 179, 182]);
+
+  useEffect(() => {
+    if (!live) return;
+
+    const id = window.setInterval(() => {
+      // deterministic-ish movement
+      setLat((v) => clamp(Math.round(v + (Math.random() * 18 - 9)), 120, 320));
+      setCost((v) => clamp(parseFloat((v + (Math.random() * 0.008 - 0.004)).toFixed(3)), 0.006, 0.035));
+      setGround((v) => clamp(parseFloat((v + (Math.random() * 0.04 - 0.02)).toFixed(2)), 0.72, 0.95));
+      setErr((v) => clamp(parseFloat((v + (Math.random() * 0.5 - 0.25)).toFixed(1)), 0.0, 2.5));
+      setTps((v) => clamp(parseFloat((v + (Math.random() * 2.2 - 1.1)).toFixed(1)), 10, 60));
+
+      setLatSeries((prev) => {
+        const next = [...prev.slice(1), clamp(prev[prev.length - 1]! + (Math.random() * 26 - 13), 120, 320)];
+        return next;
+      });
+    }, 1100);
+
+    return () => window.clearInterval(id);
+  }, [live]);
+
+  const configText = useMemo(() => {
+    const lines: string[] = [];
+    lines.push("routes:");
+    lines.push("  - match: /assistant/*");
+    lines.push("    model: gpt-4o");
+    lines.push(`    fallback: ${fallback ? "claude-3.5" : "off"}`);
+    lines.push(`    cache: ${cache ? "on" : "off"}`);
+    lines.push("");
+    lines.push("rag:");
+    lines.push("  vector_db: pgvector");
+    lines.push("  top_k: 4");
+    lines.push("  rerank: on");
+    lines.push("");
+    lines.push("guardrails:");
+    lines.push(`  pii_redaction: ${pii ? "true" : "false"}`);
+    lines.push(`  jailbreak_filter: ${jailbreak ? "true" : "false"}`);
+    lines.push("  audit_logs: true");
+    lines.push("");
+    lines.push("slo:");
+    lines.push("  p95_latency_ms: 350");
+    lines.push("  error_budget_pct: 1.0");
+    return lines.join("\n");
+  }, [fallback, cache, pii, jailbreak]);
+
+  const { copied, copy } = useClipboardToast();
 
   return (
-    <div className="h-full bg-[#0a0f1a] text-gray-200 overflow-hidden">
-      {/* Background Grid */}
+    <div className="h-full rounded-xl border border-emerald-500/20 bg-[#0c0e12] overflow-hidden">
+      {/* Header */}
+      <div className="border-b border-white/10 bg-black/25 px-4 py-3">
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            <div className="text-sm font-semibold text-white flex items-center gap-2">
+              <LineChart className="h-4 w-4 text-emerald-300" />
+              Production Ops
+            </div>
+            <div className="text-[10px] text-gray-500">
+              Monitoring, routing, cost controls, and safe deploy patterns.
+            </div>
+          </div>
+          <div className="flex items-center gap-2 shrink-0">
+            <Pill
+              icon={<Play className="h-3.5 w-3.5" />}
+              label={live ? "Live: ON" : "Live: OFF"}
+              active={live}
+              onClick={() => setLive((v) => !v)}
+            />
+            <Pill
+              icon={<RefreshCw className="h-3.5 w-3.5" />}
+              label="Reset"
+              onClick={() => {
+                setLat(182);
+                setCost(0.014);
+                setGround(0.86);
+                setErr(0.7);
+                setTps(24.2);
+                setLatSeries([165, 172, 181, 177, 191, 184, 178, 182, 176, 188, 179, 182]);
+              }}
+            />
+          </div>
+        </div>
+      </div>
+
+      <div className="h-[calc(100%-56px)] grid grid-cols-1 lg:grid-cols-2">
+        {/* Metrics */}
+        <div className="p-4 border-r border-white/10 overflow-y-auto custom-scrollbar space-y-3">
+          <div className="grid grid-cols-2 gap-2">
+            <div className="rounded-xl border border-white/10 bg-white/5 p-3">
+              <div className="text-[10px] text-gray-500">p95 latency</div>
+              <div className="mt-1 flex items-end justify-between gap-2">
+                <div className="text-xl font-bold text-white">
+                  {lat}
+                  <span className="text-[10px] text-gray-500 ml-1">ms</span>
+                </div>
+                <div className="text-emerald-300">
+                  <Sparkline values={latSeries} />
+                </div>
+              </div>
+              <div className="mt-2 text-[9px] text-gray-600">
+                Breakdown: retrieval + model + tools (traceable).
+              </div>
+            </div>
+
+            <div className="rounded-xl border border-white/10 bg-white/5 p-3">
+              <div className="text-[10px] text-gray-500">unit cost / request</div>
+              <div className="mt-1 text-xl font-bold text-white">
+                ${cost.toFixed(3)}
+              </div>
+              <div className="mt-2 text-[9px] text-gray-600">
+                Budgets + caching keep spend predictable.
+              </div>
+            </div>
+
+            <div className="rounded-xl border border-white/10 bg-white/5 p-3">
+              <div className="text-[10px] text-gray-500">grounding score</div>
+              <div className="mt-1 text-xl font-bold text-white">
+                {(ground * 100).toFixed(0)}
+                <span className="text-[10px] text-gray-500 ml-1">/100</span>
+              </div>
+              <div className="mt-2 text-[9px] text-gray-600">
+                Higher = answers align with sources.
+              </div>
+            </div>
+
+            <div className="rounded-xl border border-white/10 bg-white/5 p-3">
+              <div className="text-[10px] text-gray-500">error rate</div>
+              <div className="mt-1 text-xl font-bold text-white">
+                {err.toFixed(1)}
+                <span className="text-[10px] text-gray-500 ml-1">%</span>
+              </div>
+              <div className="mt-2 text-[9px] text-gray-600">
+                Retries + fallbacks reduce incidents.
+              </div>
+            </div>
+          </div>
+
+          <div className="rounded-xl border border-white/10 bg-black/25 p-3">
+            <div className="flex items-center justify-between">
+              <div>
+                <div className="text-xs font-semibold text-white">Throughput</div>
+                <div className="text-[10px] text-gray-500">requests / second</div>
+              </div>
+              <div className="text-lg font-bold text-emerald-200">{tps.toFixed(1)}</div>
+            </div>
+            <div className="mt-2 flex items-center gap-2 text-[10px] text-gray-500">
+              <span className="inline-flex items-center gap-1">
+                <CheckCircle2 className="h-3.5 w-3.5 text-emerald-300" />
+                autoscaling ready
+              </span>
+              <span className="h-1 w-1 rounded-full bg-white/20" />
+              <span className="inline-flex items-center gap-1">
+                <Shield className="h-3.5 w-3.5 text-emerald-300" />
+                audit logs
+              </span>
+            </div>
+          </div>
+
+          <div className="rounded-xl border border-white/10 bg-white/5 p-3">
+            <div className="text-xs font-semibold text-white flex items-center gap-2">
+              <Shield className="h-4 w-4 text-emerald-300" />
+              Production switches
+            </div>
+            <div className="mt-3 space-y-2">
+              <ToggleRow
+                label="Fallback model"
+                desc="Auto-route on timeouts or tool failures"
+                enabled={fallback}
+                onChange={setFallback}
+              />
+              <ToggleRow
+                label="Prompt caching"
+                desc="Reduce cost for repeat requests"
+                enabled={cache}
+                onChange={setCache}
+              />
+              <ToggleRow
+                label="PII redaction"
+                desc="Mask sensitive data before logging"
+                enabled={pii}
+                onChange={setPii}
+              />
+              <ToggleRow
+                label="Jailbreak filter"
+                desc="Block prompt-injection patterns"
+                enabled={jailbreak}
+                onChange={setJailbreak}
+              />
+            </div>
+          </div>
+
+          <div className="rounded-xl border border-emerald-500/18 bg-emerald-950/15 p-3">
+            <div className="flex items-start gap-2">
+              <AlertTriangle className="h-4 w-4 text-emerald-300 mt-0.5" />
+              <div>
+                <div className="text-xs font-semibold text-white">
+                  What you get in delivery
+                </div>
+                <div className="text-[10px] text-gray-500 mt-0.5">
+                  Tracing + eval harness + rollback plan + dashboards — so AI features don’t break silently.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Config viewer */}
+        <div className="p-4 overflow-y-auto custom-scrollbar space-y-3">
+          <div className="rounded-xl border border-white/10 bg-white/5 p-3">
+            <div className="flex items-start justify-between gap-2">
+              <div>
+                <div className="text-xs font-semibold text-white">
+                  Deploy config (router + guardrails)
+                </div>
+                <div className="text-[10px] text-gray-500">
+                  This is the kind of config we wire into your app + infra.
+                </div>
+              </div>
+              <button
+                onClick={() => copy(configText)}
+                className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-black/25 px-2.5 py-1.5 text-[10px] font-semibold text-gray-300 hover:text-white hover:border-white/20"
+              >
+                <Copy className="h-3.5 w-3.5" />
+                {copied ? "Copied" : "Copy"}
+              </button>
+            </div>
+
+            <pre className="mt-3 rounded-lg border border-white/10 bg-black/30 p-3 text-[10px] text-gray-200 overflow-x-auto">
+              <code>{configText}</code>
+            </pre>
+
+            <div className="mt-3 grid grid-cols-2 gap-2">
+              <div className="rounded-lg border border-white/10 bg-black/25 p-3">
+                <div className="text-[10px] text-gray-500">Release strategy</div>
+                <div className="mt-1 text-xs font-semibold text-white">
+                  Canary → 25% → 100%
+                </div>
+                <div className="mt-1 text-[9px] text-gray-600">
+                  Rollback triggers on error budget burn.
+                </div>
+              </div>
+              <div className="rounded-lg border border-white/10 bg-black/25 p-3">
+                <div className="text-[10px] text-gray-500">Security posture</div>
+                <div className="mt-1 text-xs font-semibold text-white">
+                  Least-privilege tools
+                </div>
+                <div className="mt-1 text-[9px] text-gray-600">
+                  Role-based tool access + audit trails.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="rounded-xl border border-white/10 bg-white/5 p-3">
+            <div className="text-xs font-semibold text-white">SLO snapshot</div>
+            <div className="mt-2 grid grid-cols-3 gap-2">
+              {[
+                { k: "Uptime", v: "99.9%" },
+                { k: "p95", v: "< 350ms" },
+                { k: "Error budget", v: "1.0%" },
+              ].map((x) => (
+                <div
+                  key={x.k}
+                  className="rounded-lg border border-white/10 bg-black/25 p-2 text-center"
+                >
+                  <div className="text-sm font-bold text-emerald-200">{x.v}</div>
+                  <div className="text-[9px] text-gray-500">{x.k}</div>
+                </div>
+              ))}
+            </div>
+            <div className="mt-2 text-[9px] text-gray-600">
+              We can tune model routing by SLO (latency) and budget (cost).
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function AISystemsContent() {
+  const [tab, setTab] = useState<Tab>("assistant");
+
+  return (
+    <div className="relative h-full bg-[#0a0f1a] text-gray-200 overflow-hidden">
+      {/* Subtle emerald grid */}
       <div
-        className="absolute inset-0 pointer-events-none opacity-[0.03]"
+        className="absolute inset-0 pointer-events-none opacity-[0.035]"
         style={{
-          backgroundImage: "linear-gradient(rgba(0,212,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(0,212,255,0.5) 1px, transparent 1px)",
-          backgroundSize: "40px 40px",
+          backgroundImage:
+            "linear-gradient(rgba(16,185,129,0.55) 1px, transparent 1px), linear-gradient(90deg, rgba(16,185,129,0.55) 1px, transparent 1px)",
+          backgroundSize: "42px 42px",
         }}
       />
+      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_30%_20%,rgba(16,185,129,0.18),transparent_55%),radial-gradient(circle_at_80%_60%,rgba(34,211,238,0.10),transparent_55%)]" />
 
       <div className="relative z-10 h-full flex flex-col">
-        {/* Header */}
-        <div className="flex items-center justify-between px-4 py-3 border-b border-white/10 bg-white/5">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center">
-              <Sparkles className="w-5 h-5 text-emerald-400" />
+        {/* Top header */}
+        <div className="flex items-center justify-between gap-3 px-4 py-3 border-b border-white/10 bg-white/5">
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="h-10 w-10 rounded-xl bg-emerald-500/18 border border-emerald-500/25 flex items-center justify-center">
+              <Sparkles className="h-5 w-5 text-emerald-300" />
             </div>
-            <div>
-              <h3 className="text-base font-bold text-white">AI Systems</h3>
-              <p className="text-[10px] text-emerald-400">LLM Integration & RAG</p>
+            <div className="min-w-0">
+              <div className="text-base font-bold text-white leading-tight">
+                AI Systems
+              </div>
+              <div className="text-[10px] text-emerald-200/80">
+                LLM features that ship: assistants • RAG • agents • observability
+              </div>
             </div>
           </div>
 
-          {/* Tabs */}
-          <div className="flex bg-black/40 p-1 rounded-lg border border-white/10">
-            {[
-              { id: "chat", label: "Chat", icon: MessageSquare },
-              { id: "rag", label: "RAG", icon: Database },
-              { id: "config", label: "Config", icon: Settings },
-            ].map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id as any)}
-                className={cn(
-                  "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[10px] font-medium transition-all",
-                  activeTab === tab.id
-                    ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
-                    : "text-gray-500 hover:text-white"
-                )}
-              >
-                <tab.icon className="w-3.5 h-3.5" />
-                {tab.label}
-              </button>
-            ))}
+          <div className="flex items-center gap-2 rounded-lg border border-white/10 bg-black/35 p-1">
+            <button
+              onClick={() => setTab("assistant")}
+              className={cn(
+                "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[10px] font-semibold transition-colors",
+                tab === "assistant"
+                  ? "bg-emerald-500/15 border border-emerald-500/25 text-emerald-200"
+                  : "text-gray-500 hover:text-white"
+              )}
+            >
+              <Bot className="h-3.5 w-3.5" />
+              Assistant
+            </button>
+            <button
+              onClick={() => setTab("knowledge")}
+              className={cn(
+                "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[10px] font-semibold transition-colors",
+                tab === "knowledge"
+                  ? "bg-emerald-500/15 border border-emerald-500/25 text-emerald-200"
+                  : "text-gray-500 hover:text-white"
+              )}
+            >
+              <Database className="h-3.5 w-3.5" />
+              Knowledge
+            </button>
+            <button
+              onClick={() => setTab("ops")}
+              className={cn(
+                "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[10px] font-semibold transition-colors",
+                tab === "ops"
+                  ? "bg-emerald-500/15 border border-emerald-500/25 text-emerald-200"
+                  : "text-gray-500 hover:text-white"
+              )}
+            >
+              <LineChart className="h-3.5 w-3.5" />
+              Ops
+            </button>
           </div>
         </div>
 
-        {/* Content */}
+        {/* Body */}
         <div className="flex-1 overflow-hidden p-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 h-full">
-            {/* Left Column - Main Feature */}
+            {/* Left: interactive demo */}
             <div className="h-full">
-              {activeTab === "chat" && <ChatInterface />}
-              {activeTab === "rag" && <RAGPipeline />}
-              {activeTab === "config" && <ModelConfigurator />}
+              <AnimatePresence mode="wait">
+                {tab === "assistant" && (
+                  <motion.div
+                    key="assistant"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    className="h-full"
+                  >
+                    <AssistantDemo kbQuerySeed="rag citations guardrails observability" />
+                  </motion.div>
+                )}
+                {tab === "knowledge" && (
+                  <motion.div
+                    key="knowledge"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    className="h-full"
+                  >
+                    <KnowledgeDemo />
+                  </motion.div>
+                )}
+                {tab === "ops" && (
+                  <motion.div
+                    key="ops"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    className="h-full"
+                  >
+                    <OpsDemo />
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
 
-            {/* Right Column - Secondary Info */}
-            <div className="space-y-3 overflow-y-auto custom-scrollbar">
-              {/* Capabilities */}
-              <div className="bg-[#0c0e12] rounded-xl border border-white/10 p-3">
-                <h4 className="text-xs font-semibold text-white mb-3 flex items-center gap-2">
-                  <Zap className="w-3.5 h-3.5 text-emerald-400" />
-                  Capabilities
-                </h4>
-                <div className="grid grid-cols-2 gap-2">
+            {/* Right: clarity + vision (what clients need to understand quickly) */}
+            <div className="h-full overflow-y-auto custom-scrollbar space-y-3">
+              <div className="rounded-xl border border-white/10 bg-[#0c0e12] p-4">
+                <div className="text-xs font-semibold text-white flex items-center gap-2">
+                  <Zap className="h-4 w-4 text-emerald-300" />
+                  What we build
+                </div>
+                <div className="mt-2 grid grid-cols-2 gap-2">
                   {[
-                    { icon: MessageSquare, label: "Chatbots", desc: "Conversational AI" },
-                    { icon: Brain, label: "RAG", desc: "Document Q&A" },
-                    { icon: Workflow, label: "Agents", desc: "Auto-tasks" },
-                    { icon: Code, label: "Code", desc: "Assistants" },
-                  ].map((cap) => (
+                    {
+                      title: "Customer assistants",
+                      desc: "Support, onboarding, self-serve help",
+                      icon: <Bot className="h-4 w-4 text-emerald-300" />,
+                    },
+                    {
+                      title: "Knowledge search",
+                      desc: "Docs + tickets + CRM, with citations",
+                      icon: <Database className="h-4 w-4 text-emerald-300" />,
+                    },
+                    {
+                      title: "Guardrails",
+                      desc: "PII redaction + jailbreak resistance",
+                      icon: <Shield className="h-4 w-4 text-emerald-300" />,
+                    },
+                    {
+                      title: "Production ops",
+                      desc: "Routing, evals, dashboards, SLOs",
+                      icon: <LineChart className="h-4 w-4 text-emerald-300" />,
+                    },
+                  ].map((x) => (
                     <div
-                      key={cap.label}
-                      className="p-2 rounded-lg bg-white/5 border border-white/10 hover:border-emerald-500/30 transition-colors"
+                      key={x.title}
+                      className="rounded-lg border border-white/10 bg-white/5 p-3"
                     >
-                      <cap.icon className="w-3.5 h-3.5 text-emerald-400 mb-1" />
-                      <div className="text-[10px] font-medium text-white">{cap.label}</div>
-                      <div className="text-[9px] text-gray-500">{cap.desc}</div>
+                      <div className="flex items-center gap-2">
+                        <div className="h-8 w-8 rounded-lg border border-emerald-500/20 bg-emerald-500/10 flex items-center justify-center">
+                          {x.icon}
+                        </div>
+                        <div className="min-w-0">
+                          <div className="text-[11px] font-semibold text-white">
+                            {x.title}
+                          </div>
+                          <div className="text-[9px] text-gray-500">
+                            {x.desc}
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   ))}
                 </div>
               </div>
 
-              {/* Use Cases */}
-              <div className="bg-[#0c0e12] rounded-xl border border-white/10 p-3">
-                <h4 className="text-xs font-semibold text-white mb-3">Common Use Cases</h4>
-                <div className="space-y-2">
+              <div className="rounded-xl border border-white/10 bg-[#0c0e12] p-4">
+                <div className="text-xs font-semibold text-white">Delivery flow</div>
+                <div className="mt-2 space-y-2">
                   {[
-                    { icon: "💬", title: "Customer Support", desc: "24/7 intelligent agents" },
-                    { icon: "📊", title: "Data Analysis", desc: "Natural language insights" },
-                    { icon: "🎯", title: "Sales Automation", desc: "Lead qualification" },
-                    { icon: "💻", title: "Dev Tools", desc: "Code assistants" },
-                  ].map((useCase, idx) => (
-                    <motion.div
-                      key={useCase.title}
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: idx * 0.1 }}
-                      className="flex items-center gap-2 p-2 rounded-lg bg-white/5 border border-white/10 hover:border-emerald-500/30 transition-colors"
+                    {
+                      step: "Week 1",
+                      title: "Scope + data surfaces",
+                      note: "Docs, tickets, CRM, internal dashboards",
+                    },
+                    {
+                      step: "Week 2",
+                      title: "RAG + agent tools",
+                      note: "Citations + structured actions",
+                    },
+                    {
+                      step: "Week 3",
+                      title: "Evals + guardrails",
+                      note: "PII, injection, regressions, QA",
+                    },
+                    {
+                      step: "Week 4",
+                      title: "Deploy + monitoring",
+                      note: "SLOs, dashboards, rollback plan",
+                    },
+                  ].map((s) => (
+                    <div
+                      key={s.step}
+                      className="rounded-lg border border-white/10 bg-white/5 px-3 py-2"
                     >
-                      <span className="text-base">{useCase.icon}</span>
-                      <div className="flex-1 min-w-0">
-                        <div className="text-[10px] font-medium text-white">{useCase.title}</div>
-                        <div className="text-[9px] text-gray-500">{useCase.desc}</div>
+                      <div className="flex items-center justify-between gap-2">
+                        <div className="text-[10px] font-semibold text-emerald-200">
+                          {s.step}
+                        </div>
+                        <CheckCircle2 className="h-4 w-4 text-emerald-300/80" />
                       </div>
-                      <ChevronRight className="w-3.5 h-3.5 text-gray-600" />
-                    </motion.div>
+                      <div className="text-xs font-semibold text-white">
+                        {s.title}
+                      </div>
+                      <div className="text-[9px] text-gray-500">{s.note}</div>
+                    </div>
                   ))}
                 </div>
               </div>
 
-              {/* Tech Stack */}
-              <div className="bg-[#0c0e12] rounded-xl border border-white/10 p-3">
-                <h4 className="text-xs font-semibold text-white mb-2">Supported Models</h4>
-                <div className="flex flex-wrap gap-1.5">
-                  {["GPT-4", "Claude 3", "Llama 3", "Mistral", "Vector DBs", "LangChain"].map((tech) => (
-                    <span
-                      key={tech}
-                      className="px-2 py-1 rounded-full text-[9px] bg-white/5 border border-white/10 text-gray-400 hover:bg-emerald-500/10 hover:border-emerald-500/30 hover:text-emerald-400 transition-colors"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Stats */}
               <div className="grid grid-cols-3 gap-2">
                 {[
-                  { label: "Latency", value: "<100ms", color: "emerald" },
-                  { label: "Uptime", value: "99.9%", color: "cyan" },
-                  { label: "Models", value: "20+", color: "purple" },
-                ].map((stat) => (
+                  { k: "Latency", v: "< 350ms" },
+                  { k: "Uptime", v: "99.9%" },
+                  { k: "Models", v: "multi-provider" },
+                ].map((x) => (
                   <div
-                    key={stat.label}
-                    className="p-2 rounded-lg bg-white/5 border border-white/10 text-center"
+                    key={x.k}
+                    className="rounded-xl border border-white/10 bg-white/5 p-3 text-center"
                   >
-                    <div className={cn("text-sm font-bold", `text-${stat.color}-400`)}>
-                      {stat.value}
+                    <div className="text-sm font-bold text-emerald-200">
+                      {x.v}
                     </div>
-                    <div className="text-[9px] text-gray-500">{stat.label}</div>
+                    <div className="text-[9px] text-gray-500">{x.k}</div>
                   </div>
                 ))}
               </div>
+
+              <div className="rounded-xl border border-emerald-500/18 bg-emerald-950/15 p-4">
+                <div className="text-xs font-semibold text-white">
+                  Why this matters
+                </div>
+                <div className="mt-1 text-[10px] text-gray-400 leading-relaxed">
+                  Most AI demos fail in production because they’re not observable, not grounded, and not safe.
+                  We ship AI like software: evals, traces, budgets, and rollback.
+                </div>
+              </div>
             </div>
+          </div>
+        </div>
+
+        {/* Footer hint */}
+        <div className="px-4 pb-4 -mt-2">
+          <div className="text-[10px] text-gray-600">
+            Tip: Click <span className="text-emerald-200 font-semibold">Knowledge</span> to see citations, then <span className="text-emerald-200 font-semibold">Ops</span> for routing + SLOs.
           </div>
         </div>
       </div>

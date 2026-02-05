@@ -6,6 +6,10 @@ import Image from "next/image";
 import swarpLogo from "@/assets/swarplogo.png";
 import { SocialCard } from "./social-card";
 
+/* ─────────────────────────────────────────────
+   DATA
+   ───────────────────────────────────────────── */
+
 type FooterLink = { name: string; href: string };
 type FooterSection = { title: string; links: FooterLink[] };
 
@@ -13,36 +17,37 @@ const footerSections: FooterSection[] = [
   {
     title: "Products",
     links: [
-      { name: "SwarpPay", href: "/products#swarppay" },
-      { name: "Developer Tools", href: "/products#tools" },
-      { name: "Infrastructure", href: "/products#infra" },
+      { name: "SwarpPay", href: "/products" },
+      { name: "SwarpID", href: "/products/swarp-id" },
+      { name: "pSOL Protocol", href: "/products" },
+      { name: "SwarpLaunch", href: "/products" },
     ],
   },
   {
     title: "Services",
     links: [
-      { name: "AI Development", href: "/services#ai" },
-      { name: "Web Apps", href: "/services#web" },
-      { name: "Blockchain", href: "/services#blockchain" },
-      { name: "Smart Contracts", href: "/services#contracts" },
+      { name: "AI Systems", href: "/services" },
+      { name: "Web & Mobile", href: "/services" },
+      { name: "Blockchain", href: "/services" },
+      { name: "Security Audits", href: "/services" },
     ],
   },
   {
-    title: "Developers",
+    title: "Explore",
     links: [
-      { name: "Docs", href: "#docs" },
-      { name: "API Reference", href: "#apis" },
-      { name: "SDKs", href: "#sdks" },
-      { name: "Status", href: "#status" },
-    ],
-  },
-  {
-    title: "Company",
-    links: [
-      { name: "About", href: "/about" },
-      { name: "Careers", href: "#careers" },
-      { name: "Blog", href: "#blog" },
+      { name: "Swarp AI", href: "/swarp-ai" },
+      { name: "Works", href: "/works" },
+      { name: "About Us", href: "/about" },
       { name: "Contact", href: "/contact" },
+    ],
+  },
+  {
+    title: "Legal",
+    links: [
+      { name: "Privacy Policy", href: "/privacy" },
+      { name: "Terms of Service", href: "/terms" },
+      { name: "Security", href: "/security" },
+      { name: "Cookie Policy", href: "/cookies" },
     ],
   },
 ];
@@ -55,6 +60,10 @@ const stats: Stat[] = [
   { target: 25, label: "Countries", duration: 1600 },
   { target: 10, label: "Products", duration: 1200, suffix: "+" },
 ];
+
+/* ─────────────────────────────────────────────
+   HOOKS / UTILS
+   ───────────────────────────────────────────── */
 
 function usePrefersReducedMotion() {
   const [reduced, setReduced] = useState(false);
@@ -122,6 +131,10 @@ function scrambleToTarget(
   return () => cancelAnimationFrame(raf);
 }
 
+/* ─────────────────────────────────────────────
+   SUB-COMPONENTS
+   ───────────────────────────────────────────── */
+
 function Sparkline({ reducedMotion }: { reducedMotion: boolean }) {
   return (
     <div className="sparkline" aria-hidden="true">
@@ -129,38 +142,21 @@ function Sparkline({ reducedMotion }: { reducedMotion: boolean }) {
       <div className="sparkline__scan" />
       <style jsx>{`
         .sparkline {
-          position: absolute;
-          inset: 8px;
-          border-radius: 10px;
-          overflow: hidden;
-          opacity: 0.55;
-          pointer-events: none;
-          mix-blend-mode: screen;
+          position: absolute; inset: 8px; border-radius: 10px;
+          overflow: hidden; opacity: 0.55; pointer-events: none; mix-blend-mode: screen;
         }
         .sparkline__wave {
-          position: absolute;
-          inset: -40% -40%;
+          position: absolute; inset: -40% -40%;
           background:
             radial-gradient(circle at 20% 50%, rgba(0, 255, 240, 0.15), transparent 45%),
             radial-gradient(circle at 50% 40%, rgba(140, 80, 255, 0.12), transparent 50%),
             radial-gradient(circle at 75% 55%, rgba(154, 255, 90, 0.1), transparent 48%);
-          filter: blur(10px);
-          transform: translate3d(0, 0, 0);
+          filter: blur(10px); transform: translate3d(0, 0, 0);
           animation: ${reducedMotion ? "none" : "spark-drift 6s ease-in-out infinite"};
         }
         .sparkline__scan {
-          position: absolute;
-          left: -30%;
-          top: 0;
-          height: 100%;
-          width: 35%;
-          background: linear-gradient(
-            90deg,
-            transparent,
-            rgba(0, 255, 240, 0.12),
-            rgba(255, 255, 255, 0.06),
-            transparent
-          );
+          position: absolute; left: -30%; top: 0; height: 100%; width: 35%;
+          background: linear-gradient(90deg, transparent, rgba(0, 255, 240, 0.12), rgba(255, 255, 255, 0.06), transparent);
           transform: skewX(-18deg);
           animation: ${reducedMotion ? "none" : "spark-scan 3.8s ease-in-out infinite"};
           opacity: 0.6;
@@ -199,12 +195,10 @@ function DotTelemetryCard({
   useEffect(() => {
     setIsDone(false);
     const stop = scrambleToTarget(
-      target,
-      duration,
+      target, duration,
       (s) => setText(s),
       () => setIsDone(true),
-      suffix,
-      reducedMotion
+      suffix, reducedMotion
     );
     return () => stop();
   }, [target, duration, suffix, reducedMotion]);
@@ -221,14 +215,10 @@ function DotTelemetryCard({
         <div className="telemetry-card__value">{text}</div>
         <div className="telemetry-card__label">{label}</div>
         <div className="telemetry-card__frame" aria-hidden="true">
-          <span className="line top" />
-          <span className="line left" />
-          <span className="line bottom" />
-          <span className="line right" />
-          <span className="corner tl" />
-          <span className="corner tr" />
-          <span className="corner bl" />
-          <span className="corner br" />
+          <span className="line top" /><span className="line left" />
+          <span className="line bottom" /><span className="line right" />
+          <span className="corner tl" /><span className="corner tr" />
+          <span className="corner bl" /><span className="corner br" />
         </div>
       </div>
       <style jsx>{`
@@ -247,7 +237,7 @@ function DotTelemetryCard({
         }
         .telemetry-card__inner {
           position: relative; width: 100%; height: 100%; border-radius: 14px;
-          border: 1px solid rgba(255, 255, 255, 0.12); background: rgba(0, 0, 0, 0.5);
+          border: 1px solid rgba(255, 255, 255, 0.12); background: rgba(0, 0, 0, 0.7);
           box-shadow: 0 14px 35px rgba(0, 0, 0, 0.35);
           display: flex; flex-direction: column; align-items: center; justify-content: center;
           transition: transform 260ms ease, border-color 260ms ease, background 260ms ease;
@@ -374,11 +364,10 @@ function DevConsole({ open, onClose, reducedMotion }: { open: boolean; onClose: 
 [${build.ts}] build: commit=${build.commit}
 [${build.ts}] status: ${build.status}
 [${build.ts}] hint: press "~" to toggle, type "swarp" anywhere`}</pre>
-        <div className="devconsole__hint">Tip: this is fake telemetry — wire it to real status later.</div>
       </div>
       <style jsx>{`
         .devconsole { position: absolute; right: 16px; bottom: 16px; z-index: 40; width: min(420px, calc(100% - 32px)); pointer-events: none; }
-        .devconsole__panel { pointer-events: auto; border-radius: 16px; border: 1px solid rgba(0, 255, 240, 0.16); background: rgba(8, 10, 14, 0.95); backdrop-filter: blur(14px); box-shadow: 0 18px 60px rgba(0, 0, 0, 0.6); overflow: hidden; transform: translateZ(0); animation: ${reducedMotion ? "none" : "pop 220ms ease-out"}; }
+        .devconsole__panel { pointer-events: auto; border-radius: 16px; border: 1px solid rgba(0, 255, 240, 0.16); background: rgba(8, 10, 14, 0.98); backdrop-filter: blur(14px); box-shadow: 0 18px 60px rgba(0, 0, 0, 0.6); overflow: hidden; transform: translateZ(0); animation: ${reducedMotion ? "none" : "pop 220ms ease-out"}; }
         @keyframes pop { from { opacity: 0; transform: translateY(10px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
         .devconsole__top { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); background: rgba(255, 255, 255, 0.04); }
         .devconsole__title { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 650; color: rgba(255, 255, 255, 0.95); letter-spacing: 0.02em; }
@@ -387,11 +376,14 @@ function DevConsole({ open, onClose, reducedMotion }: { open: boolean; onClose: 
         .devconsole__close { width: 28px; height: 28px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.12); background: rgba(255, 255, 255, 0.06); color: rgba(255, 255, 255, 0.9); font-size: 18px; line-height: 1; display: grid; place-items: center; transition: transform 120ms ease, border-color 120ms ease; }
         .devconsole__close:hover { transform: translateY(-1px); border-color: rgba(0, 255, 240, 0.2); }
         .devconsole__body { margin: 0; padding: 12px 12px 10px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: 12px; line-height: 1.5; color: rgba(240, 245, 250, 0.95); white-space: pre-wrap; }
-        .devconsole__hint { padding: 0 12px 12px; font-size: 11px; color: rgba(180, 190, 200, 0.85); }
       `}</style>
     </div>
   );
 }
+
+/* ─────────────────────────────────────────────
+   MAIN FOOTER
+   ───────────────────────────────────────────── */
 
 export function Footer() {
   const reducedMotion = usePrefersReducedMotion();
@@ -437,7 +429,13 @@ export function Footer() {
 
   return (
     <div className="px-4 sm:px-8 lg:px-12 pb-6 mt-12 relative z-20">
-      <footer ref={(n) => { wrapRef.current = n as unknown as HTMLElement | null; }} className="footer-shell relative overflow-hidden rounded-3xl border border-white/10 bg-black/90 backdrop-blur-xl shadow-2xl">
+      <footer
+        ref={(n) => { wrapRef.current = n as unknown as HTMLElement | null; }}
+        className="footer-shell relative overflow-hidden rounded-3xl border border-white/[0.08]"
+      >
+        {/* ── SOLID OPAQUE BACKGROUND ── */}
+        <div className="absolute inset-0 z-[0] bg-[#040610]" />
+
         {/* Backdrop effects - z-index 1 */}
         <div className="pointer-events-none absolute inset-0 z-[1]">
           <div className="aurora" />
@@ -463,7 +461,9 @@ export function Footer() {
 
         {/* Main content - z-index 10 */}
         <div className="relative z-10 container mx-auto px-6 lg:px-12 py-10">
-          <div className="mb-10 pb-10 border-b border-white/10">
+
+          {/* ── STATS ROW ── */}
+          <div className="mb-10 pb-10 border-b border-white/[0.08]">
             <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-12">
               {stats.map((stat, i) => (
                 <DotTelemetryCard key={i} target={stat.target} label={stat.label} duration={stat.duration} suffix={stat.suffix ?? ""} reducedMotion={reducedMotion} />
@@ -472,7 +472,10 @@ export function Footer() {
             <div className="mt-8"><CircuitDivider reducedMotion={reducedMotion} /></div>
           </div>
 
+          {/* ── BRAND + LINKS GRID ── */}
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 items-start">
+
+            {/* Brand column */}
             <div className="lg:col-span-4 space-y-5">
               <Link href="/" className="brand group w-fit flex items-center space-x-3">
                 <div className="brand__mark">
@@ -481,23 +484,42 @@ export function Footer() {
                 </div>
                 <div className="flex flex-col leading-tight">
                   <span className="text-lg font-semibold tracking-tight text-white">Swarp Foundation</span>
-                  <span className="text-[11px] tracking-[0.22em] uppercase text-gray-300">software-native infra</span>
+                  <span className="text-[11px] tracking-[0.22em] uppercase text-white/60">Software-native infrastructure</span>
                 </div>
               </Link>
-              <p className="text-sm text-gray-200 leading-relaxed max-w-xs">Next-gen blockchain infrastructure and AI-driven solutions for the decentralized web.</p>
+
+              <p className="text-sm text-white/70 leading-relaxed max-w-xs">
+                Full-stack software development from concept to production. We build blockchain infrastructure, AI systems, and scalable web platforms.
+              </p>
+
+              {/* Social links */}
               <div className="pt-2">
-                <SocialCard title="" instagramUrl="https://instagram.com/swarpfoundation" twitterUrl="https://x.com/swarpfoundation" discordUrl="https://discord.gg/swarp" telegramUrl="https://t.me/swarpfoundation" githubUrl="https://github.com/swarp-foundation" />
+                <SocialCard
+                  title=""
+                  instagramUrl="https://instagram.com/swarpfoundation"
+                  twitterUrl="https://x.com/swarpfoundation"
+                  discordUrl="https://discord.gg/swarp"
+                  telegramUrl="https://t.me/swarpfoundation"
+                  githubUrl="https://github.com/swarp-foundation"
+                />
               </div>
-              <div className="text-[11px] text-gray-400"><span className="font-mono">Tip:</span> press <span className="kbd">~</span> for system log</div>
+
+              <div className="text-[11px] text-white/40">
+                <span className="font-mono">Tip:</span> press{" "}
+                <span className="kbd">~</span> for system log
+              </div>
             </div>
 
+            {/* Link columns */}
             <div className="lg:col-span-8 grid grid-cols-2 sm:grid-cols-4 gap-8">
               {footerSections.map((section) => (
                 <div key={section.title} className="section">
                   <h3 className="section__title">{section.title}</h3>
                   <ul className="space-y-3">
                     {section.links.map((link) => (
-                      <li key={link.name}><KineticFooterLink href={link.href}>{link.name}</KineticFooterLink></li>
+                      <li key={link.name}>
+                        <KineticFooterLink href={link.href}>{link.name}</KineticFooterLink>
+                      </li>
                     ))}
                   </ul>
                 </div>
@@ -505,12 +527,18 @@ export function Footer() {
             </div>
           </div>
 
-          <div className="mt-12 pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4">
-            <p className="text-[12px] text-gray-300 font-medium">© {year} Swarp Foundation.<span className="mx-2 text-gray-500">•</span><span className="font-mono text-gray-400">build: edge</span></p>
+          {/* ── BOTTOM BAR ── */}
+          <div className="mt-12 pt-6 border-t border-white/[0.08] flex flex-col sm:flex-row justify-between items-center gap-4">
+            <p className="text-[12px] text-white/60 font-medium">
+              © {year} Swarp Foundation. All rights reserved.
+              <span className="mx-2 text-white/20">•</span>
+              <span className="font-mono text-white/40">Lyon, France</span>
+            </p>
             <div className="flex items-center gap-6">
-              {["Privacy", "Terms", "Security"].map((item) => (
-                <Link key={item} href={`#${item.toLowerCase()}`} className="text-[12px] text-gray-300 hover:text-cyan-400 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/30 focus-visible:ring-offset-0 rounded">{item}</Link>
-              ))}
+              <Link href="/privacy" className="text-[12px] text-white/60 hover:text-cyan-400 transition-colors">Privacy</Link>
+              <Link href="/terms" className="text-[12px] text-white/60 hover:text-cyan-400 transition-colors">Terms</Link>
+              <Link href="/security" className="text-[12px] text-white/60 hover:text-cyan-400 transition-colors">Security</Link>
+              <Link href="/cookies" className="text-[12px] text-white/60 hover:text-cyan-400 transition-colors">Cookies</Link>
               <button type="button" onClick={() => setDevOpen((v) => !v)} className="devbtn" aria-label="Toggle system log">log</button>
             </div>
           </div>
@@ -520,17 +548,51 @@ export function Footer() {
 
         <style jsx>{`
           .footer-shell { --mx: 50%; --my: 15%; }
-          .aurora { position: absolute; inset: -20%; background: radial-gradient(800px 400px at var(--mx) var(--my), rgba(0, 255, 240, 0.08), transparent 55%), radial-gradient(700px 380px at calc(var(--mx) + 16%) calc(var(--my) + 12%), rgba(140, 80, 255, 0.06), transparent 58%), radial-gradient(620px 360px at calc(var(--mx) - 14%) calc(var(--my) + 18%), rgba(154, 255, 90, 0.04), transparent 60%); filter: blur(24px); opacity: 0.6; transition: opacity 240ms ease; }
-          .grid { position: absolute; inset: 0; opacity: 0.15; background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px); background-size: 48px 48px; mask-image: radial-gradient(60% 60% at 50% 20%, black, transparent 80%); }
-          .vignette { position: absolute; inset: 0; background: radial-gradient(80% 70% at 50% 30%, transparent, rgba(0, 0, 0, 0.4)); opacity: 0.7; }
+          .aurora {
+            position: absolute; inset: -20%;
+            background:
+              radial-gradient(800px 400px at var(--mx) var(--my), rgba(0, 255, 240, 0.06), transparent 55%),
+              radial-gradient(700px 380px at calc(var(--mx) + 16%) calc(var(--my) + 12%), rgba(140, 80, 255, 0.04), transparent 58%),
+              radial-gradient(620px 360px at calc(var(--mx) - 14%) calc(var(--my) + 18%), rgba(154, 255, 90, 0.03), transparent 60%);
+            filter: blur(24px); opacity: 0.6; transition: opacity 240ms ease;
+          }
+          .grid {
+            position: absolute; inset: 0; opacity: 0.12;
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 48px 48px;
+            mask-image: radial-gradient(60% 60% at 50% 20%, black, transparent 80%);
+          }
+          .vignette { position: absolute; inset: 0; background: radial-gradient(80% 70% at 50% 30%, transparent, rgba(4, 6, 16, 0.5)); opacity: 0.7; }
           .circuit-border { position: absolute; inset: 10px; width: calc(100% - 20px); height: calc(100% - 20px); pointer-events: none; opacity: 0.9; }
           .border-trace { animation: border-run 7s linear infinite; }
           @keyframes border-run { 0% { stroke-dashoffset: 0; opacity: 0.55; } 50% { opacity: 0.95; } 100% { stroke-dashoffset: -220; opacity: 0.55; } }
-          .brand__mark { position: relative; width: 40px; height: 40px; display: grid; place-items: center; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.15); background: rgba(255, 255, 255, 0.06); overflow: hidden; }
-          .brand__ring { position: absolute; inset: -40%; background: radial-gradient(circle at 30% 30%, rgba(0, 255, 240, 0.18), transparent 55%), radial-gradient(circle at 70% 70%, rgba(140, 80, 255, 0.14), transparent 58%); filter: blur(10px); opacity: 0.9; transform: translateZ(0); }
-          .section__title { font-size: 10px; font-weight: 800; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(0, 255, 240, 0.95); margin-bottom: 18px; }
-          .kbd { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: 10px; padding: 2px 6px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.15); background: rgba(255, 255, 255, 0.08); color: rgba(240, 245, 250, 0.95); margin: 0 2px; }
-          .devbtn { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: 11px; padding: 4px 10px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.15); background: rgba(255, 255, 255, 0.08); color: rgba(230, 235, 245, 0.95); transition: transform 140ms ease, border-color 140ms ease, color 140ms ease; }
+          .brand__mark {
+            position: relative; width: 40px; height: 40px; display: grid; place-items: center;
+            border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.06); overflow: hidden;
+          }
+          .brand__ring {
+            position: absolute; inset: -40%;
+            background: radial-gradient(circle at 30% 30%, rgba(0, 255, 240, 0.18), transparent 55%), radial-gradient(circle at 70% 70%, rgba(140, 80, 255, 0.14), transparent 58%);
+            filter: blur(10px); opacity: 0.9; transform: translateZ(0);
+          }
+          .section__title {
+            font-size: 10px; font-weight: 800; letter-spacing: 0.22em; text-transform: uppercase;
+            color: rgba(0, 255, 240, 0.95); margin-bottom: 18px;
+          }
+          .kbd {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 10px; padding: 2px 6px; border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.15); background: rgba(255, 255, 255, 0.08);
+            color: rgba(240, 245, 250, 0.95); margin: 0 2px;
+          }
+          .devbtn {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 11px; padding: 4px 10px; border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.15); background: rgba(255, 255, 255, 0.08);
+            color: rgba(230, 235, 245, 0.95);
+            transition: transform 140ms ease, border-color 140ms ease, color 140ms ease;
+          }
           .devbtn:hover { transform: translateY(-1px); border-color: rgba(0, 255, 240, 0.25); color: rgba(255, 255, 255, 0.98); }
           .devbtn:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(0, 255, 240, 0.18); }
         `}</style>
