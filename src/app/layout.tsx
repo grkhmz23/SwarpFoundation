@@ -4,6 +4,7 @@ import "./globals.css";
 import dynamic from "next/dynamic";
 import { Header3D } from "@/components/ui/header-3d";
 import { Footer } from "@/components/ui/footer";
+import { LegalModalProvider } from "@/components/ui/legal-modal";
 
 const AetherBackground = dynamic(
   () => import("@/components/ui/aether-background"),
@@ -30,9 +31,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <AetherBackground>
-          <Header3D />
-          {children}
-          <Footer />
+          <LegalModalProvider>
+            <Header3D />
+            {children}
+            <Footer />
+          </LegalModalProvider>
         </AetherBackground>
       </body>
     </html>
