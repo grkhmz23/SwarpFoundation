@@ -8,7 +8,7 @@ import {
   ChevronRight, Plus, Minus, RefreshCw, Search, FileJson, 
   Code2, Terminal, Settings, Eye, EyeOff, Zap, Layers,
   ArrowRight, ArrowDown, MoreHorizontal, Copy, Check,
-  DatabaseBackup, LineChart, AreaChart
+  DatabaseBackup, LineChart, AreaChart, Play
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 

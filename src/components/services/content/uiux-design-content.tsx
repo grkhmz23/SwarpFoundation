@@ -1,4 +1,4 @@
-content = '''"use client";
+"use client";
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -169,7 +169,7 @@ function DesignSystem() {
 
       {/* Code Snippet */}
       <div className="mt-3 p-2 rounded-lg bg-[#09090b] border border-white/10 font-mono text-[10px] text-gray-400 flex items-center justify-between">
-        <code>&lt;{current.name} variant="primary" /&gt;</code>
+        <code>&lt;{current.name} variant=&quot;primary&quot; /&gt;</code>
         <button onClick={copyCode} className="p-1 hover:bg-white/5 rounded transition-colors">
           {copied ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
         </button>
@@ -624,21 +624,3 @@ export function UIUXDesignContent() {
 }
 
 export default UIUXDesignContent;
-
-# Save to file
-with open('/mnt/kimi/output/uiux-design-content.tsx', 'w') as f:
-    f.write(content)
-
-print("✅ uiux-design-content.tsx created successfully!")
-print("\nKey features included:")
-print("- Interactive Design System viewer (Button/Input/Card components)")
-print("- Live component previews with variants and states")
-print("- Color Token System with copy-to-clipboard functionality")
-print("- Typography Scale with visual hierarchy (H1-H3, Body, Small, Caption)")
-print("- Responsive Breakpoint Tester (Mobile/Tablet/Desktop)")
-print("- 12-Column Grid System visualization")
-print("- Accessibility (WCAG) Checker with contrast examples")
-print("- Design tools grid (Figma, Framer, Storybook, Stark)")
-print("- Fuchsia/Pink/Purple design-themed color scheme")
-print("- Tabbed navigation (Components/Tokens/Layout)")
-print("- Beautiful gradient background effects")

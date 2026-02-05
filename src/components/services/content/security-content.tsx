@@ -1,4 +1,4 @@
-content = '''"use client";
+"use client";
 
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -574,17 +574,3 @@ export function SecurityContent() {
 }
 
 export default SecurityContent;
-
-# Save to file
-with open('/mnt/kimi/output/security-content.tsx', 'w') as f:
-    f.write(content)
-
-print("✅ security-content.tsx created successfully!")
-print("\nKey features included:")
-print("- Live Threat Radar with animated scanning and real-time threat feed")
-print("- Interactive Vulnerability Scanner with OWASP categories")
-print("- Penetration Testing Terminal with simulated command outputs")
-print("- Animated Security Score with checklist")
-print("- Tabbed interface (Overview/PenTest/Compliance)")
-print("- Red/Orange security-themed color scheme")
-print("- Fully responsive grid layout")

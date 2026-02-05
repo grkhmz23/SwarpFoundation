@@ -389,10 +389,12 @@ function WebhookTester() {
     if (!isListening) return;
 
     const interval = setInterval(() => {
+      const eventTypes = ["invoice.paid", "subscription.created", "payment_failed"];
+      const eventType = eventTypes[Math.floor(Math.random() * 3)];
       const newEvent = {
         id: Math.random().toString(),
-        event: ["invoice.paid", "subscription.created", "payment_failed"][Math.floor(Math.random() * 3)],
-        payload: { timestamp: Date.now() },
+        event: eventType,
+        payload: { id: `evt_${Date.now()}`, amount: Math.floor(Math.random() * 10000) + 1000 },
         timestamp: "just now",
       };
       setEvents(prev => [newEvent, ...prev].slice(0, 5));

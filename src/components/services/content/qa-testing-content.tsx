@@ -1,4 +1,4 @@
-content = '''"use client";
+"use client";
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -7,7 +7,7 @@ import {
   ChevronRight, Terminal, Activity, Gauge, Shield, Zap, Layers,
   Clock, TrendingUp, AlertTriangle, Check, X, MoreHorizontal,
   Search, Filter, Download, Share2, Settings, Eye, EyeOff,
-  FileCode, GitBranch, Cpu, Server, Wifi, Radio
+  FileCode, GitBranch, Cpu, Server, Wifi, Radio, Circle
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -595,22 +595,3 @@ export function QATestingContent() {
 }
 
 export default QATestingContent;
-
-# Save to file
-with open('/mnt/kimi/output/qa-testing-content.tsx', 'w') as f:
-    f.write(content)
-
-print("✅ qa-testing-content.tsx created successfully!")
-print("\nKey features included:")
-print("- Test Automation Dashboard with test suites")
-print("- Run All Tests button with live execution logs")
-print("- Pass/Fail/Skip progress bars with color coding")
-print("- Interactive Bug Tracker with click-to-cycle status")
-print("- Severity levels (Critical/High/Medium/Low)")
-print("- Load Testing with RPS/latency/error rate metrics")
-print("- Live updating chart during load test")
-print("- SRE Dashboard with Error Budget tracking")
-print("- SLO monitoring (Availability, Latency, Error Rate)")
-print("- Recent alerts feed")
-print("- Pink/Rose/Orange testing-themed color scheme")
-print("- Tabbed navigation (Tests/Bugs/Load)")
