@@ -444,10 +444,6 @@ export default function ServicesPage() {
             animate={{ opacity: 1, y: 0 }}
             className="text-center mb-12"
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/30 mb-4">
-              <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
-              <span className="text-xs font-semibold text-cyan-400 uppercase tracking-wider">What We Do</span>
-            </div>
 
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
               <span className="bg-gradient-to-r from-white via-white to-gray-400 bg-clip-text text-transparent">

@@ -507,14 +507,6 @@ export default function ProductsPage() {
         <div className="relative z-10 max-w-6xl mx-auto px-4 lg:px-8">
           {/* Hero */}
           <div className="text-center mb-12">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/30 mb-6"
-            >
-              <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
-              <span className="text-xs font-semibold text-cyan-400 uppercase tracking-wider">Product Suite</span>
-            </motion.div>
 
             <motion.h1 
               initial={{ opacity: 0, y: 20 }}

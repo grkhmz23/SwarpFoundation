@@ -224,10 +224,6 @@ export default function WorksPage() {
     <AetherBackground className="min-h-screen">
       {/* Hero */}
       <div className="relative z-10 max-w-7xl mx-auto pt-32 px-6 text-center">
-        <div className="inline-flex items-center gap-2 px-4 py-2 bg-cyan-500/10 border border-cyan-500/30 rounded-full mb-6">
-          <Sparkles className="w-4 h-4 text-cyan-400" />
-          <span className="text-xs font-semibold text-cyan-400 uppercase tracking-wider">Our Work</span>
-        </div>
         <h1 className="text-5xl md:text-7xl font-black uppercase tracking-tighter mb-4">
           Project <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500 italic">Portfolio</span>
         </h1>
