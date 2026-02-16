@@ -117,5 +117,53 @@
       "security": "Sicurezza",
       "cookies": "Cookie"
     }
+  },
+  "about": {
+    "hero": {
+      "eyebrow": "Chi siamo",
+      "title": "Costruiamo l'infrastruttura",
+      "titleAccent": "di cui le persone hanno davvero bisogno",
+      "description": "Swarp Foundation è una società software con sede a Milano, Italia. Progettiamo e sviluppiamo strumenti che rendono la tecnologia blockchain accessibile, sicura ed equa per tutti, non solo per i più tecnici."
+    },
+    "tabs": {
+      "mission": {
+        "label": "La nostra missione",
+        "title": "Rendere la blockchain utile alle persone reali",
+        "p1": "La crypto doveva dare a tutti pari accesso agli strumenti finanziari. Invece, molte piattaforme sono costruite per chi già conosce la tecnologia, lasciando indietro gli altri. Swarp Foundation nasce per colmare questo divario.",
+        "p2": "Costruiamo software che porta i benefici reali della blockchain, come mercati trasparenti, denaro programmabile e privacy finanziaria, a persone che non dovrebbero avere una laurea in informatica per usarli. Tutto ciò che rilasciamo è progettato prima per chiarezza e sicurezza, poi per complessità."
+      },
+      "approach": {
+        "label": "Il nostro approccio",
+        "title": "Regolamentazione, sicurezza, equità",
+        "p1": "Non crediamo che decentralizzazione significhi ignorare le regole. Swarp Foundation opera in quadri normativi chiari, perseguendo licenze sia nell'Unione Europea sia negli Emirati Arabi Uniti, perché la fiducia nasce dalla responsabilità, non dall'anonimato.",
+        "p2": "Ogni prodotto che sviluppiamo passa audit di sicurezza rigorosi prima di arrivare agli utenti. Il nostro launchpad impone limiti per persona tramite verifica dell'identità, per evitare che bot e attori malevoli dominino i lanci token. L'obiettivo è un ecosistema con regole eque per tutti."
+      },
+      "why": {
+        "label": "Perché Solana",
+        "title": "Velocità e costo adatti all'uso quotidiano",
+        "p1": "Abbiamo scelto Solana perché è veloce, economica e progettata per applicazioni ad alto throughput. Quando una persona compra un token o verifica la propria identità, dovrebbe avvenire in pochi secondi e costare frazioni di centesimo, non minuti e dollari.",
+        "p2": "Solana ci offre la base tecnica per costruire prodotti reattivi come le app usate ogni giorno. Questo conta quando l'obiettivo è l'adozione mainstream, non solo servire la community crypto-native."
+      }
+    },
+    "products": {
+      "eyebrow": "Cosa costruiamo",
+      "title": "Un ecosistema di prodotti connessi",
+      "description": "Ogni prodotto risolve un problema specifico. Insieme formano una piattaforma completa in cui le persone possono scambiare, lanciare, verificare e transare in modo privato, tutto in un unico posto."
+    },
+    "company": {
+      "eyebrow": "Entità legale",
+      "legalForm": "Forma legale",
+      "registeredAddress": "Sede legale",
+      "email": "Email",
+      "companyRegistration": "Registrazione aziendale",
+      "reaNumber": "Numero REA",
+      "vat": "P.IVA / Partita IVA",
+      "pec": "PEC"
+    },
+    "cta": {
+      "title": "Vuoi saperne di più?",
+      "description": "Che tu sia un partner potenziale, un investitore o semplicemente curioso di ciò che stiamo costruendo, ci farebbe piacere sentirti.",
+      "button": "Contattaci"
+    }
   }
 }

@@ -117,5 +117,53 @@
       "security": "Sécurité",
       "cookies": "Cookies"
     }
+  },
+  "about": {
+    "hero": {
+      "eyebrow": "À propos",
+      "title": "Construire l'infrastructure",
+      "titleAccent": "dont les gens ont vraiment besoin",
+      "description": "Swarp Foundation est une société logicielle basée à Milan, en Italie. Nous concevons et développons des outils qui rendent la technologie blockchain accessible, sécurisée et équitable pour tous, pas seulement pour les profils techniques."
+    },
+    "tabs": {
+      "mission": {
+        "label": "Notre mission",
+        "title": "Faire fonctionner la blockchain pour les vraies personnes",
+        "p1": "La crypto devait offrir à tous un accès égal aux outils financiers. Pourtant, la plupart des plateformes sont conçues pour des personnes qui comprennent déjà la technologie, laissant les autres de côté. Swarp Foundation existe pour combler cet écart.",
+        "p2": "Nous développons des logiciels qui apportent les véritables bénéfices de la blockchain, comme des marchés transparents, de l'argent programmable et la confidentialité financière, à des personnes qui ne devraient pas avoir besoin d'un diplôme en informatique pour les utiliser. Tout ce que nous livrons est conçu avec la clarté et la sécurité en priorité."
+      },
+      "approach": {
+        "label": "Notre approche",
+        "title": "Réglementation, sécurité, équité",
+        "p1": "Nous ne pensons pas que la décentralisation signifie ignorer les règles. Swarp Foundation opère dans des cadres réglementaires clairs, en poursuivant des licences dans l'Union européenne et aux EAU, car la confiance se construit par la responsabilité, pas par l'anonymat.",
+        "p2": "Chaque produit que nous construisons passe par des audits de sécurité rigoureux avant d'arriver aux utilisateurs. Notre launchpad applique des limites par personne via vérification d'identité pour empêcher bots et acteurs malveillants de dominer les lancements de token. L'objectif est un écosystème où les règles sont équitables pour tous."
+      },
+      "why": {
+        "label": "Pourquoi Solana",
+        "title": "Vitesse et coût adaptés à l'usage quotidien",
+        "p1": "Nous avons choisi Solana car c'est rapide, peu coûteux et conçu pour des applications à haut débit. Lorsqu'une personne achète un token ou vérifie son identité, cela doit se faire en quelques secondes et pour une fraction de centime, pas en minutes et en dollars.",
+        "p2": "Solana nous donne la base technique pour créer des produits aussi réactifs que les applications du quotidien. C'est essentiel pour viser l'adoption grand public, et pas seulement la communauté crypto-native."
+      }
+    },
+    "products": {
+      "eyebrow": "Ce que nous construisons",
+      "title": "Un écosystème de produits connectés",
+      "description": "Chaque produit résout un problème précis. Ensemble, ils forment une plateforme complète où les utilisateurs peuvent trader, lancer, vérifier et effectuer des transactions privées au même endroit."
+    },
+    "company": {
+      "eyebrow": "Entité légale",
+      "legalForm": "Forme juridique",
+      "registeredAddress": "Adresse enregistrée",
+      "email": "Email",
+      "companyRegistration": "Immatriculation",
+      "reaNumber": "Numéro REA",
+      "vat": "TVA / Partita IVA",
+      "pec": "PEC"
+    },
+    "cta": {
+      "title": "Vous voulez en savoir plus ?",
+      "description": "Que vous soyez partenaire potentiel, investisseur ou simplement curieux de ce que nous construisons, nous serions ravis d'échanger avec vous.",
+      "button": "Nous contacter"
+    }
   }
 }

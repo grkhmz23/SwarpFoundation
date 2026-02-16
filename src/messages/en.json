@@ -117,5 +117,53 @@
       "security": "Security",
       "cookies": "Cookies"
     }
+  },
+  "about": {
+    "hero": {
+      "eyebrow": "About Us",
+      "title": "Building the infrastructure",
+      "titleAccent": "people actually need",
+      "description": "Swarp Foundation is a software company based in Milan, Italy. We design and build tools that make blockchain technology accessible, secure, and fair for everyone, not just the technically inclined."
+    },
+    "tabs": {
+      "mission": {
+        "label": "Our Mission",
+        "title": "Making blockchain work for real people",
+        "p1": "Crypto was supposed to give everyone equal access to financial tools. Instead, most platforms are built for people who already understand the technology, leaving everyone else behind. Swarp Foundation exists to close that gap.",
+        "p2": "We build software that brings the real benefits of blockchain, like transparent markets, programmable money, and financial privacy, to people who should not need a computer science degree to use them. Everything we ship is designed for clarity and security first, complexity second."
+      },
+      "approach": {
+        "label": "Our Approach",
+        "title": "Regulation, security, fairness",
+        "p1": "We do not believe that decentralization means ignoring the rules. Swarp Foundation operates within clear regulatory frameworks, pursuing licensing in both the European Union and the UAE, because trust is built through accountability, not anonymity.",
+        "p2": "Every product we build goes through rigorous security audits before it reaches users. Our launchpad enforces per-person limits through identity verification, ensuring that bots and bad actors cannot dominate token launches. The goal is an ecosystem where the rules are fair and everyone plays by them."
+      },
+      "why": {
+        "label": "Why Solana",
+        "title": "Speed and cost that make sense for everyday use",
+        "p1": "We chose to build on Solana because it is fast, inexpensive, and designed for high-throughput applications. When someone buys a token or verifies their identity, it should happen in seconds and cost fractions of a cent, not minutes and dollars.",
+        "p2": "Solana gives us the technical foundation to build products that feel as responsive as the apps people already use every day. That matters when the goal is mainstream adoption, not just serving the crypto-native crowd."
+      }
+    },
+    "products": {
+      "eyebrow": "What We Build",
+      "title": "An ecosystem of connected products",
+      "description": "Each product solves a specific problem. Together, they form a complete platform where people can trade, launch, verify, and transact privately, all in one place."
+    },
+    "company": {
+      "eyebrow": "Legal Entity",
+      "legalForm": "Legal Form",
+      "registeredAddress": "Registered Address",
+      "email": "Email",
+      "companyRegistration": "Company Registration",
+      "reaNumber": "REA Number",
+      "vat": "VAT / Partita IVA",
+      "pec": "PEC"
+    },
+    "cta": {
+      "title": "Want to learn more?",
+      "description": "Whether you are a potential partner, investor, or just curious about what we are building, we would love to hear from you.",
+      "button": "Get in Touch"
+    }
   }
 }
