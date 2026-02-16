@@ -76,9 +76,7 @@ export function SwarpPresale() {
               <style>
                 {`.sans-bold { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-weight: 800; letter-spacing: -0.02em; }
                 .sans-med { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-weight: 500; letter-spacing: 0.02em; }
-                .mono { font-family: 'SF Mono', 'Menlo', 'Monaco', 'Courier New', monospace; font-weight: 400; letter-spacing: 0.05em; }
-                @keyframes pulse { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
-                .pulsing { animation: pulse 3s infinite ease-in-out; }`}
+                .mono { font-family: 'SF Mono', 'Menlo', 'Monaco', 'Courier New', monospace; font-weight: 400; letter-spacing: 0.05em; }`}
               </style>
             </defs>
 
@@ -95,10 +93,13 @@ export function SwarpPresale() {
             </g>
 
             <g filter="url(#noiseFilter)">
-              {/* Center Reactor */}
+              {/* Center Reactor - Glass card only, content removed */}
               <g transform="translate(540, 540)">
+                {/* Orbital rings */}
                 <circle r="180" fill="none" stroke="#2a2e45" strokeWidth="1" strokeDasharray="4 6" opacity="0.5"/>
                 <circle r="140" fill="none" stroke="url(#glassBorder)" strokeWidth="1.5" opacity="0.3"/>
+                
+                {/* Tick marks */}
                 <g opacity="0.6">
                   <path d="M 0 -160 L 0 -170" stroke="#00FFF0" strokeWidth="2"/>
                   <path d="M 0 160 L 0 170" stroke="#00FFF0" strokeWidth="2"/>
@@ -106,22 +107,13 @@ export function SwarpPresale() {
                   <path d="M 160 0 L 170 0" stroke="#9D4EDD" strokeWidth="2"/>
                 </g>
 
+                {/* Glass card */}
                 <g filter="url(#softGlow)">
                   <rect x="-110" y="-110" width="220" height="220" rx="40" fill="url(#glassSurface)" stroke="url(#glassBorder)" strokeWidth="2"/>
                   <rect x="-106" y="-106" width="212" height="212" rx="38" fill="none" stroke="#000000" strokeWidth="2" opacity="0.5"/>
                 </g>
-
-                {/* Logo placeholder area - empty for HTML overlay */}
-                <circle r="70" fill="#00D4FF" fillOpacity="0.05" filter="url(#coreGlow)"/>
                 
-                {/* $SWARP text - below where logo will be */}
-                <text className="sans-bold" x="0" y="35" textAnchor="middle" fill="#FFFFFF" fontSize="32" letterSpacing="0.05em" filter="url(#coreGlow)">$SWARP</text>
-                
-                {/* PRESALE SOON - at bottom of reactor */}
-                <rect x="-60" y="55" width="120" height="20" rx="4" fill="#00FFF0" fillOpacity="0.1"/>
-                <text className="mono pulsing" x="0" y="69" textAnchor="middle" fill="#00FFF0" fontSize="11" fontWeight="700">PRESALE SOON</text>
-                
-                {/* Decorative brackets */}
+                {/* Corner brackets */}
                 <path d="M -40 -60 L -50 -60 L -50 -50" fill="none" stroke="#FFFFFF" strokeWidth="2" opacity="0.5"/>
                 <path d="M 40 -60 L 50 -60 L 50 -50" fill="none" stroke="#FFFFFF" strokeWidth="2" opacity="0.5"/>
                 <path d="M -40 85 L -50 85 L -50 75" fill="none" stroke="#FFFFFF" strokeWidth="2" opacity="0.5"/>
@@ -222,24 +214,34 @@ export function SwarpPresale() {
             <rect width="1080" height="1080" fill="url(#vignetteOverlay)"/>
           </svg>
 
-          {/* Logo Overlay - Positioned in upper part of center reactor, above $SWARP text */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[calc(50%+20px)] w-[90px] h-[90px] md:w-[110px] md:h-[110px]">
+          {/* Center Content Overlay - Logo + $SWARP + PRESALE SOON inside the glass card */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[180px] h-[180px] flex flex-col items-center justify-center pointer-events-none">
+            {/* Logo */}
             <motion.div
-              className="relative w-full h-full"
-              whileHover={{ scale: 1.08 }}
+              className="relative w-[70px] h-[70px] md:w-[80px] md:h-[80px]"
+              whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.3 }}
             >
-              {/* Cyan glow effect */}
-              <div className="absolute inset-0 rounded-full transition-all duration-300 group-hover:shadow-[0_0_50px_rgba(0,212,255,0.8)] shadow-[0_0_35px_rgba(0,212,255,0.6)] pointer-events-none" />
+              <div className="absolute inset-0 rounded-full transition-all duration-300 group-hover:shadow-[0_0_40px_rgba(0,212,255,0.6)] shadow-[0_0_25px_rgba(0,212,255,0.4)]" />
               <Image
                 src="/logo_transparent.png"
-                alt="SWARP Logo"
-                width={110}
-                height={110}
-                className="object-contain drop-shadow-[0_0_20px_rgba(0,212,255,0.7)] transition-all duration-300 group-hover:drop-shadow-[0_0_35px_rgba(0,212,255,1)]"
+                alt="SWARP"
+                width={80}
+                height={80}
+                className="object-contain drop-shadow-[0_0_15px_rgba(0,212,255,0.5)]"
                 priority
               />
             </motion.div>
+            
+            {/* $SWARP Text */}
+            <span className="mt-1 text-white font-bold text-base md:text-lg tracking-[0.15em]" style={{ fontFamily: "system-ui, -apple-system, sans-serif" }}>
+              $SWARP
+            </span>
+            
+            {/* PRESALE SOON - Pulsing */}
+            <span className="mt-1.5 text-[#00FFF0] text-[10px] md:text-xs font-mono tracking-[0.2em] animate-pulse">
+              PRESALE SOON
+            </span>
           </div>
         </motion.a>
 
