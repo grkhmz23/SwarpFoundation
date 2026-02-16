@@ -165,5 +165,157 @@
       "description": "سواء كنت شريكاً محتملاً أو مستثمراً أو مجرد مهتم بما نبنيه، يسعدنا التواصل معك.",
       "button": "تواصل معنا"
     }
+  },
+  "servicesPage": {
+    "hero": {
+      "titleMain": "هندسة",
+      "titleAccent": "متميزة",
+      "description": "تطوير برمجيات full-stack من الفكرة إلى الإنتاج. اختر خدمة لاستكشاف قدراتنا."
+    },
+    "cta": {
+      "title": "هل أنت جاهز لبدء مشروعك؟",
+      "button": "احجز استشارة"
+    },
+    "preview": {
+      "emptyTitle": "استكشف خدماتنا",
+      "emptyDescription": "اختر أي خدمة من الشبكة لعرض التفاصيل والميزات والجداول الزمنية للتسليم.",
+      "availableCount": "{count} معاينات تفاعلية متاحة",
+      "comingSoon": "قريباً",
+      "expectedTimeline": "الجدول الزمني المتوقع:"
+    },
+    "services": {
+      "webMobile": {
+        "title": "الويب والموبايل",
+        "short": "تطبيقات عالية التوسع",
+        "desc": "UI/UX بمستوى منتج مع backends قابلة للتوسع. إصدارات موبايل جاهزة للمتاجر باستخدام React Native أو Flutter.",
+        "proof": [
+          "جاهز للإنتاج",
+          "99.9% Uptime",
+          "متوافق مع المتاجر"
+        ],
+        "timeline": "8-12 أسبوعاً"
+      },
+      "softwareTools": {
+        "title": "أدوات برمجية",
+        "short": "CLI وتطبيقات سطح المكتب",
+        "desc": "Tooling بنهج developer-first، وتطبيقات سطح مكتب cross-platform (Electron/Rust)، وأدوات CLI قوية.",
+        "proof": [
+          "Cross-platform",
+          "Rust/Go Core",
+          "Auto-update"
+        ],
+        "timeline": "6-10 أسابيع"
+      },
+      "aiSystems": {
+        "title": "أنظمة AI",
+        "short": "LLM وواجهات المحادثة",
+        "desc": "Pipelines RAG مخصصة، ونماذج fine-tuned، وواجهة محادثة للدعم والمبيعات والعمليات.",
+        "proof": [
+          "Context-aware",
+          "بيانات آمنة",
+          "زمن استجابة منخفض"
+        ],
+        "timeline": "4-8 أسابيع"
+      },
+      "blockchain": {
+        "title": "Blockchain",
+        "short": "DeFi وsmart contract",
+        "desc": "smart contracts آمنة، وdApps، ولوحات telemetry on-chain لـ DeFi وDAO.",
+        "proof": [
+          "كود مُدقَّق",
+          "Gas optimized",
+          "Multi-chain"
+        ],
+        "timeline": "10-14 أسبوعاً"
+      },
+      "security": {
+        "title": "الأمان",
+        "short": "تدقيق واختبارات اختراق",
+        "desc": "تدقيقات أمان شاملة، وتقييمات ثغرات، وإعدادات monitoring آلية.",
+        "proof": [
+          "OWASP Top 10",
+          "Whitehat",
+          "تقارير مفصلة"
+        ],
+        "timeline": "2-4 أسابيع"
+      },
+      "hardware": {
+        "title": "Hardware",
+        "short": "الأجهزة وIoT",
+        "desc": "نصمم ونطوّر نماذج أولية لـ hardware مخصص والهياكل وأجهزة IoT.",
+        "proof": [
+          "Industrial Design",
+          "PCB Layout",
+          "نمذجة أولية"
+        ],
+        "timeline": "12-24 أسبوعاً"
+      },
+      "cloud": {
+        "title": "Cloud وDevOps",
+        "short": "AWS/GCP وK8s",
+        "desc": "Infrastructure as code قابلة للتوسع. Kubernetes clusters، وCI/CD pipelines، وتحسين التكاليف.",
+        "proof": [
+          "Terraform",
+          "Zero Downtime",
+          "Auto-scaling"
+        ],
+        "timeline": "4-8 أسابيع"
+      },
+      "engineering": {
+        "title": "Engineering",
+        "short": "فرق مخصصة",
+        "desc": "ادعم فريقك عبر pod مخصص من المهندسين وPM والمصممين.",
+        "proof": [
+          "Agile",
+          "شفافية كاملة",
+          "خبرات senior"
+        ],
+        "timeline": "Retainer شهري"
+      },
+      "integrations": {
+        "title": "Integrations",
+        "short": "API وMiddleware",
+        "desc": "تطوير API قوي وintegrations مع جهات خارجية (Stripe, Salesforce, Twilio).",
+        "proof": [
+          "Idempotent",
+          "Rate Limited",
+          "موثّق"
+        ],
+        "timeline": "3-6 أسابيع"
+      },
+      "data": {
+        "title": "Data وAnalytics",
+        "short": "Pipelines وBI",
+        "desc": "تنفيذ modern data stack. ETL pipelines، وdata warehouses (Snowflake/BigQuery)، ولوحات تحكم.",
+        "proof": [
+          "Real-time",
+          "Governance",
+          "Actionable"
+        ],
+        "timeline": "6-10 أسابيع"
+      },
+      "qa": {
+        "title": "QA وTesting",
+        "short": "الأتمتة وSRE",
+        "desc": "أطر end-to-end testing، وload testing، وsite reliability engineering (SRE).",
+        "proof": [
+          "95% Coverage",
+          "Auto-revert",
+          "Chaos Testing"
+        ],
+        "timeline": "3-5 أسابيع"
+      },
+      "design": {
+        "title": "UI/UX Design",
+        "short": "أنظمة ونمذجة أولية",
+        "desc": "Design systems كاملة، وcomponent libraries، وUI kits سهلة الوصول.",
+        "proof": [
+          "Accessible (WCAG)",
+          "Token-based",
+          "Pixel Perfect"
+        ],
+        "timeline": "4-8 أسابيع"
+      }
+    }
   }
 }

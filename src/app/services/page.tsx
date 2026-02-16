@@ -3,19 +3,14 @@
 import { useState } from "react";
 import dynamic from "next/dynamic";
 import { motion, AnimatePresence } from "framer-motion";
-import { 
-  Calendar, Clock, Globe, Wrench, Bot, 
-  Blocks, Shield, Cpu, Cloud, Users, Plug, Database, 
-  TestTube, Palette, ArrowRight, Sparkles, CheckCircle2
-} from "lucide-react";
+import { Calendar, Clock, ArrowRight, Sparkles, CheckCircle2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { KeyboardLink } from "@/components/ui/keyboard-button";
 import { AetherBackground } from "@/components/ui/aether-background";
 import { ServiceContentWrapper } from "@/components/services/service-content-wrapper";
+import { useServicesData, ServiceItem } from "@/lib/services-data";
+import { useTranslations } from "next-intl";
 
-// ═══════════════════════════════════════════════════════════════════════════
-// ALL 12 CONTENT COMPONENTS - DYNAMICALLY IMPORTED FOR PERFORMANCE
-// ═══════════════════════════════════════════════════════════════════════════
 const WebMobileContent = dynamic(() => import("@/components/services/content/web-mobile-content").then(m => ({ default: m.WebMobileContent })), { ssr: false });
 const SoftwareToolsContent = dynamic(() => import("@/components/services/content/software-tools-content").then(m => ({ default: m.SoftwareToolsContent })), { ssr: false });
 const AISystemsContent = dynamic(() => import("@/components/services/content/ai-systems-content").then(m => ({ default: m.AISystemsContent })), { ssr: false });
@@ -29,181 +24,32 @@ const DataAnalyticsContent = dynamic(() => import("@/components/services/content
 const QATestingContent = dynamic(() => import("@/components/services/content/qa-testing-content").then(m => ({ default: m.QATestingContent })), { ssr: false });
 const UIUXDesignContent = dynamic(() => import("@/components/services/content/uiux-design-content").then(m => ({ default: m.UIUXDesignContent })), { ssr: false });
 
-interface Service {
-  id: string;
-  title: string;
-  short: string;
-  desc: string;
-  proof: string[];
-  timeline: string;
-  hasContent: boolean;
-  icon: React.ReactNode;
-  color: string;
-}
+type Service = ServiceItem;
 
-// ═══════════════════════════════════════════════════════════════════════════
-// ALL 12 SERVICES - BRAND COLOR MAPPING
-// ═══════════════════════════════════════════════════════════════════════════
-const SERVICES: Service[] = [
-  {
-    id: "web-mobile",
-    title: "Web & Mobile",
-    short: "High-scale applications",
-    desc: "Product-grade UI/UX with scalable backends. Store-ready mobile builds using React Native or Flutter.",
-    proof: ["Production-ready", "99.9% Uptime", "Store Compliant"],
-    timeline: "8-12 Weeks",
-    hasContent: true,
-    icon: <Globe className="w-5 h-5" />,
-    color: "cyan"
-  },
-  {
-    id: "software-tools",
-    title: "Software Tools",
-    short: "CLI & Desktop Apps",
-    desc: "Developer-first tooling, cross-platform desktop apps (Electron/Rust), and robust CLI utilities.",
-    proof: ["Cross-platform", "Rust/Go Core", "Auto-update"],
-    timeline: "6-10 Weeks",
-    hasContent: true,
-    icon: <Wrench className="w-5 h-5" />,
-    color: "purple"
-  },
-  {
-    id: "ai-systems",
-    title: "AI Systems",
-    short: "LLM & Chat Interfaces",
-    desc: "Custom RAG pipelines, fine-tuned models, and conversational UI for Support, Sales, or Ops.",
-    proof: ["Context-aware", "Secure Data", "Low Latency"],
-    timeline: "4-8 Weeks",
-    hasContent: true,
-    icon: <Bot className="w-5 h-5" />,
-    color: "cyan"
-  },
-  {
-    id: "blockchain",
-    title: "Blockchain",
-    short: "DeFi & Smart Contracts",
-    desc: "Secure smart contracts, dApps, and on-chain telemetry dashboards for DeFi and DAOs.",
-    proof: ["Audited Code", "Gas Optimized", "Multi-chain"],
-    timeline: "10-14 Weeks",
-    hasContent: true,
-    icon: <Blocks className="w-5 h-5" />,
-    color: "purple"
-  },
-  {
-    id: "security",
-    title: "Security",
-    short: "Audit & Pen-testing",
-    desc: "Comprehensive security audits, vulnerability assessments, and automated monitoring setups.",
-    proof: ["OWASP Top 10", "Whitehat", "Detailed Reports"],
-    timeline: "2-4 Weeks",
-    hasContent: true,
-    icon: <Shield className="w-5 h-5" />,
-    color: "cyan"
-  },
-  {
-    id: "hardware",
-    title: "Hardware",
-    short: "Devices & IoT",
-    desc: "We design and prototype custom computing hardware, enclosures, and IoT devices.",
-    proof: ["Industrial Design", "PCB Layout", "Prototyping"],
-    timeline: "12-24 Weeks",
-    hasContent: true,
-    icon: <Cpu className="w-5 h-5" />,
-    color: "purple"
-  },
-  {
-    id: "cloud",
-    title: "Cloud & DevOps",
-    short: "AWS/GCP & K8s",
-    desc: "Scalable infrastructure as code. Kubernetes clusters, CI/CD pipelines, and cost optimization.",
-    proof: ["Terraform", "Zero Downtime", "Auto-scaling"],
-    timeline: "4-8 Weeks",
-    hasContent: true,
-    icon: <Cloud className="w-5 h-5" />,
-    color: "cyan"
-  },
-  {
-    id: "retainer",
-    title: "Engineering",
-    short: "Dedicated Teams",
-    desc: "Augment your workforce with a dedicated pod of engineers, PMs, and designers.",
-    proof: ["Agile", "Full Transparency", "Senior Talent"],
-    timeline: "Monthly Retainer",
-    hasContent: true,
-    icon: <Users className="w-5 h-5" />,
-    color: "purple"
-  },
-  {
-    id: "integrations",
-    title: "Integrations",
-    short: "APIs & Middleware",
-    desc: "Robust API development and third-party integrations (Stripe, Salesforce, Twilio).",
-    proof: ["Idempotent", "Rate Limited", "Documented"],
-    timeline: "3-6 Weeks",
-    hasContent: true,
-    icon: <Plug className="w-5 h-5" />,
-    color: "cyan"
-  },
-  {
-    id: "data",
-    title: "Data & Analytics",
-    short: "Pipelines & BI",
-    desc: "Modern data stack implementation. ETL pipelines, warehouses (Snowflake/BigQuery), and dashboards.",
-    proof: ["Real-time", "Governance", "Actionable"],
-    timeline: "6-10 Weeks",
-    hasContent: true,
-    icon: <Database className="w-5 h-5" />,
-    color: "purple"
-  },
-  {
-    id: "qa",
-    title: "QA & Testing",
-    short: "Automation & SRE",
-    desc: "End-to-end testing frameworks, load testing, and site reliability engineering (SRE).",
-    proof: ["95% Coverage", "Auto-revert", "Chaos Testing"],
-    timeline: "3-5 Weeks",
-    hasContent: true,
-    icon: <TestTube className="w-5 h-5" />,
-    color: "cyan"
-  },
-  {
-    id: "design",
-    title: "UI/UX Design",
-    short: "Systems & Prototyping",
-    desc: "Complete design systems, component libraries, and accessible UI kits.",
-    proof: ["Accessible (WCAG)", "Token-based", "Pixel Perfect"],
-    timeline: "4-8 Weeks",
-    hasContent: true,
-    icon: <Palette className="w-5 h-5" />,
-    color: "purple"
-  },
-];
-
-// Brand color mapping using swarp colors
 const colorMap: Record<string, { bg: string; border: string; glow: string; text: string; gradient: string }> = {
-  cyan: { 
-    bg: "bg-swarp-blue/10", 
-    border: "border-swarp-blue/30", 
-    glow: "shadow-swarp-blue/20", 
+  cyan: {
+    bg: "bg-swarp-blue/10",
+    border: "border-swarp-blue/30",
+    glow: "shadow-swarp-blue/20",
     text: "text-swarp-blue",
     gradient: "from-swarp-blue to-swarp-cyan"
   },
-  purple: { 
-    bg: "bg-swarp-purple/10", 
-    border: "border-swarp-purple/30", 
-    glow: "shadow-swarp-purple/20", 
+  purple: {
+    bg: "bg-swarp-purple/10",
+    border: "border-swarp-purple/30",
+    glow: "shadow-swarp-purple/20",
     text: "text-swarp-purple",
     gradient: "from-swarp-purple to-swarp-blue"
   },
 };
 
-function ServiceCard({ 
-  service, 
-  isSelected, 
-  onClick 
-}: { 
-  service: Service; 
-  isSelected: boolean; 
+function ServiceCard({
+  service,
+  isSelected,
+  onClick
+}: {
+  service: Service;
+  isSelected: boolean;
   onClick: () => void;
 }) {
   const colors = colorMap[service.color] || colorMap.cyan;
@@ -216,12 +62,11 @@ function ServiceCard({
       className={cn(
         "group relative w-full p-4 rounded-xl transition-all duration-300",
         "backdrop-blur-md border text-left",
-        isSelected 
-          ? cn(colors.bg, colors.border, "shadow-lg", colors.glow) 
+        isSelected
+          ? cn(colors.bg, colors.border, "shadow-lg", colors.glow)
           : "bg-white/[0.03] border-white/10 hover:bg-white/[0.06] hover:border-white/20"
       )}
     >
-      {/* Glow effect */}
       <div className={cn(
         "absolute inset-0 rounded-xl opacity-0 transition-opacity duration-300",
         "bg-gradient-to-r from-white/5 to-transparent",
@@ -229,18 +74,16 @@ function ServiceCard({
       )} />
 
       <div className="relative flex items-start gap-3">
-        {/* Icon */}
         <div className={cn(
           "flex items-center justify-center w-10 h-10 rounded-lg shrink-0",
           "backdrop-blur-sm border transition-all duration-300",
-          isSelected 
-            ? cn(colors.bg, colors.border, colors.text) 
+          isSelected
+            ? cn(colors.bg, colors.border, colors.text)
             : "bg-white/5 border-white/10 text-gray-400 group-hover:text-white group-hover:border-white/20"
         )}>
-          {service.icon}
+          <service.icon className="w-5 h-5" />
         </div>
 
-        {/* Content */}
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
             <span className={cn(
@@ -266,6 +109,7 @@ function ServiceCard({
 }
 
 function ComingSoonPreview({ service }: { service: Service }) {
+  const t = useTranslations("servicesPage.preview");
   const colors = colorMap[service.color] || colorMap.cyan;
 
   return (
@@ -282,7 +126,7 @@ function ComingSoonPreview({ service }: { service: Service }) {
         <Clock className={cn("w-10 h-10", colors.text)} />
       </motion.div>
 
-      <motion.h3 
+      <motion.h3
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.1 }}
@@ -291,7 +135,7 @@ function ComingSoonPreview({ service }: { service: Service }) {
         {service.title}
       </motion.h3>
 
-      <motion.p 
+      <motion.p
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.2 }}
@@ -300,7 +144,7 @@ function ComingSoonPreview({ service }: { service: Service }) {
         {service.desc}
       </motion.p>
 
-      <motion.div 
+      <motion.div
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.3 }}
@@ -310,10 +154,10 @@ function ComingSoonPreview({ service }: { service: Service }) {
         )}
       >
         <span className={cn("w-2 h-2 rounded-full animate-pulse", colors.text.replace('text-', 'bg-'))} />
-        <span className={cn("text-sm font-medium", colors.text)}>Coming Soon</span>
+        <span className={cn("text-sm font-medium", colors.text)}>{t("comingSoon")}</span>
       </motion.div>
 
-      <motion.div 
+      <motion.div
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.4 }}
@@ -327,19 +171,21 @@ function ComingSoonPreview({ service }: { service: Service }) {
         ))}
       </motion.div>
 
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.5 }}
         className="mt-6 text-xs text-gray-600"
       >
-        Expected timeline: <span className="text-gray-400">{service.timeline}</span>
+        {t("expectedTimeline")} <span className="text-gray-400">{service.timeline}</span>
       </motion.div>
     </div>
   );
 }
 
-function ServicePreview({ service }: { service: Service | null }) {
+function ServicePreview({ service, servicesCount }: { service: Service | null; servicesCount: number }) {
+  const t = useTranslations("servicesPage.preview");
+
   if (!service) {
     return (
       <div className="h-full flex flex-col items-center justify-center p-8 text-center">
@@ -351,32 +197,32 @@ function ServicePreview({ service }: { service: Service | null }) {
           <Sparkles className="w-12 h-12 text-swarp-blue" />
         </motion.div>
 
-        <motion.h3 
+        <motion.h3
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.1 }}
           className="text-2xl font-bold text-white mb-2"
         >
-          Explore Our Services
+          {t("emptyTitle")}
         </motion.h3>
 
-        <motion.p 
+        <motion.p
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.2 }}
           className="text-gray-400 max-w-sm"
         >
-          Select any service from the grid to view details, features, and delivery timelines.
+          {t("emptyDescription")}
         </motion.p>
 
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3 }}
           className="mt-8 flex items-center gap-2 text-sm text-gray-500"
         >
           <span className="w-2 h-2 rounded-full bg-swarp-blue animate-pulse" />
-          <span>{SERVICES.filter(s => s.hasContent).length} interactive previews available</span>
+          <span>{t("availableCount", { count: servicesCount })}</span>
         </motion.div>
       </div>
     );
@@ -394,7 +240,6 @@ function ServicePreview({ service }: { service: Service | null }) {
       >
         {service.hasContent ? (
           <div className="p-6">
-            {/* Header */}
             <div className="flex items-start justify-between mb-6">
               <div>
                 <h2 className="text-3xl font-bold text-white mb-2">{service.title}</h2>
@@ -410,9 +255,6 @@ function ServicePreview({ service }: { service: Service | null }) {
               </div>
             </div>
 
-            {/* ════════════════════════════════════════════════════════════ */}
-            {/* ALL 12 SERVICES WIRED HERE - Wrapped with Intersection Observer */}
-            {/* ════════════════════════════════════════════════════════════ */}
             <div className="bg-black/20 rounded-2xl border border-white/5 overflow-hidden">
               <ServiceContentWrapper>
                 {service.id === "web-mobile" && <WebMobileContent />}
@@ -439,43 +281,41 @@ function ServicePreview({ service }: { service: Service | null }) {
 }
 
 export default function ServicesPage() {
+  const t = useTranslations("servicesPage");
+  const services = useServicesData();
   const [selectedService, setSelectedService] = useState<Service | null>(null);
 
   return (
     <AetherBackground className="min-h-screen">
       <div className="pt-20 pb-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          {/* Header */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             className="text-center mb-12"
           >
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
               <span className="bg-gradient-to-r from-white via-white to-gray-400 bg-clip-text text-transparent">
-                Engineering
+                {t("hero.titleMain")}
               </span>
               <span className="bg-gradient-to-r from-swarp-blue to-swarp-purple bg-clip-text text-transparent">
-                {" "}Excellence
+                {" "}{t("hero.titleAccent")}
               </span>
             </h1>
 
             <p className="text-gray-400 max-w-2xl mx-auto text-lg">
-              Full-stack software development from concept to production. 
-              Select a service to explore our capabilities.
+              {t("hero.description")}
             </p>
           </motion.div>
 
-          {/* Main Content */}
           <div className="grid lg:grid-cols-2 gap-6 lg:gap-8">
-            {/* Services Grid - Left Side */}
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.2 }}
               className="grid grid-cols-1 sm:grid-cols-2 gap-3 content-start"
             >
-              {SERVICES.map((service, index) => (
+              {services.map((service, index) => (
                 <motion.div
                   key={service.id}
                   initial={{ opacity: 0, y: 20 }}
@@ -491,7 +331,6 @@ export default function ServicesPage() {
               ))}
             </motion.div>
 
-            {/* Preview Panel - Right Side */}
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -503,37 +342,33 @@ export default function ServicesPage() {
                 "shadow-[0_0_60px_-20px_rgba(0,212,255,0.15),inset_0_1px_0_rgba(255,255,255,0.1)]"
               )}
             >
-              {/* Top glow */}
               <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-px bg-gradient-to-r from-transparent via-swarp-blue/50 to-transparent" />
 
-              {/* Corner accents */}
               <div className="absolute top-4 left-4 w-8 h-8 border-l-2 border-t-2 border-white/20 rounded-tl-lg" />
               <div className="absolute top-4 right-4 w-8 h-8 border-r-2 border-t-2 border-white/20 rounded-tr-lg" />
               <div className="absolute bottom-4 left-4 w-8 h-8 border-l-2 border-b-2 border-white/20 rounded-bl-lg" />
               <div className="absolute bottom-4 right-4 w-8 h-8 border-r-2 border-b-2 border-white/20 rounded-br-lg" />
 
-              {/* Content */}
               <div className="relative h-full">
-                <ServicePreview service={selectedService} />
+                <ServicePreview service={selectedService} servicesCount={services.filter((s) => s.hasContent).length} />
               </div>
             </motion.div>
           </div>
 
-          {/* CTA Section */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
             className="mt-12 text-center"
           >
-            <p className="text-gray-400 mb-4">Ready to start your project?</p>
+            <p className="text-gray-400 mb-4">{t("cta.title")}</p>
             <KeyboardLink
               href="/contact"
               variant="primary"
               size="lg"
               icon={<Calendar className="w-4 h-4" />}
             >
-              Book a Consultation
+              {t("cta.button")}
             </KeyboardLink>
           </motion.div>
         </div>

@@ -165,5 +165,157 @@
       "description": "Ob potenzieller Partner, Investor oder einfach neugierig auf das, was wir bauen: Wir freuen uns auf Ihre Nachricht.",
       "button": "Kontakt aufnehmen"
     }
+  },
+  "servicesPage": {
+    "hero": {
+      "titleMain": "Engineering",
+      "titleAccent": "Exzellenz",
+      "description": "Full-Stack-Softwareentwicklung vom Konzept bis zur Produktion. Wählen Sie einen Service, um unsere Fähigkeiten zu entdecken."
+    },
+    "cta": {
+      "title": "Bereit, Ihr Projekt zu starten?",
+      "button": "Beratung buchen"
+    },
+    "preview": {
+      "emptyTitle": "Entdecken Sie unsere Services",
+      "emptyDescription": "Wählen Sie einen Service aus dem Grid, um Details, Features und Lieferzeiten zu sehen.",
+      "availableCount": "{count} interaktive Vorschauen verfügbar",
+      "comingSoon": "Demnächst verfügbar",
+      "expectedTimeline": "Erwartete Timeline:"
+    },
+    "services": {
+      "webMobile": {
+        "title": "Web & Mobile",
+        "short": "High-Scale-Anwendungen",
+        "desc": "Produktreife UI/UX mit skalierbaren Backends. Store-ready Mobile-Builds mit React Native oder Flutter.",
+        "proof": [
+          "Production-ready",
+          "99,9% Uptime",
+          "Store-konform"
+        ],
+        "timeline": "8-12 Wochen"
+      },
+      "softwareTools": {
+        "title": "Software Tools",
+        "short": "CLI & Desktop Apps",
+        "desc": "Developer-first Tooling, cross-platform Desktop-Apps (Electron/Rust) und robuste CLI-Utilities.",
+        "proof": [
+          "Cross-platform",
+          "Rust/Go Core",
+          "Auto-update"
+        ],
+        "timeline": "6-10 Wochen"
+      },
+      "aiSystems": {
+        "title": "AI-Systeme",
+        "short": "LLM & Chat-Interfaces",
+        "desc": "Custom RAG-Pipelines, fine-tuned Modelle und Conversational UI für Support, Sales oder Ops.",
+        "proof": [
+          "Context-aware",
+          "Sichere Daten",
+          "Niedrige Latenz"
+        ],
+        "timeline": "4-8 Wochen"
+      },
+      "blockchain": {
+        "title": "Blockchain",
+        "short": "DeFi & smart contract",
+        "desc": "Sichere smart contracts, dApps und on-chain Telemetrie-Dashboards für DeFi und DAO.",
+        "proof": [
+          "Audited Code",
+          "Gas optimiert",
+          "Multi-chain"
+        ],
+        "timeline": "10-14 Wochen"
+      },
+      "security": {
+        "title": "Sicherheit",
+        "short": "Audit & Pen-testing",
+        "desc": "Umfassende Sicherheitsaudits, Vulnerability Assessments und automatisierte Monitoring-Setups.",
+        "proof": [
+          "OWASP Top 10",
+          "Whitehat",
+          "Detaillierte Reports"
+        ],
+        "timeline": "2-4 Wochen"
+      },
+      "hardware": {
+        "title": "Hardware",
+        "short": "Geräte & IoT",
+        "desc": "Wir entwerfen und prototypisieren kundenspezifische Hardware, Gehäuse und IoT-Geräte.",
+        "proof": [
+          "Industrial Design",
+          "PCB Layout",
+          "Prototyping"
+        ],
+        "timeline": "12-24 Wochen"
+      },
+      "cloud": {
+        "title": "Cloud & DevOps",
+        "short": "AWS/GCP & K8s",
+        "desc": "Skalierbares Infrastructure as code. Kubernetes-Cluster, CI/CD-Pipelines und Kostenoptimierung.",
+        "proof": [
+          "Terraform",
+          "Zero Downtime",
+          "Auto-scaling"
+        ],
+        "timeline": "4-8 Wochen"
+      },
+      "engineering": {
+        "title": "Engineering",
+        "short": "Dedizierte Teams",
+        "desc": "Erweitern Sie Ihr Team mit einem dedizierten Pod aus Engineers, PMs und Designern.",
+        "proof": [
+          "Agile",
+          "Volle Transparenz",
+          "Senior-Talente"
+        ],
+        "timeline": "Monatlicher Retainer"
+      },
+      "integrations": {
+        "title": "Integrationen",
+        "short": "API & Middleware",
+        "desc": "Robuste API-Entwicklung und Third-Party-Integrationen (Stripe, Salesforce, Twilio).",
+        "proof": [
+          "Idempotent",
+          "Rate Limited",
+          "Dokumentiert"
+        ],
+        "timeline": "3-6 Wochen"
+      },
+      "data": {
+        "title": "Data & Analytics",
+        "short": "Pipelines & BI",
+        "desc": "Modern data stack Implementierung. ETL-Pipelines, Data Warehouses (Snowflake/BigQuery) und Dashboards.",
+        "proof": [
+          "Real-time",
+          "Governance",
+          "Actionable"
+        ],
+        "timeline": "6-10 Wochen"
+      },
+      "qa": {
+        "title": "QA & Testing",
+        "short": "Automatisierung & SRE",
+        "desc": "End-to-end Testing-Frameworks, Load-Testing und Site Reliability Engineering (SRE).",
+        "proof": [
+          "95% Coverage",
+          "Auto-revert",
+          "Chaos Testing"
+        ],
+        "timeline": "3-5 Wochen"
+      },
+      "design": {
+        "title": "UI/UX Design",
+        "short": "Systeme & Prototyping",
+        "desc": "Komplette Design-Systeme, Component Libraries und zugängliche UI Kits.",
+        "proof": [
+          "Accessible (WCAG)",
+          "Token-based",
+          "Pixel Perfect"
+        ],
+        "timeline": "4-8 Wochen"
+      }
+    }
   }
 }
