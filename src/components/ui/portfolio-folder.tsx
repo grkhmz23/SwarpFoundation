@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect, useLayoutEffect, useCallback, forwa
 import Image from "next/image";
 import { X, ExternalLink, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 // --- Interfaces & Constants ---
 
@@ -107,6 +108,7 @@ const ImageLightbox: React.FC<ImageLightboxProps> = ({
   onCloseComplete,
   onNavigate,
 }) => {
+  const t = useTranslations("worksUi");
   const [animationPhase, setAnimationPhase] = useState<"initial" | "animating" | "complete">("initial");
   const [isClosing, setIsClosing] = useState(false);
   const [shouldRender, setShouldRender] = useState(false);
@@ -355,7 +357,7 @@ const ImageLightbox: React.FC<ImageLightboxProps> = ({
                   rel="noopener noreferrer"
                   className={cn("flex items-center gap-2 px-6 py-3 text-sm font-bold uppercase tracking-widest text-black bg-cyan-400 hover:bg-cyan-300 rounded-xl shadow-lg shadow-cyan-500/20 transition-all duration-300 hover:scale-105 active:scale-95")}
                 >
-                  <span>View Project</span>
+                  <span>{t("viewProject")}</span>
                   <ExternalLink className="w-4 h-4" />
                 </a>
               )}
@@ -375,6 +377,7 @@ interface AnimatedFolderProps {
 }
 
 export const AnimatedFolder: React.FC<AnimatedFolderProps> = ({ title, projects, className, gradient }) => {
+  const t = useTranslations("worksUi");
   const [isHovered, setIsHovered] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [sourceRect, setSourceRect] = useState<DOMRect | null>(null);
@@ -424,10 +427,12 @@ export const AnimatedFolder: React.FC<AnimatedFolderProps> = ({ title, projects,
         </div>
         <div className="text-center">
           <h3 className="text-lg font-bold text-white mt-4 transition-all duration-500" style={{ transform: isHovered ? "translateY(2px)" : "translateY(0)", letterSpacing: isHovered ? "-0.01em" : "0" }}>{title}</h3>
-          <p className="text-sm font-medium text-gray-400 transition-all duration-500" style={{ opacity: isHovered ? 0.8 : 1 }}>{projects.length} {projects.length === 1 ? 'project' : 'projects'}</p>
+          <p className="text-sm font-medium text-gray-400 transition-all duration-500" style={{ opacity: isHovered ? 0.8 : 1 }}>
+            {projects.length} {projects.length === 1 ? t("project") : t("projects")}
+          </p>
         </div>
         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-gray-600 transition-all duration-500" style={{ opacity: isHovered ? 0 : 1, transform: isHovered ? "translateY(10px)" : "translateY(0)" }}>
-          <span>Hover to explore</span>
+          <span>{t("hoverToExplore")}</span>
         </div>
       </div>
       <ImageLightbox projects={projects} currentIndex={selectedIndex ?? 0} isOpen={selectedIndex !== null} onClose={handleCloseLightbox} sourceRect={sourceRect} onCloseComplete={handleCloseComplete} onNavigate={handleNavigate} />

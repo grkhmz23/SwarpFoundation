@@ -2,41 +2,43 @@
 
 import HolographicCard from "@/components/ui/holographic-card";
 import { Code, Blocks, Cpu, Globe, Lock, Zap } from "lucide-react";
-
-const services = [
-  {
-    title: "Smart Contracts",
-    description: "Production-grade Solana programs with formal verification and comprehensive testing.",
-    icon: <Code className="h-8 w-8" />,
-  },
-  {
-    title: "DeFi Protocols",
-    description: "Yield optimization, liquid staking, and privacy-preserving financial infrastructure.",
-    icon: <Blocks className="h-8 w-8" />,
-  },
-  {
-    title: "Web3 Apps",
-    description: "Full-stack decentralized applications with seamless UX and wallet integration.",
-    icon: <Globe className="h-8 w-8" />,
-  },
-  {
-    title: "Blockchain Infrastructure",
-    description: "Custom RPC nodes, MEV protection, and high-performance validator setups.",
-    icon: <Cpu className="h-8 w-8" />,
-  },
-  {
-    title: "Security Audits",
-    description: "Comprehensive smart contract audits and penetration testing for Web3.",
-    icon: <Lock className="h-8 w-8" />,
-  },
-  {
-    title: "High-Frequency Trading",
-    description: "Ultra-low latency trading bots and market-making infrastructure.",
-    icon: <Zap className="h-8 w-8" />,
-  },
-];
+import { useTranslations } from "next-intl";
 
 export function WhatWeBuild() {
+  const t = useTranslations("whatWeBuildSection");
+  const services = [
+    {
+      title: t("items.smartContracts.title"),
+      description: t("items.smartContracts.description"),
+      icon: <Code className="h-8 w-8" />,
+    },
+    {
+      title: t("items.defi.title"),
+      description: t("items.defi.description"),
+      icon: <Blocks className="h-8 w-8" />,
+    },
+    {
+      title: t("items.web3Apps.title"),
+      description: t("items.web3Apps.description"),
+      icon: <Globe className="h-8 w-8" />,
+    },
+    {
+      title: t("items.infrastructure.title"),
+      description: t("items.infrastructure.description"),
+      icon: <Cpu className="h-8 w-8" />,
+    },
+    {
+      title: t("items.audits.title"),
+      description: t("items.audits.description"),
+      icon: <Lock className="h-8 w-8" />,
+    },
+    {
+      title: t("items.hft.title"),
+      description: t("items.hft.description"),
+      icon: <Zap className="h-8 w-8" />,
+    },
+  ];
+
   return (
     <section id="services" className="py-24 bg-swarp-dark relative overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_50%,rgba(157,78,221,0.05),transparent_50%)]" />
@@ -44,10 +46,10 @@ export function WhatWeBuild() {
       <div className="max-w-6xl mx-auto px-4 relative z-10">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-gradient mb-4">
-            What We Build
+            {t("title")}
           </h2>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-            End-to-end blockchain solutions from concept to production
+            {t("subtitle")}
           </p>
         </div>
 

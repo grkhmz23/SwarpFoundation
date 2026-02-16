@@ -1,35 +1,37 @@
 "use client";
 
 import { TrendingUp, Users, Zap, Shield } from "lucide-react";
-
-const metrics = [
-  {
-    icon: TrendingUp,
-    value: "99.9%",
-    label: "Uptime SLA",
-    description: "Guaranteed reliability",
-  },
-  {
-    icon: Zap,
-    value: "10M+",
-    label: "Transactions Processed",
-    description: "Monthly volume",
-  },
-  {
-    icon: Users,
-    value: "500K+",
-    label: "Active Users",
-    description: "Across our platforms",
-  },
-  {
-    icon: Shield,
-    value: "100+",
-    label: "Security Audits",
-    description: "Zero critical issues",
-  },
-];
+import { useTranslations } from "next-intl";
 
 export function Metrics() {
+  const t = useTranslations("metricsSection");
+  const metrics = [
+    {
+      icon: TrendingUp,
+      value: "99.9%",
+      label: t("items.0.label"),
+      description: t("items.0.description"),
+    },
+    {
+      icon: Zap,
+      value: "10M+",
+      label: t("items.1.label"),
+      description: t("items.1.description"),
+    },
+    {
+      icon: Users,
+      value: "500K+",
+      label: t("items.2.label"),
+      description: t("items.2.description"),
+    },
+    {
+      icon: Shield,
+      value: "100+",
+      label: t("items.3.label"),
+      description: t("items.3.description"),
+    },
+  ];
+
   return (
     <section className="relative py-24 overflow-hidden">
       {/* Background */}

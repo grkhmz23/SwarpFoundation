@@ -550,14 +550,14 @@ export function Footer() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-[11px] text-white/30 leading-relaxed">
               <div className="space-y-1.5">
                 <p className="text-white/50 font-semibold font-mono text-[10px] tracking-[0.1em] uppercase mb-2">{t("company.title")}</p>
-                <p><span className="text-white/45">SWARP FOUNDATION S.R.L.</span> — Società a Responsabilità Limitata</p>
-                <p>Viale Tunisia 22, 20124, Milano (MI), Italy</p>
-                <p>Reg. No: 14284090967 &nbsp;·&nbsp; REA: MI-2771688 &nbsp;·&nbsp; P.IVA: 14284090967</p>
+                <p><span className="text-white/45">SWARP FOUNDATION S.R.L.</span> — {t("company.legalForm")}</p>
+                <p>{t("company.address")}</p>
+                <p>{t("company.registration")}</p>
               </div>
               <div className="space-y-1.5">
                 <p className="text-white/50 font-semibold font-mono text-[10px] tracking-[0.1em] uppercase mb-2">{t("contact.title")}</p>
                 <p>PEC: <a href="mailto:swarpfoundation@pec.it" className="text-[#00D4FF]/60 hover:text-[#00FFF0] transition-colors">swarpfoundation@pec.it</a></p>
-                <p>Email: <a href="mailto:info@swarppay.com" className="text-[#00D4FF]/60 hover:text-[#00FFF0] transition-colors">info@swarppay.com</a></p>
+                <p>{t("contact.emailLabel")}: <a href="mailto:info@swarppay.com" className="text-[#00D4FF]/60 hover:text-[#00FFF0] transition-colors">info@swarppay.com</a></p>
               </div>
             </div>
 
@@ -577,7 +577,7 @@ export function Footer() {
                 type="button"
                 onClick={() => setDevOpen((v) => !v)}
                 className="font-mono text-[11px] px-2.5 py-1 rounded-full border border-white/15 bg-white/[0.06] text-white/80 hover:border-[#00FFF0]/25 hover:text-white transition-all cursor-pointer"
-                aria-label="Toggle system log"
+                aria-label={t("toggleSystemLog")}
               >
                 log
               </button>

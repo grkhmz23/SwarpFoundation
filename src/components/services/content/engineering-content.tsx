@@ -219,7 +219,7 @@ function SkillMatrix() {
         </div>
         <div className="flex items-center gap-1 text-[10px] text-emerald-400">
           <Star className="w-3 h-3" />
-          <span>Top 5% Talent</span>
+          <span>TOP 5% TALENT</span>
         </div>
       </div>
 
@@ -320,7 +320,7 @@ function ProjectTimeline() {
             {/* Progress */}
             <div className="mb-2">
               <div className="flex justify-between text-[9px] text-gray-500 mb-1">
-                <span>Progress</span>
+                <span>PROGRESS</span>
                 <span>{project.progress}%</span>
               </div>
               <div className="h-1.5 bg-gray-800 rounded-full overflow-hidden">

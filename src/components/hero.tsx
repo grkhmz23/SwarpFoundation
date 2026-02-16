@@ -3,6 +3,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { KeyboardLink } from "@/components/ui/keyboard-button";
 import { ArrowRight, MessageCircle, Shield, Zap, Cpu, Sparkles } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 const codeLines = [
   "// Initializing Swarp Foundation...",
@@ -231,7 +232,28 @@ function MetricChip({
 }
 
 export function Hero() {
+  const t = useTranslations("hero");
   const reducedMotion = usePrefersReducedMotion();
+
+  const codeLines = useMemo(
+    () => [
+      t("codeLines.0"),
+      t("codeLines.1"),
+      "",
+      t("codeLines.3"),
+      t("codeLines.4"),
+      t("codeLines.5"),
+      t("codeLines.6"),
+      t("codeLines.7"),
+      t("codeLines.8"),
+      t("codeLines.9"),
+      t("codeLines.10"),
+      "",
+      t("codeLines.12"),
+      t("codeLines.13"),
+    ],
+    [t]
+  );
 
   const [displayedLines, setDisplayedLines] = useState<string[]>([]);
   const [currentLineIndex, setCurrentLineIndex] = useState(0);
@@ -277,17 +299,29 @@ export function Hero() {
 
   const metrics = useMemo(
     () => [
-      { icon: <Zap className="w-3.5 h-3.5 sm:w-4 sm:h-4" />, label: "Delivery", value: "Fast iteration" },
-      { icon: <Shield className="w-3.5 h-3.5 sm:w-4 sm:h-4" />, label: "Quality", value: "Production-grade" },
-      { icon: <Cpu className="w-3.5 h-3.5 sm:w-4 sm:h-4" />, label: "Stack", value: "Web • AI • Web3" },
+      {
+        icon: <Zap className="w-3.5 h-3.5 sm:w-4 sm:h-4" />,
+        label: t("metrics.delivery.label"),
+        value: t("metrics.delivery.value"),
+      },
+      {
+        icon: <Shield className="w-3.5 h-3.5 sm:w-4 sm:h-4" />,
+        label: t("metrics.quality.label"),
+        value: t("metrics.quality.value"),
+      },
+      {
+        icon: <Cpu className="w-3.5 h-3.5 sm:w-4 sm:h-4" />,
+        label: t("metrics.stack.label"),
+        value: t("metrics.stack.value"),
+      },
     ],
-    []
+    [t]
   );
 
   return (
     <section
       className="relative min-h-screen flex items-center justify-center pt-20 sm:pt-24 pb-24 sm:pb-12 px-4 overflow-hidden"
-      aria-label="Swarp hero"
+      aria-label={t("ariaLabel")}
     >
       {/* Main content */}
       <div className="w-full max-w-6xl mx-auto relative z-10">
@@ -296,20 +330,19 @@ export function Hero() {
           <div className="space-y-4 sm:space-y-6 text-center lg:text-left">
             <div className="badge">
               <span className="badge__dot" aria-hidden="true" />
-              <span className="badge__text">Enterprise Software Solutions</span>
+              <span className="badge__text">{t("badge.text")}</span>
               <span className="badge__sep hidden sm:inline">•</span>
-              <span className="badge__mono hidden sm:inline">build → ship → scale</span>
+              <span className="badge__mono hidden sm:inline">{t("badge.mono")}</span>
             </div>
 
             <h1 className="text-4xl sm:text-5xl md:text-7xl font-extrabold leading-[1.02] tracking-tight">
               <span className="text-white">Swarp</span>
               <br />
-              <span className="title-accent">Foundation</span>
+              <span className="title-accent">{t("titleAccent")}</span>
             </h1>
 
             <p className="text-base sm:text-lg md:text-xl text-slate-300/90 max-w-xl mx-auto lg:mx-0 leading-relaxed">
-              Full-stack software development company. From web platforms to AI solutions, blockchain
-              infrastructure to security audits — delivered with engineering discipline and speed.
+              {t("subtitle")}
             </p>
 
             <div className="flex flex-wrap gap-2 sm:gap-3 pt-1 justify-center lg:justify-start">
@@ -326,7 +359,7 @@ export function Hero() {
                   size="lg"
                   icon={<ArrowRight className="w-4 h-4" />}
                 >
-                  Explore Projects
+                  {t("actions.exploreProjects")}
                 </KeyboardLink>
               </div>
 
@@ -337,7 +370,7 @@ export function Hero() {
                   size="lg"
                   icon={<MessageCircle className="w-4 h-4" />}
                 >
-                  Get in Touch
+                  {t("actions.getInTouch")}
                 </KeyboardLink>
               </div>
             </div>
@@ -345,7 +378,7 @@ export function Hero() {
             <div className="hint">
               <Sparkles className="w-4 h-4 text-cyan-300/80 flex-shrink-0" />
               <span>
-                Have an idea? We can spec it in 24–48h and start shipping immediately.
+                {t("hint")}
               </span>
             </div>
           </div>
@@ -369,11 +402,11 @@ export function Hero() {
                   <div className="w-3 h-3 rounded-full bg-green-500/80" />
                 </div>
 
-                <div className="winbar__title">swarp-foundation.ts</div>
+                <div className="winbar__title">{t("panel.fileName")}</div>
 
                 <div className="winbar__right">
                   <span className="live-dot" />
-                  <span className="live-text">LIVE</span>
+                  <span className="live-text">{t("panel.live")}</span>
                 </div>
               </div>
 
@@ -401,10 +434,10 @@ export function Hero() {
               </div>
 
               <div className="footbar">
-                <span className="footbar__left">Web • Mobile • AI • Blockchain • Security</span>
+                <span className="footbar__left">{t("panel.footerLeft")}</span>
                 <span className="footbar__right">
                   <span className="ok-dot" />
-                  99.9% Uptime
+                  {t("panel.uptime")}
                 </span>
               </div>
             </div>
@@ -414,7 +447,7 @@ export function Hero() {
 
       {/* Scroll indicator - hidden on mobile */}
       <div className={`scroll hidden sm:flex ${reducedMotion ? "" : "bounce"}`} aria-hidden="true">
-        <span className="scroll__text">Scroll to explore</span>
+        <span className="scroll__text">{t("scroll")}</span>
         <div className="mouse">
           <div className="wheel" />
         </div>

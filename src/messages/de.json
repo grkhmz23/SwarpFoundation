@@ -105,10 +105,14 @@
       "forLog": "für das Systemprotokoll"
     },
     "company": {
-      "title": "Unternehmen"
+      "title": "Unternehmen",
+      "legalForm": "Società a Responsabilità Limitata",
+      "address": "Viale Tunisia 22, 20124, Milano (MI), Italy",
+      "registration": "Reg. No: 14284090967 · REA: MI-2771688 · P.IVA: 14284090967"
     },
     "contact": {
-      "title": "Kontakt"
+      "title": "Kontakt",
+      "emailLabel": "Email"
     },
     "copyright": "© 2026 SWARP FOUNDATION S.R.L. Alle Rechte vorbehalten.",
     "bottom": {
@@ -116,7 +120,8 @@
       "terms": "Bedingungen",
       "security": "Sicherheit",
       "cookies": "Cookies"
-    }
+    },
+    "toggleSystemLog": "Toggle system log"
   },
   "about": {
     "hero": {
@@ -315,6 +320,888 @@
           "Pixel Perfect"
         ],
         "timeline": "4-8 Wochen"
+      }
+    }
+  },
+  "hero": {
+    "ariaLabel": "Swarp Hero",
+    "badge": {
+      "text": "Enterprise-Softwarelösungen",
+      "mono": "bauen → liefern → skalieren"
+    },
+    "titleAccent": "Foundation",
+    "subtitle": "Full-Stack-Softwareentwicklungsunternehmen. Von Webplattformen bis AI-Lösungen, von blockchain-Infrastruktur bis Security-Audits — mit Engineering-Disziplin und Geschwindigkeit.",
+    "actions": {
+      "exploreProjects": "Projekte ansehen",
+      "getInTouch": "Kontakt aufnehmen"
+    },
+    "hint": "Sie haben eine Idee? Wir können sie in 24–48h spezifizieren und sofort mit der Umsetzung starten.",
+    "panel": {
+      "fileName": "swarp-foundation.ts",
+      "live": "LIVE",
+      "footerLeft": "Web • Mobile • AI • Blockchain • Security",
+      "uptime": "99,9% Uptime"
+    },
+    "scroll": "Scrollen zum Erkunden",
+    "metrics": {
+      "delivery": {
+        "label": "Delivery",
+        "value": "Schnelle Iteration"
+      },
+      "quality": {
+        "label": "Quality",
+        "value": "Production-grade"
+      },
+      "stack": {
+        "label": "Stack",
+        "value": "Web • AI • Web3"
+      }
+    },
+    "codeLines": {
+      "0": "// Initialisiere Swarp Foundation...",
+      "1": "import { Web, Mobile, AI, Blockchain, Security } from '@swarp/stack';",
+      "3": "const services = {",
+      "4": "  platforms: ['Web Apps', 'Mobile Apps', 'APIs'],",
+      "5": "  intelligence: ['AI Chat', 'ML Models', 'Automation'],",
+      "6": "  web3: ['DeFi', 'Smart Contracts', 'Wallets'],",
+      "7": "  security: ['Audits', 'Penetration Testing', 'Monitoring'],",
+      "8": "  devops: ['Cloud Infrastructure', 'CI/CD', 'Kubernetes'],",
+      "9": "};",
+      "10": "",
+      "12": "const deploy = await Swarp.build(services);",
+      "13": "console.log('✨ Innovation erfolgreich bereitgestellt');"
+    }
+  },
+  "ideaSection": {
+    "ariaLabel": "Ideenbereich",
+    "titlePrefix": "Haben Sie eine",
+    "titleAccent": "Idee",
+    "subtitle": "Beschreiben Sie sie. Wir bauen sie. Production-ready Software, schnell.",
+    "chips": {
+      "idea": "Idee",
+      "spec": "Spec",
+      "ship": "Ship"
+    },
+    "bullets": {
+      "scope": "Scope in 24-48h",
+      "iterations": "Schnelle Iterationen",
+      "quality": "Produktionsqualität"
+    },
+    "actions": {
+      "exploreServices": "Services erkunden",
+      "sendMessage": "Nachricht senden"
+    }
+  },
+  "presale": {
+    "alt": "SWARP Premium-Utility-Schema mit presale-Details"
+  },
+  "products": {
+    "hero": {
+      "titlePrefix": "Build on",
+      "description": "A safer, simpler way for mainstream users to access Solana. One custodial interface for fiat-to-crypto access, curated trading, and fair launch participation—designed with compliance readiness from day one."
+    },
+    "ecosystem": {
+      "titlePrefix": "The Swarp",
+      "titleAccent": "Ecosystem",
+      "description": "Three integrated components working together to reduce fragmentation, increase transparency, and enforce fairness in the Solana ecosystem.",
+      "learnMore": "Learn more"
+    },
+    "fees": {
+      "titlePrefix": "Fee",
+      "titleAccent": "Summary",
+      "swarppay": {
+        "listedTokenSwaps": "Listed token swaps",
+        "graduatedTokens": "Graduated tokens",
+        "poolFeesOnly": "Pool fees only"
+      },
+      "swarplaunch": {
+        "bondingPhase": "Bonding phase",
+        "swarpShare": "↳ Swarp share",
+        "creatorShare": "↳ Creator share",
+        "postGraduationPool": "Post-graduation pool"
+      },
+      "swarpid": {
+        "uniqueIssuance": "Unique issuance",
+        "apiValidation": "API validation",
+        "platformMinimum": "Platform minimum"
+      }
+    },
+    "bottomCta": {
+      "title": "Ready to get started?",
+      "description": "Join the waitlist for early access or reach out to discuss partnership opportunities.",
+      "demo": "Try SwarpPay Demo",
+      "contact": "Contact Us"
+    },
+    "securityCard": {
+      "name": "Verified Human"
+    },
+    "items": {
+      "swarppay": {
+        "tagline": "All-in-One Custodial Trading",
+        "description": "A Solana-first custodial trading app where retail users can buy and sell supported crypto assets with fiat, trade curated Solana tokens, and access safer launch participation-all in a single interface.",
+        "longDescription": "SwarpPay addresses the fragmented Solana ecosystem where users currently jump between wallets, DEX tools, charts, token scanners, and social channels to complete one decision. This increases mistakes and scam exposure. SwarpPay provides an exchange-style UX with custody-grade operational controls including 2FA, step-up authentication, device binding, withdrawal risk rules, anomaly detection, and incident response processes.",
+        "cta": "Try Demo",
+        "features": [
+          {
+            "title": "Fiat On/Off-Ramp",
+            "desc": "Buy and sell crypto with fiat via embedded third-party on/off-ramp providers"
+          },
+          {
+            "title": "Custodial UX",
+            "desc": "Users do not export private keys; Swarp provides custody-grade operational controls"
+          },
+          {
+            "title": "Curated Listings",
+            "desc": "Tokens listed only after risk screening, disclosures, and minimum liquidity thresholds"
+          },
+          {
+            "title": "Clear Fee Disclosure",
+            "desc": "Platform fee shown separately from Solana network fees and underlying pool fees"
+          },
+          {
+            "title": "Security Controls",
+            "desc": "2FA, step-up auth, device binding, withdrawal risk rules, and anomaly detection"
+          },
+          {
+            "title": "Risk Controls",
+            "desc": "Manual review triggers and incident response aligned with partner requirements"
+          }
+        ],
+        "stats": [
+          {
+            "label": "Platform Fee",
+            "desc": "per swap (buy/sell)"
+          },
+          {
+            "label": "Security",
+            "desc": "+ device binding"
+          },
+          {
+            "label": "Controls",
+            "desc": "grade operations"
+          }
+        ]
+      },
+      "swarplaunch": {
+        "tagline": "Curated Token Launchpad",
+        "description": "A request-only curated launchpad with standardized launch mechanics and per-user caps to reduce Sybil capture. Fair participation enforced through SwarpID verification.",
+        "longDescription": "Most token launches are unvetted and unsafe, with common hidden mechanics and liquidity traps. SwarpLaunch addresses this through a curated, request-only model where projects submit launch requests and Swarp evaluates legitimacy, token design, wallet disclosures, and readiness. Acceptance is not pay-to-launch. The bonding phase uses standardized mechanics with per-person caps and non-transferability until graduation.",
+        "cta": "Apply to Launch",
+        "features": [
+          {
+            "title": "Request & Review",
+            "desc": "Projects submit launch requests; Swarp evaluates legitimacy and readiness. Not pay-to-launch"
+          },
+          {
+            "title": "Per-Person Fairness",
+            "desc": "Bonding restricted to SwarpID verified users, capped at 1% of total supply per user"
+          },
+          {
+            "title": "Non-Transferability",
+            "desc": "Tokens non-transferable during bonding to reduce OTC bypass. Restrictions lift at graduation"
+          },
+          {
+            "title": "Graduation to Meteora",
+            "desc": "Liquidity migrates to Meteora via defined, published process. Trading becomes permissionless"
+          },
+          {
+            "title": "Creator Allocation",
+            "desc": "Standard 2% allocation at acceptance, disclosed and wallet-labeled, locked during bonding"
+          },
+          {
+            "title": "Transparent Dashboards",
+            "desc": "Fixed supply, no post-mint expansion, published launch parameters"
+          }
+        ],
+        "stats": [
+          {
+            "label": "Bonding Fee",
+            "desc": "per buy and sell"
+          },
+          {
+            "label": "Swarp Share",
+            "desc": "platform fee"
+          },
+          {
+            "label": "Creator Share",
+            "desc": "of trades"
+          }
+        ]
+      },
+      "swarpid": {
+        "tagline": "Verification & Anti-Duplicate Layer",
+        "description": "Enforce one active verified human credential per person for gated actions like launch participation and higher-risk operations. Enables stronger compliance and risk controls for fiat features.",
+        "longDescription": "Fairness in the Solana ecosystem is currently per-wallet, not per-person. Bots and Sybil attacks dominate early markets through per-wallet systems that allow one human to control many wallets, defeating fairness and distorting price discovery. SwarpID enforces one active verified human credential per person with optional binding to a primary wallet, enabling true per-person fairness.",
+        "cta": "Learn More",
+        "features": [
+          {
+            "title": "Identity Verification",
+            "desc": "Third-party KYC plus Swarp anti-duplicate checks (name/address normalization, device signals)"
+          },
+          {
+            "title": "One Person, One Credential",
+            "desc": "Enforces unique human verification with optional primary wallet binding"
+          },
+          {
+            "title": "Risk-Based Controls",
+            "desc": "Device and risk signals with manual review for identity risk scoring"
+          },
+          {
+            "title": "B2B API",
+            "desc": "Packaged service for partners requiring per-person uniqueness for wallets and gated actions"
+          },
+          {
+            "title": "Proof-of-Personhood (v2)",
+            "desc": "Future: uniqueness upgrades and portable reputation signals"
+          },
+          {
+            "title": "Privacy Constraints",
+            "desc": "Subject to regulatory requirements and user privacy controls"
+          }
+        ]
+      }
+    }
+  },
+  "works": {
+    "hero": {
+      "titlePrefix": "Project",
+      "titleAccent": "Portfolio",
+      "description": "Explore our completed projects across web development, blockchain, AI, and hardware. Hover over folders to preview work samples."
+    },
+    "cta": {
+      "title": "Have a Project in Mind?",
+      "description": "Let's discuss how we can bring your vision to life with cutting-edge technology.",
+      "button": "Start a Project"
+    },
+    "folders": {
+      "web": {
+        "title": "Web Applications",
+        "projects": [
+          {
+            "title": "SwarpPay Dashboard",
+            "description": "Full-featured trading platform with real-time charts, order management, and portfolio analytics."
+          },
+          {
+            "title": "Analytics Platform",
+            "description": "Enterprise analytics dashboard with customizable widgets and data visualization."
+          },
+          {
+            "title": "Admin Console",
+            "description": "Multi-tenant admin system with role-based access control and audit logging."
+          },
+          {
+            "title": "Client Portal",
+            "description": "Self-service portal for customers with document management and support tickets."
+          },
+          {
+            "title": "Developer Hub",
+            "description": "API documentation site with interactive playground and SDK downloads."
+          }
+        ]
+      },
+      "blockchain": {
+        "title": "Blockchain & DeFi",
+        "projects": [
+          {
+            "title": "pSOL Protocol",
+            "description": "Privacy-focused Solana protocol using zero-knowledge proofs for shielded transactions."
+          },
+          {
+            "title": "DEX Aggregator",
+            "description": "Multi-chain DEX aggregator with optimal routing and MEV protection."
+          },
+          {
+            "title": "NFT Marketplace",
+            "description": "Gasless NFT marketplace with lazy minting and royalty enforcement."
+          },
+          {
+            "title": "Staking Platform",
+            "description": "Liquid staking solution with auto-compounding rewards and governance."
+          },
+          {
+            "title": "BSC Nexus",
+            "description": "Cross-chain bridge infrastructure for BNB Smart Chain ecosystem."
+          }
+        ]
+      },
+      "ai": {
+        "title": "AI & Machine Learning",
+        "projects": [
+          {
+            "title": "RAG Chatbot",
+            "description": "Enterprise chatbot with document retrieval and contextual understanding."
+          },
+          {
+            "title": "Sentiment Analyzer",
+            "description": "Real-time social media sentiment analysis for trading signals."
+          },
+          {
+            "title": "Fraud Detection",
+            "description": "ML-powered fraud detection system with 99.7% accuracy."
+          },
+          {
+            "title": "Voice Assistant",
+            "description": "Custom voice AI for customer support automation."
+          }
+        ]
+      },
+      "mobile": {
+        "title": "Mobile Apps",
+        "projects": [
+          {
+            "title": "Crypto Wallet",
+            "description": "Multi-chain mobile wallet with biometric security and DApp browser."
+          },
+          {
+            "title": "Trading App",
+            "description": "iOS & Android trading app with real-time notifications and charts."
+          },
+          {
+            "title": "Fitness Tracker",
+            "description": "Health monitoring app with wearable integration."
+          }
+        ]
+      },
+      "hardware": {
+        "title": "Hardware & IoT",
+        "projects": [
+          {
+            "title": "Edge Node",
+            "description": "Custom ARM-based edge computing node for industrial IoT."
+          },
+          {
+            "title": "Sensor Gateway",
+            "description": "Multi-protocol sensor gateway with LoRaWAN and NB-IoT."
+          },
+          {
+            "title": "Mining Rig",
+            "description": "Optimized ASIC controller for cryptocurrency mining operations."
+          }
+        ]
+      },
+      "design": {
+        "title": "UI/UX Design",
+        "projects": [
+          {
+            "title": "Design System",
+            "description": "Comprehensive component library with Figma and code sync."
+          },
+          {
+            "title": "Dashboard Kit",
+            "description": "Premium dashboard UI kit with 200+ components."
+          },
+          {
+            "title": "Mobile UI Kit",
+            "description": "iOS and Android UI kit for fintech applications."
+          },
+          {
+            "title": "Icon Set",
+            "description": "1000+ custom icons optimized for web and mobile."
+          }
+        ]
+      }
+    }
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "Have a project in mind? Let's build something remarkable together.",
+    "cards": {
+      "email": {
+        "title": "Email",
+        "description": "Reach us directly for proposals and partnerships."
+      },
+      "office": {
+        "title": "Headquarters",
+        "description": "Swarp Foundation registered office."
+      },
+      "company": {
+        "title": "Company Info",
+        "description": "Official legal and registry details."
+      }
+    },
+    "copy": {
+      "copy": "Copy",
+      "copied": "Copied"
+    },
+    "location": {
+      "eyebrow": "Our Location",
+      "title": "Milan, Italy"
+    },
+    "online": {
+      "title": "Find us online"
+    },
+    "directLine": {
+      "eyebrow": "Secure Channel",
+      "title": "Direct Message Gateway",
+      "description": "Use our encrypted channel for confidential inquiries."
+    },
+    "gateway": {
+      "title": "Secure Message Gateway",
+      "subtitle": "Send an encrypted message to our team."
+    },
+    "social": {
+      "github": "GitHub",
+      "twitter": "X / Twitter",
+      "linkedin": "LinkedIn"
+    }
+  },
+  "projectsSection": {
+    "title": "Our Work",
+    "subtitle": "Building the future of blockchain infrastructure",
+    "items": {
+      "swarppay": {
+        "description": "Multi-currency payment infrastructure for Web3. $10M+ processed."
+      },
+      "humanRail": {
+        "description": "Identity verification + AI accountability on Solana. 50K+ verified users."
+      },
+      "psol": {
+        "description": "Multi-Asset Shielded Pool privacy protocol. 99.9% uptime."
+      },
+      "bscNexus": {
+        "description": "Enterprise blockchain infrastructure for BNB Chain. Ultra-fast trading."
+      },
+      "simfi": {
+        "description": "Solana paper trading platform. 10K+ traders."
+      },
+      "desertRose": {
+        "description": "Luxury brand website with 3D interactive elements. Award-winning UX."
+      }
+    }
+  },
+  "whatWeBuildSection": {
+    "title": "What We Build",
+    "subtitle": "End-to-end blockchain solutions from concept to production",
+    "items": {
+      "smartContracts": {
+        "title": "Smart Contracts",
+        "description": "Production-grade Solana programs with formal verification and comprehensive testing."
+      },
+      "defi": {
+        "title": "DeFi Protocols",
+        "description": "Yield optimization, liquid staking, and privacy-preserving financial infrastructure."
+      },
+      "web3Apps": {
+        "title": "Web3 Apps",
+        "description": "Full-stack decentralized applications with seamless UX and wallet integration."
+      },
+      "infrastructure": {
+        "title": "Blockchain Infrastructure",
+        "description": "Custom RPC nodes, MEV protection, and high-performance validator setups."
+      },
+      "audits": {
+        "title": "Security Audits",
+        "description": "Comprehensive smart contract audits and penetration testing for Web3."
+      },
+      "hft": {
+        "title": "High-Frequency Trading",
+        "description": "Ultra-low latency trading bots and market-making infrastructure."
+      }
+    }
+  },
+  "metricsSection": {
+    "items": [
+      {
+        "label": "Uptime SLA",
+        "description": "Guaranteed reliability"
+      },
+      {
+        "label": "Transactions Processed",
+        "description": "Monthly volume"
+      },
+      {
+        "label": "Active Users",
+        "description": "Across our platforms"
+      },
+      {
+        "label": "Security Audits",
+        "description": "Zero critical issues"
+      }
+    ]
+  },
+  "finalCtaSection": {
+    "badge": "Let's Talk",
+    "titlePrefix": "Launch with",
+    "description": "Ready to build something amazing? Whether you need a full product, specific infrastructure, or just want to explore possibilities, we're here to help.",
+    "success": {
+      "title": "Message Sent!",
+      "description": "We'll get back to you within 24 hours."
+    },
+    "form": {
+      "nameLabel": "Your Name *",
+      "namePlaceholder": "John Doe",
+      "emailLabel": "Email Address *",
+      "emailPlaceholder": "john@example.com",
+      "companyLabel": "Company / Project",
+      "companyPlaceholder": "Your Company",
+      "messageLabel": "Tell Us About Your Project *",
+      "messagePlaceholder": "I'm looking to build...",
+      "submit": "Send Message",
+      "disclaimer": "By submitting this form, you agree to our privacy policy and terms of service."
+    },
+    "info": {
+      "emailLabel": "Email",
+      "responseTimeLabel": "Response Time",
+      "responseTimeValue": "Within 24 hours",
+      "supportLabel": "Support",
+      "supportValue": "24/7 Available"
+    }
+  },
+  "worksUi": {
+    "viewProject": "View Project",
+    "project": "project",
+    "projects": "projects",
+    "hoverToExplore": "Hover to explore"
+  },
+  "legalLayout": {
+    "back": "Back",
+    "close": "Close",
+    "lastUpdated": "Last updated",
+    "contents": "Contents",
+    "contactUs": "Contact Us",
+    "contactDescription": "If you have any questions about this policy, please contact us at:",
+    "email": "Email",
+    "address": "Address",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "security": "Security",
+    "cookies": "Cookies"
+  },
+  "legal": {
+    "privacy": {
+      "title": "Privacy Policy",
+      "subtitle": "Legal / Privacy",
+      "lastUpdated": "August 2025",
+      "contactEmail": "info@swarppay.com",
+      "contactAddress": "Viale Tunisia 22, 20124, Milano, Italy",
+      "sections": {
+        "s1": {
+          "id": "information-we-collect",
+          "title": "Information We Collect",
+          "intro": "We collect information you provide directly, information gathered automatically while using our services, and information from trusted third parties.",
+          "items": [
+            "Personal information (name, email, phone number, date of birth)",
+            "Financial information (transaction history, wallet identifiers, payment details)",
+            "Identity verification data (government-issued ID and proof of address)",
+            "Technical data (IP address, device details, browser, and usage analytics)"
+          ],
+          "note": ""
+        },
+        "s2": {
+          "id": "how-we-use",
+          "title": "How We Use Your Information",
+          "intro": "We process your information to operate and improve our services, including:",
+          "items": [
+            "Service delivery and account management",
+            "Transaction processing and fraud prevention",
+            "Legal and regulatory compliance",
+            "Security alerts, technical updates, and support operations"
+          ],
+          "note": ""
+        },
+        "s3": {
+          "id": "information-sharing",
+          "title": "Information Sharing",
+          "intro": "We may share data with service providers, regulatory authorities, or in the context of business transfers where legally required.",
+          "note": "We do not sell personal information for third-party marketing.",
+          "items": [
+            "",
+            "",
+            "",
+            ""
+          ]
+        },
+        "s4": {
+          "id": "data-security",
+          "title": "Data Security",
+          "intro": "We apply technical and organizational controls including encryption, access controls, and monitoring to protect your data.",
+          "items": [
+            "",
+            "",
+            "",
+            ""
+          ],
+          "note": ""
+        },
+        "s5": {
+          "id": "your-rights",
+          "title": "Your Rights",
+          "intro": "Depending on your jurisdiction, you may request access, correction, deletion, portability, restriction, or objection regarding your data.",
+          "items": [
+            "",
+            "",
+            "",
+            ""
+          ],
+          "note": ""
+        },
+        "s6": {
+          "id": "changes",
+          "title": "Changes to This Policy",
+          "intro": "We may update this policy periodically. Material changes will be published with an updated revision date.",
+          "items": [
+            "",
+            "",
+            "",
+            ""
+          ],
+          "note": ""
+        }
+      }
+    },
+    "terms": {
+      "title": "Terms of Service",
+      "subtitle": "Legal / Terms",
+      "lastUpdated": "August 2025",
+      "contactEmail": "info@swarppay.com",
+      "contactAddress": "Viale Tunisia 22, 20124, Milano, Italy",
+      "sections": {
+        "s1": {
+          "id": "acceptance",
+          "title": "Acceptance of Terms",
+          "intro": "By accessing or using Swarp services, you agree to these Terms. If you disagree, do not use the services.",
+          "items": [
+            "",
+            "",
+            "",
+            ""
+          ],
+          "note": ""
+        },
+        "s2": {
+          "id": "service-description",
+          "title": "Service Description",
+          "intro": "Swarp provides software and digital asset services, including payments, blockchain integrations, and verification workflows.",
+          "items": [
+            "",
+            "",
+            "",
+            ""
+          ],
+          "note": ""
+        },
+        "s3": {
+          "id": "acceptable-use",
+          "title": "Acceptable Use",
+          "intro": "You must not use the services for unlawful activity, fraud, sanctions evasion, malware distribution, or unauthorized access.",
+          "items": [
+            "No money laundering or terrorist financing",
+            "No fraudulent or deceptive transactions",
+            "No attempts to compromise platform integrity",
+            ""
+          ],
+          "note": ""
+        },
+        "s4": {
+          "id": "aml-kyc",
+          "title": "AML / KYC Compliance",
+          "intro": "We apply identity verification, monitoring, and sanctions screening as required by applicable law.",
+          "items": [
+            "",
+            "",
+            "",
+            ""
+          ],
+          "note": ""
+        },
+        "s5": {
+          "id": "fees",
+          "title": "Fees and Charges",
+          "intro": "Applicable fees are disclosed before transaction confirmation and may be updated with reasonable notice.",
+          "items": [
+            "",
+            "",
+            "",
+            ""
+          ],
+          "note": ""
+        },
+        "s6": {
+          "id": "liability",
+          "title": "Limitation of Liability",
+          "intro": "To the maximum extent permitted by law, Swarp is not liable for indirect or consequential damages resulting from service use.",
+          "items": [
+            "",
+            "",
+            "",
+            ""
+          ],
+          "note": ""
+        },
+        "s7": {
+          "id": "governing-law",
+          "title": "Governing Law",
+          "intro": "These Terms are governed by the laws of Italy, with jurisdiction in Milan, Italy.",
+          "items": [
+            "",
+            "",
+            "",
+            ""
+          ],
+          "note": ""
+        }
+      }
+    },
+    "security": {
+      "title": "Security",
+      "subtitle": "Trust / Security",
+      "lastUpdated": "August 2025",
+      "contactEmail": "security@swarppay.com",
+      "contactAddress": "Viale Tunisia 22, 20124, Milano, Italy",
+      "sections": {
+        "s1": {
+          "id": "commitment",
+          "title": "Our Security Commitment",
+          "intro": "Security is a foundational requirement across Swarp products and infrastructure.",
+          "items": [
+            "",
+            "",
+            "",
+            ""
+          ],
+          "note": ""
+        },
+        "s2": {
+          "id": "infrastructure",
+          "title": "Infrastructure Security",
+          "items": [
+            "Encryption in transit and at rest",
+            "Network segmentation, monitoring, and DDoS controls",
+            "Environment isolation and controlled access",
+            "Redundancy and disaster recovery planning"
+          ],
+          "intro": "",
+          "note": ""
+        },
+        "s3": {
+          "id": "application",
+          "title": "Application Security",
+          "items": [
+            "Secure SDLC and code review",
+            "Automated SAST/DAST and dependency scanning",
+            "Penetration testing and remediation workflows",
+            ""
+          ],
+          "intro": "",
+          "note": ""
+        },
+        "s4": {
+          "id": "incident-response",
+          "title": "Incident Response",
+          "intro": "We maintain documented incident response procedures with escalation, containment, and post-incident review.",
+          "items": [
+            "",
+            "",
+            "",
+            ""
+          ],
+          "note": ""
+        },
+        "s5": {
+          "id": "vulnerability-disclosure",
+          "title": "Responsible Vulnerability Disclosure",
+          "intro": "Report security issues to security@swarppay.com with clear reproduction steps and sufficient validation details.",
+          "items": [
+            "",
+            "",
+            "",
+            ""
+          ],
+          "note": ""
+        },
+        "s6": {
+          "id": "user-recommendations",
+          "title": "Security Recommendations for Users",
+          "items": [
+            "Enable MFA",
+            "Use unique strong passwords",
+            "Keep devices updated",
+            "Beware of phishing attempts"
+          ],
+          "intro": "",
+          "note": ""
+        }
+      }
+    },
+    "cookies": {
+      "title": "Cookie Policy",
+      "subtitle": "Legal / Cookies",
+      "lastUpdated": "August 2025",
+      "contactEmail": "info@swarppay.com",
+      "contactAddress": "Viale Tunisia 22, 20124, Milano, Italy",
+      "sections": {
+        "s1": {
+          "id": "what-are-cookies",
+          "title": "What Are Cookies",
+          "intro": "Cookies are small text files stored on your device to support site functionality and improve experience.",
+          "items": [
+            "",
+            "",
+            "",
+            ""
+          ],
+          "note": ""
+        },
+        "s2": {
+          "id": "how-we-use",
+          "title": "How We Use Cookies",
+          "items": [
+            "Essential cookies for security and session handling",
+            "Performance and analytics cookies for service improvement",
+            "Functionality cookies for user preferences",
+            ""
+          ],
+          "intro": "",
+          "note": ""
+        },
+        "s3": {
+          "id": "managing",
+          "title": "Managing Cookies",
+          "intro": "You can manage cookie settings through browser controls and consent preferences.",
+          "items": [
+            "",
+            "",
+            "",
+            ""
+          ],
+          "note": ""
+        },
+        "s4": {
+          "id": "third-party",
+          "title": "Third-Party Cookies",
+          "intro": "Some services may set third-party cookies for analytics, embedded content, or payment flows.",
+          "items": [
+            "",
+            "",
+            "",
+            ""
+          ],
+          "note": ""
+        },
+        "s5": {
+          "id": "dnt",
+          "title": "Do Not Track Signals",
+          "intro": "We currently do not respond to Do Not Track signals because there is no universal standard.",
+          "items": [
+            "",
+            "",
+            "",
+            ""
+          ],
+          "note": ""
+        },
+        "s6": {
+          "id": "updates",
+          "title": "Updates to This Policy",
+          "intro": "We may revise this policy and publish updates with an updated revision date.",
+          "items": [
+            "",
+            "",
+            "",
+            ""
+          ],
+          "note": ""
+        }
       }
     }
   }

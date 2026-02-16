@@ -15,25 +15,27 @@ import {
 import { Button, ButtonProps } from '@/components/ui/button';
 import { LocationMap } from '@/components/ui/expand-map';
 import { SecureMessageGateway } from '@/components/ui/secure-message-gateway';
+import { useTranslations } from 'next-intl';
 
 const APP_EMAIL = 'info@swarppay.com';
 
 export function ContactPage() {
+    const t = useTranslations('contact');
     const socialLinks = [
         {
             icon: GithubIcon,
             href: 'https://github.com/SwarpPay',
-            label: 'GitHub',
+            label: t('social.github'),
         },
         {
             icon: TwitterIcon,
             href: 'https://twitter.com/Swarp_Pay',
-            label: 'Twitter',
+            label: t('social.twitter'),
         },
         {
             icon: LinkedinIcon,
             href: 'https://linkedin.com/company/swarp-pay',
-            label: 'LinkedIn',
+            label: t('social.linkedin'),
         },
     ];
 
@@ -50,18 +52,18 @@ export function ContactPage() {
                 </div>
                 <div className="flex grow flex-col justify-center px-4 md:px-6 pt-32 pb-16">
                     <h1 className="text-4xl font-bold md:text-5xl text-gradient">
-                        Contact Us
+                        {t('title')}
                     </h1>
                     <p className="text-gray-400 mb-5 text-base">
-                        Get in touch with the Swarp Foundation team.
+                        {t('subtitle')}
                     </p>
                 </div>
                 <BorderSeparator />
                 <div className="grid md:grid-cols-3">
                     <Box
                         icon={Mail}
-                        title="Email"
-                        description="We respond to all emails within 24 hours."
+                        title={t('cards.email.title')}
+                        description={t('cards.email.description')}
                     >
                         <a
                             href={`mailto:${APP_EMAIL}`}
@@ -69,12 +71,12 @@ export function ContactPage() {
                         >
                             {APP_EMAIL}
                         </a>
-                        <CopyButton className="size-6" test={APP_EMAIL} />
+                        <CopyButton className="size-6" test={APP_EMAIL} copiedLabel={t('copy.copied')} copyLabel={t('copy.copy')} />
                     </Box>
                     <Box
                         icon={MapPin}
-                        title="Office"
-                        description="SWARP FOUNDATION S.R.L. \u2014 Societ\u00e0 a Responsabilit\u00e0 Limitata"
+                        title={t('cards.office.title')}
+                        description={t('cards.office.description')}
                     >
                         <span className="font-mono text-sm font-medium tracking-wide text-gray-300">
                             Viale Tunisia 22, 20124, Milano (MI), Italy
@@ -82,8 +84,8 @@ export function ContactPage() {
                     </Box>
                     <Box
                         icon={Building2}
-                        title="Company"
-                        description="Registered in Milan, Italy"
+                        title={t('cards.company.title')}
+                        description={t('cards.company.description')}
                         className="border-b-0 md:border-r-0"
                     >
                         <div className="space-y-1">
@@ -115,14 +117,14 @@ export function ContactPage() {
                     <div className="relative z-1 space-y-6">
                         <div className="text-center mb-8">
                             <p className="text-gray-500 text-xs font-medium tracking-[0.2em] uppercase mb-4">
-                                Our Location
+                                {t('location.eyebrow')}
                             </p>
                             <h2 className="text-2xl font-bold text-gradient">
-                                Milano, Italy
+                                {t('location.title')}
                             </h2>
                         </div>
                         <LocationMap 
-                            location="Milano, Italy" 
+                            location={t('location.title')}
                             coordinates="45.4642\u00b0 N, 9.1900\u00b0 E"
                         />
                     </div>
@@ -141,7 +143,7 @@ export function ContactPage() {
 
                     <div className="relative z-1 space-y-6">
                         <h2 className="text-center text-3xl font-bold md:text-4xl text-gradient">
-                            Find us online
+                            {t('online.title')}
                         </h2>
                         <div className="flex flex-wrap items-center gap-4 justify-center">
                             {socialLinks.map((link) => (
@@ -178,18 +180,18 @@ export function ContactPage() {
                     <div className="relative z-1 w-full max-w-3xl px-4">
                         <div className="text-center mb-8">
                             <p className="text-gray-500 text-xs font-medium tracking-[0.2em] uppercase mb-4">
-                                Direct Line
+                                {t('directLine.eyebrow')}
                             </p>
                             <h2 className="text-2xl font-bold text-gradient mb-2">
-                                Send a Message
+                                {t('directLine.title')}
                             </h2>
                             <p className="text-gray-400 text-sm">
-                                Encrypted channel for direct communication with our team
+                                {t('directLine.description')}
                             </p>
                         </div>
                         <SecureMessageGateway 
-                            title="Secure Message Gateway"
-                            subtitle="Your message will be delivered to our team directly"
+                            title={t('gateway.title')}
+                            subtitle={t('gateway.subtitle')}
                         />
                     </div>
                 </div>
@@ -238,6 +240,8 @@ function Box({
 
 type CopyButtonProps = ButtonProps & {
     test: string;
+    copiedLabel: string;
+    copyLabel: string;
 };
 
 function CopyButton({
@@ -245,6 +249,8 @@ function CopyButton({
         variant = 'ghost',
         size = 'sm',
         test,
+        copiedLabel,
+        copyLabel,
         ...props
 }: CopyButtonProps) {
     const [copied, setCopied] = React.useState<boolean>(false);
@@ -265,7 +271,7 @@ function CopyButton({
             size={size}
             className={cn('disabled:opacity-100', className)}
             onClick={handleCopy}
-            aria-label={copied ? 'Copied' : 'Copy to clipboard'}
+            aria-label={copied ? copiedLabel : copyLabel}
             disabled={copied || props.disabled}
             {...props}
         >

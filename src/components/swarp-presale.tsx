@@ -2,8 +2,11 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 export function SwarpPresale() {
+  const t = useTranslations("presale");
+
   return (
     <section className="relative isolate py-12 md:py-20">
       <div className="relative mx-auto w-full max-w-6xl px-4 sm:px-6">
@@ -16,7 +19,7 @@ export function SwarpPresale() {
         >
           <Image
             src="/swarp-presale-schematic.svg"
-            alt="SWARP luxury utility schematic with presale details"
+            alt={t("alt")}
             width={1080}
             height={1080}
             className="block h-auto w-full"

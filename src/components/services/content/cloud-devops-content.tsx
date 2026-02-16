@@ -934,7 +934,7 @@ spec:
             3 changes pending
           </span>
         </div>
-        <span>Last updated: 2 min ago</span>
+        <span>last updated: 2 min ago</span>
       </div>
     </ServiceCard>
   );

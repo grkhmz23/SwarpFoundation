@@ -207,7 +207,7 @@ function VulnScanner() {
       {scanning && (
         <div className="mb-4">
           <div className="flex justify-between text-[10px] text-gray-400 mb-1">
-            <span>Scanning target: https://api.target.com</span>
+            <span>scanning target: https://api.target.com</span>
             <span>{progress}%</span>
           </div>
           <div className="h-1.5 bg-gray-800 rounded-full overflow-hidden">
@@ -341,7 +341,7 @@ function PentestTerminal() {
 
       <div className="mt-3 pt-3 border-t border-white/10 flex items-center justify-between text-[10px] text-gray-500">
         <span>Status: <span className="text-emerald-400">Active</span></span>
-        <span>Tests: {currentCommand}/{commands.length}</span>
+        <span>tests: {currentCommand}/{commands.length}</span>
       </div>
     </div>
   );

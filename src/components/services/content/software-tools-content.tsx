@@ -474,8 +474,8 @@ const AppContent = ({ config }: { config: ConfigState }) => {
             <div className="flex items-center justify-between px-4 py-1 border-b border-gray-800 text-[10px] uppercase text-gray-500 font-bold">
               <div className="flex gap-4">
                 <span className="text-white border-b border-white pb-1">Terminal</span>
-                <span>Output</span>
-                <span>Problems</span>
+                <span>OUTPUT</span>
+                <span>PROBLEMS</span>
               </div>
               <div className="flex gap-2">
                 <div className="w-2 h-2 rounded-full bg-gray-700 hover:bg-gray-500 cursor-pointer" />
@@ -528,7 +528,7 @@ const InstallerTab = () => {
         </div>
       </div>
       <div className="flex justify-between w-full max-w-xs text-[10px] text-gray-500 font-mono mb-12 uppercase tracking-widest">
-        <span>Init</span>
+        <span>INIT</span>
         <span>{progress}%</span>
       </div>
 

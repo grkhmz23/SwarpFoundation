@@ -411,7 +411,7 @@ function ResponsiveTester() {
       {/* Breakpoint Info */}
       <div className="mt-3 flex items-center justify-between text-[10px] text-gray-400">
         <span>Breakpoint: <span className="text-swarp-purple">{currentBreakpoint}</span></span>
-        <span>Width: {breakpoints.find(b => b.key === currentBreakpoint)?.width}px</span>
+        <span>width: {breakpoints.find(b => b.key === currentBreakpoint)?.width}px</span>
       </div>
 
       {/* Grid System */}

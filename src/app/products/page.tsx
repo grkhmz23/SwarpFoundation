@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { motion } from "framer-motion";
 import { 
   Wallet, Rocket, Shield, ArrowRight, 
@@ -11,80 +12,34 @@ import { cn } from "@/lib/utils";
 import { KeyboardLink } from "@/components/ui/keyboard-button";
 import { AetherBackground } from "@/components/ui/aether-background";
 import SecurityCard from "@/components/products/security-card";
+import { useTranslations } from "next-intl";
 
-// Product data based on business plan
-const PRODUCTS = [
-  {
-    id: "swarppay",
-    name: "SwarpPay",
-    tagline: "All-in-One Custodial Trading",
-    description: "A Solana-first custodial trading app where retail users can buy and sell supported crypto assets with fiat, trade curated Solana tokens, and access safer launch participation—all in a single interface.",
-    longDescription: "SwarpPay addresses the fragmented Solana ecosystem where users currently jump between wallets, DEX tools, charts, token scanners, and social channels to complete one decision. This increases mistakes and scam exposure. SwarpPay provides an exchange-style UX with custody-grade operational controls including 2FA, step-up authentication, device binding, withdrawal risk rules, anomaly detection, and incident response processes.",
-    icon: Wallet,
-    color: "cyan",
-    gradient: "from-cyan-500 to-blue-500",
-    features: [
-      { icon: CreditCard, title: "Fiat On/Off-Ramp", desc: "Buy and sell crypto with fiat via embedded third-party on/off-ramp providers" },
-      { icon: Lock, title: "Custodial UX", desc: "Users do not export private keys; Swarp provides custody-grade operational controls" },
-      { icon: FileCheck, title: "Curated Listings", desc: "Tokens listed only after risk screening, disclosures, and minimum liquidity thresholds" },
-      { icon: BarChart3, title: "Clear Fee Disclosure", desc: "Platform fee shown separately from Solana network fees and underlying pool fees" },
-      { icon: ShieldCheck, title: "Security Controls", desc: "2FA, step-up auth, device binding, withdrawal risk rules, and anomaly detection" },
-      { icon: Target, title: "Risk Controls", desc: "Manual review triggers and incident response aligned with partner requirements" },
-    ],
-    stats: [
-      { label: "Platform Fee", value: "0.50%", desc: "per swap (buy/sell)" },
-      { label: "Security", value: "2FA", desc: "+ device binding" },
-      { label: "Controls", value: "Custody", desc: "grade operations" },
-    ],
-    cta: { label: "Try Demo", href: "https://dash.swarppay.com" },
-  },
-  {
-    id: "swarplaunch",
-    name: "SwarpLaunch",
-    tagline: "Curated Token Launchpad",
-    description: "A request-only curated launchpad with standardized launch mechanics and per-user caps to reduce Sybil capture. Fair participation enforced through SwarpID verification.",
-    longDescription: "Most token launches are unvetted and unsafe, with common hidden mechanics and liquidity traps. SwarpLaunch addresses this through a curated, request-only model where projects submit launch requests and Swarp evaluates legitimacy, token design, wallet disclosures, and readiness. Acceptance is not pay-to-launch. The bonding phase uses standardized mechanics with per-person caps and non-transferability until graduation.",
-    icon: Rocket,
-    color: "purple",
-    gradient: "from-purple-500 to-pink-500",
-    features: [
-      { icon: FileCheck, title: "Request & Review", desc: "Projects submit launch requests; Swarp evaluates legitimacy and readiness. Not pay-to-launch" },
-      { icon: Users, title: "Per-Person Fairness", desc: "Bonding restricted to SwarpID verified users, capped at 1% of total supply per user" },
-      { icon: Lock, title: "Non-Transferability", desc: "Tokens non-transferable during bonding to reduce OTC bypass. Restrictions lift at graduation" },
-      { icon: Zap, title: "Graduation to Meteora", desc: "Liquidity migrates to Meteora via defined, published process. Trading becomes permissionless" },
-      { icon: Coins, title: "Creator Allocation", desc: "Standard 2% allocation at acceptance, disclosed and wallet-labeled, locked during bonding" },
-      { icon: TrendingUp, title: "Transparent Dashboards", desc: "Fixed supply, no post-mint expansion, published launch parameters" },
-    ],
-    stats: [
-      { label: "Bonding Fee", value: "2.00%", desc: "per buy and sell" },
-      { label: "Swarp Share", value: "1.50%", desc: "platform fee" },
-      { label: "Creator Share", value: "0.50%", desc: "of trades" },
-    ],
-    cta: { label: "Apply to Launch", href: "/contact" },
-  },
-  {
-    id: "swarpid",
-    name: "SwarpID",
-    tagline: "Verification & Anti-Duplicate Layer",
-    description: "Enforce one active verified human credential per person for gated actions like launch participation and higher-risk operations. Enables stronger compliance and risk controls for fiat features.",
-    longDescription: "Fairness in the Solana ecosystem is currently per-wallet, not per-person. Bots and Sybil attacks dominate early markets through per-wallet systems that allow one human to control many wallets, defeating fairness and distorting price discovery. SwarpID enforces one active verified human credential per person with optional binding to a primary wallet, enabling true per-person fairness.",
-    icon: Shield,
-    color: "green",
-    gradient: "from-emerald-500 to-cyan-500",
-    features: [
-      { icon: Fingerprint, title: "Identity Verification", desc: "Third-party KYC plus Swarp anti-duplicate checks (name/address normalization, device signals)" },
-      { icon: UserCheck, title: "One Person, One Credential", desc: "Enforces unique human verification with optional primary wallet binding" },
-      { icon: Shield, title: "Risk-Based Controls", desc: "Device and risk signals with manual review for identity risk scoring" },
-      { icon: Building2, title: "B2B API", desc: "Packaged service for partners requiring per-person uniqueness for wallets and gated actions" },
-      { icon: Globe, title: "Proof-of-Personhood (v2)", desc: "Future: uniqueness upgrades and portable reputation signals" },
-      { icon: Lock, title: "Privacy Constraints", desc: "Subject to regulatory requirements and user privacy controls" },
-    ],
-    stats: [
-    ],
-    cta: { label: "Learn More", href: "/contact" },
-    hasDemo: true,
-  },
-];
+type ProductFeature = {
+  icon: any;
+  title: string;
+  desc: string;
+};
+
+type ProductStat = {
+  label: string;
+  value: string;
+  desc: string;
+};
+
+type Product = {
+  id: string;
+  name: string;
+  tagline: string;
+  description: string;
+  longDescription: string;
+  icon: any;
+  color: "cyan" | "purple" | "green";
+  gradient: string;
+  features: ProductFeature[];
+  stats: ProductStat[];
+  cta: { label: string; href: string };
+  hasDemo?: boolean;
+};
 
 // Glass card component
 function GlassCard({ children, className }: { children: React.ReactNode; className?: string }) {
@@ -103,7 +58,8 @@ function GlassCard({ children, className }: { children: React.ReactNode; classNa
 }
 
 // Product section component
-function ProductSection({ product, index }: { product: typeof PRODUCTS[0]; index: number }) {
+function ProductSection({ product, index }: { product: Product; index: number }) {
+  const t = useTranslations("products");
   const isReversed = index % 2 === 1;
   const Icon = product.icon;
 
@@ -227,7 +183,7 @@ function ProductSection({ product, index }: { product: typeof PRODUCTS[0]; index
           isReversed && "lg:col-start-1"
         )}>
           {product.hasDemo ? (
-            <SecurityCard name="Verified Human" email="user@swarpid.com" delay={6000} />
+            <SecurityCard name={t("securityCard.name")} email="user@swarpid.com" delay={6000} />
           ) : (
             <ProductVisual product={product} />
           )}
@@ -238,7 +194,7 @@ function ProductSection({ product, index }: { product: typeof PRODUCTS[0]; index
 }
 
 // Product visual for SwarpPay and SwarpLaunch
-function ProductVisual({ product }: { product: typeof PRODUCTS[0] }) {
+function ProductVisual({ product }: { product: Product }) {
   const Icon = product.icon;
 
   return (
@@ -318,7 +274,8 @@ function ProductVisual({ product }: { product: typeof PRODUCTS[0] }) {
 }
 
 // Ecosystem overview component
-function EcosystemOverview() {
+function EcosystemOverview({ products }: { products: Product[] }) {
+  const t = useTranslations("products.ecosystem");
   return (
     <motion.section
       initial={{ opacity: 0, y: 30 }}
@@ -329,10 +286,10 @@ function EcosystemOverview() {
       <GlassCard className="p-8 md:p-12">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            The Swarp <span className="text-gradient">Ecosystem</span>
+            {t("titlePrefix")} <span className="text-gradient">{t("titleAccent")}</span>
           </h2>
           <p className="text-gray-400 max-w-2xl mx-auto">
-            Three integrated components working together to reduce fragmentation, increase transparency, and enforce fairness in the Solana ecosystem.
+            {t("description")}
           </p>
         </div>
 
@@ -342,7 +299,7 @@ function EcosystemOverview() {
           <div className="hidden md:block absolute top-1/2 left-[33%] w-[34%] h-px bg-gradient-to-r from-cyan-500/50 to-purple-500/50" />
           <div className="hidden md:block absolute top-1/2 right-[33%] w-[34%] h-px bg-gradient-to-r from-purple-500/50 to-emerald-500/50" />
 
-          {PRODUCTS.map((product, i) => {
+          {products.map((product, i) => {
             const Icon = product.icon;
             return (
               <motion.a
@@ -374,7 +331,7 @@ function EcosystemOverview() {
                     product.color === "cyan" && "text-cyan-400",
                     product.color === "purple" && "text-purple-400",
                     product.color === "green" && "text-emerald-400"
-                  )}>Learn more</span>
+                  )}>{t("learnMore")}</span>
                   <ArrowRight className={cn(
                     "w-3 h-3 transition-transform group-hover:translate-x-1",
                     product.color === "cyan" && "text-cyan-400",
@@ -393,6 +350,7 @@ function EcosystemOverview() {
 
 // Fee summary section
 function FeeSummary() {
+  const t = useTranslations("products.fees");
   return (
     <motion.section
       initial={{ opacity: 0, y: 30 }}
@@ -402,7 +360,7 @@ function FeeSummary() {
     >
       <GlassCard className="p-8 md:p-12">
         <h2 className="text-2xl md:text-3xl font-bold text-white mb-8 text-center">
-          Fee <span className="text-gradient">Summary</span>
+          {t("titlePrefix")} <span className="text-gradient">{t("titleAccent")}</span>
         </h2>
 
         <div className="grid md:grid-cols-3 gap-6">
@@ -411,12 +369,12 @@ function FeeSummary() {
             <h3 className="text-lg font-bold text-cyan-400 mb-4">SwarpPay</h3>
             <div className="space-y-3 text-sm">
               <div className="flex justify-between">
-                <span className="text-gray-400">Listed token swaps</span>
+                <span className="text-gray-400">{t("swarppay.listedTokenSwaps")}</span>
                 <span className="text-white font-semibold">0.50%</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-400">Graduated tokens</span>
-                <span className="text-white font-semibold">Pool fees only</span>
+                <span className="text-gray-400">{t("swarppay.graduatedTokens")}</span>
+                <span className="text-white font-semibold">{t("swarppay.poolFeesOnly")}</span>
               </div>
             </div>
           </div>
@@ -426,19 +384,19 @@ function FeeSummary() {
             <h3 className="text-lg font-bold text-purple-400 mb-4">SwarpLaunch</h3>
             <div className="space-y-3 text-sm">
               <div className="flex justify-between">
-                <span className="text-gray-400">Bonding phase</span>
+                <span className="text-gray-400">{t("swarplaunch.bondingPhase")}</span>
                 <span className="text-white font-semibold">2.00%</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-400">↳ Swarp share</span>
+                <span className="text-gray-400">{t("swarplaunch.swarpShare")}</span>
                 <span className="text-gray-300">1.50%</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-400">↳ Creator share</span>
+                <span className="text-gray-400">{t("swarplaunch.creatorShare")}</span>
                 <span className="text-gray-300">0.50%</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-400">Post-graduation pool</span>
+                <span className="text-gray-400">{t("swarplaunch.postGraduationPool")}</span>
                 <span className="text-white font-semibold">~1.00%</span>
               </div>
             </div>
@@ -449,15 +407,15 @@ function FeeSummary() {
             <h3 className="text-lg font-bold text-emerald-400 mb-4">SwarpID B2B</h3>
             <div className="space-y-3 text-sm">
               <div className="flex justify-between">
-                <span className="text-gray-400">Unique issuance</span>
+                <span className="text-gray-400">{t("swarpid.uniqueIssuance")}</span>
                 <span className="text-white font-semibold">$3.50</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-400">API validation</span>
+                <span className="text-gray-400">{t("swarpid.apiValidation")}</span>
                 <span className="text-white font-semibold">$0.02</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-400">Platform minimum</span>
+                <span className="text-gray-400">{t("swarpid.platformMinimum")}</span>
                 <span className="text-white font-semibold">$2,500/mo</span>
               </div>
             </div>
@@ -469,6 +427,82 @@ function FeeSummary() {
 }
 
 export default function ProductsPage() {
+  const t = useTranslations("products");
+  const products = useMemo<Product[]>(
+    () => [
+      {
+        id: "swarppay",
+        name: "SwarpPay",
+        tagline: t("items.swarppay.tagline"),
+        description: t("items.swarppay.description"),
+        longDescription: t("items.swarppay.longDescription"),
+        icon: Wallet,
+        color: "cyan",
+        gradient: "from-cyan-500 to-blue-500",
+        features: [
+          { icon: CreditCard, title: t("items.swarppay.features.0.title"), desc: t("items.swarppay.features.0.desc") },
+          { icon: Lock, title: t("items.swarppay.features.1.title"), desc: t("items.swarppay.features.1.desc") },
+          { icon: FileCheck, title: t("items.swarppay.features.2.title"), desc: t("items.swarppay.features.2.desc") },
+          { icon: BarChart3, title: t("items.swarppay.features.3.title"), desc: t("items.swarppay.features.3.desc") },
+          { icon: ShieldCheck, title: t("items.swarppay.features.4.title"), desc: t("items.swarppay.features.4.desc") },
+          { icon: Target, title: t("items.swarppay.features.5.title"), desc: t("items.swarppay.features.5.desc") },
+        ],
+        stats: [
+          { label: t("items.swarppay.stats.0.label"), value: "0.50%", desc: t("items.swarppay.stats.0.desc") },
+          { label: t("items.swarppay.stats.1.label"), value: "2FA", desc: t("items.swarppay.stats.1.desc") },
+          { label: t("items.swarppay.stats.2.label"), value: "Custody", desc: t("items.swarppay.stats.2.desc") },
+        ],
+        cta: { label: t("items.swarppay.cta"), href: "https://dash.swarppay.com" },
+      },
+      {
+        id: "swarplaunch",
+        name: "SwarpLaunch",
+        tagline: t("items.swarplaunch.tagline"),
+        description: t("items.swarplaunch.description"),
+        longDescription: t("items.swarplaunch.longDescription"),
+        icon: Rocket,
+        color: "purple",
+        gradient: "from-purple-500 to-pink-500",
+        features: [
+          { icon: FileCheck, title: t("items.swarplaunch.features.0.title"), desc: t("items.swarplaunch.features.0.desc") },
+          { icon: Users, title: t("items.swarplaunch.features.1.title"), desc: t("items.swarplaunch.features.1.desc") },
+          { icon: Lock, title: t("items.swarplaunch.features.2.title"), desc: t("items.swarplaunch.features.2.desc") },
+          { icon: Zap, title: t("items.swarplaunch.features.3.title"), desc: t("items.swarplaunch.features.3.desc") },
+          { icon: Coins, title: t("items.swarplaunch.features.4.title"), desc: t("items.swarplaunch.features.4.desc") },
+          { icon: TrendingUp, title: t("items.swarplaunch.features.5.title"), desc: t("items.swarplaunch.features.5.desc") },
+        ],
+        stats: [
+          { label: t("items.swarplaunch.stats.0.label"), value: "2.00%", desc: t("items.swarplaunch.stats.0.desc") },
+          { label: t("items.swarplaunch.stats.1.label"), value: "1.50%", desc: t("items.swarplaunch.stats.1.desc") },
+          { label: t("items.swarplaunch.stats.2.label"), value: "0.50%", desc: t("items.swarplaunch.stats.2.desc") },
+        ],
+        cta: { label: t("items.swarplaunch.cta"), href: "/contact" },
+      },
+      {
+        id: "swarpid",
+        name: "SwarpID",
+        tagline: t("items.swarpid.tagline"),
+        description: t("items.swarpid.description"),
+        longDescription: t("items.swarpid.longDescription"),
+        icon: Shield,
+        color: "green",
+        gradient: "from-emerald-500 to-cyan-500",
+        features: [
+          { icon: Fingerprint, title: t("items.swarpid.features.0.title"), desc: t("items.swarpid.features.0.desc") },
+          { icon: UserCheck, title: t("items.swarpid.features.1.title"), desc: t("items.swarpid.features.1.desc") },
+          { icon: Shield, title: t("items.swarpid.features.2.title"), desc: t("items.swarpid.features.2.desc") },
+          { icon: Building2, title: t("items.swarpid.features.3.title"), desc: t("items.swarpid.features.3.desc") },
+          { icon: Globe, title: t("items.swarpid.features.4.title"), desc: t("items.swarpid.features.4.desc") },
+          { icon: Lock, title: t("items.swarpid.features.5.title"), desc: t("items.swarpid.features.5.desc") },
+        ],
+        stats: [],
+        cta: { label: t("items.swarpid.cta"), href: "/contact" },
+        hasDemo: true,
+      },
+    ],
+    [t]
+  );
+
   return (
     <AetherBackground className="min-h-screen">
       {/* CSS for SecurityCard animations */}
@@ -514,7 +548,7 @@ export default function ProductsPage() {
               transition={{ delay: 0.1 }}
               className="text-5xl md:text-6xl font-bold mb-6"
             >
-              <span className="text-white">Build on </span>
+              <span className="text-white">{t("hero.titlePrefix")} </span>
               <span className="text-gradient">Swarp</span>
             </motion.h1>
 
@@ -524,15 +558,15 @@ export default function ProductsPage() {
               transition={{ delay: 0.2 }}
               className="text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed"
             >
-              A safer, simpler way for mainstream users to access Solana. One custodial interface for fiat-to-crypto access, curated trading, and fair launch participation—designed with compliance readiness from day one.
+              {t("hero.description")}
             </motion.p>
           </div>
 
           {/* Ecosystem Overview */}
-          <EcosystemOverview />
+          <EcosystemOverview products={products} />
 
           {/* Product Sections */}
-          {PRODUCTS.map((product, i) => (
+          {products.map((product, i) => (
             <ProductSection key={product.id} product={product} index={i} />
           ))}
 
@@ -544,21 +578,21 @@ export default function ProductsPage() {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="py-16"
+              className="py-16"
           >
             <GlassCard className="p-12 text-center">
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-                Ready to get started?
+                {t("bottomCta.title")}
               </h2>
               <p className="text-gray-400 max-w-xl mx-auto mb-8">
-                Join the waitlist for early access or reach out to discuss partnership opportunities.
+                {t("bottomCta.description")}
               </p>
               <div className="flex flex-wrap justify-center gap-4">
                 <KeyboardLink href="https://dash.swarppay.com" variant="primary" size="lg">
-                  Try SwarpPay Demo
+                  {t("bottomCta.demo")}
                 </KeyboardLink>
                 <KeyboardLink href="/contact" variant="secondary" size="lg">
-                  Contact Us
+                  {t("bottomCta.contact")}
                 </KeyboardLink>
               </div>
             </GlassCard>

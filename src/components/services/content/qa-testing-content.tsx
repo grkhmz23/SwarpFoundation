@@ -456,12 +456,12 @@ function SREDashboard() {
         <div className="space-y-1.5">
           <div className="flex items-center gap-2 text-[10px] p-2 rounded bg-amber-500/10 border border-amber-500/20 text-amber-400">
             <AlertTriangle className="w-3 h-3" />
-            <span>Latency spike detected (p95: 320ms)</span>
+            <span>latency spike detected (p95: 320ms)</span>
             <span className="ml-auto text-gray-500">5m ago</span>
           </div>
           <div className="flex items-center gap-2 text-[10px] p-2 rounded bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
             <CheckCircle2 className="w-3 h-3" />
-            <span>Error rate back to normal</span>
+            <span>error rate back to normal</span>
             <span className="ml-auto text-gray-500">12m ago</span>
           </div>
         </div>

@@ -118,11 +118,11 @@ const SwarpBentoGrid = ({ className }: SwarpBentoGridProps) => {
           <div className="space-y-2 mt-4">
             <div className="flex items-center gap-2 text-sm text-gray-500">
               <div className="w-1.5 h-1.5 rounded-full bg-[#00D4FF]" />
-              <span>Groth16 ZK Proofs</span>
+              <span>GROTH16 ZK PROOFS</span>
             </div>
             <div className="flex items-center gap-2 text-sm text-gray-500">
               <div className="w-1.5 h-1.5 rounded-full bg-[#9D4EDD]" />
-              <span>Multi-Asset Shielded Pool</span>
+              <span>MULTI-ASSET SHIELDED POOL</span>
             </div>
             <div className="flex items-center gap-2 text-sm text-gray-500">
               <div className="w-1.5 h-1.5 rounded-full bg-[#00FFF0]" />

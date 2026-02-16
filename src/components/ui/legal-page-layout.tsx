@@ -4,6 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { ArrowLeft, X } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 interface LegalSection {
   id: string;
@@ -29,6 +30,7 @@ export function LegalPageLayout({
   contactAddress = "Viale Tunisia 22, 20124, Milano, Italy",
 }: LegalPageLayoutProps) {
   const router = useRouter();
+  const t = useTranslations("legalLayout");
 
   return (
     <div className="min-h-screen relative z-10 py-8 px-4 sm:px-6 lg:px-8">
@@ -41,14 +43,14 @@ export function LegalPageLayout({
             className="flex items-center gap-2 text-sm text-white/60 hover:text-white transition-colors group"
           >
             <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
-            Back
+            {t("back")}
           </button>
           <Link
             href="/"
             className="flex items-center gap-2 text-sm text-white/60 hover:text-white transition-colors"
           >
             <X size={16} />
-            Close
+            {t("close")}
           </Link>
         </div>
 
@@ -77,14 +79,14 @@ export function LegalPageLayout({
                 {title}
               </h1>
               <p className="text-sm text-white/40">
-                Last updated: {lastUpdated}
+                {t("lastUpdated")}: {lastUpdated}
               </p>
             </div>
 
             {/* Table of contents */}
             <div className="px-8 sm:px-12 py-6 border-b border-white/[0.06] bg-white/[0.02]">
               <p className="text-[10px] font-mono tracking-[0.2em] uppercase text-white/30 mb-4">
-                Contents
+                {t("contents")}
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {sections.map((section, i) => (
@@ -125,16 +127,16 @@ export function LegalPageLayout({
                 <div className="flex items-center gap-3 mb-4">
                   <div className="h-1 w-6 rounded-full bg-gradient-to-r from-[#00FFF0] to-[#00D4FF]" />
                   <h2 className="text-lg font-semibold text-white tracking-tight">
-                    Contact Us
+                    {t("contactUs")}
                   </h2>
                 </div>
                 <div className="pl-8 text-[14px] text-white/65 leading-relaxed space-y-2">
                   <p>
-                    If you have any questions about this policy, please contact us at:
+                    {t("contactDescription")}
                   </p>
                   <div className="mt-4 p-4 rounded-xl border border-white/[0.06] bg-white/[0.02] inline-block">
                     <p>
-                      <span className="text-white/40">Email: </span>
+                      <span className="text-white/40">{t("email")}: </span>
                       <a
                         href={`mailto:${contactEmail}`}
                         className="text-[#00D4FF] hover:text-[#00FFF0] transition-colors"
@@ -143,7 +145,7 @@ export function LegalPageLayout({
                       </a>
                     </p>
                     <p className="mt-1">
-                      <span className="text-white/40">Address: </span>
+                      <span className="text-white/40">{t("address")}: </span>
                       <span className="text-white/70">{contactAddress}</span>
                     </p>
                   </div>
@@ -155,16 +157,16 @@ export function LegalPageLayout({
             <div className="px-8 sm:px-12 py-6 border-t border-white/[0.06] bg-white/[0.02] flex flex-wrap gap-4 items-center justify-between">
               <div className="flex items-center gap-4">
                 <Link href="/privacy" className="text-[12px] text-white/40 hover:text-[#00D4FF] transition-colors">
-                  Privacy
+                  {t("privacy")}
                 </Link>
                 <Link href="/terms" className="text-[12px] text-white/40 hover:text-[#00D4FF] transition-colors">
-                  Terms
+                  {t("terms")}
                 </Link>
                 <Link href="/security" className="text-[12px] text-white/40 hover:text-[#00D4FF] transition-colors">
-                  Security
+                  {t("security")}
                 </Link>
                 <Link href="/cookies" className="text-[12px] text-white/40 hover:text-[#00D4FF] transition-colors">
-                  Cookies
+                  {t("cookies")}
                 </Link>
               </div>
               <p className="text-[11px] text-white/25 font-mono">

@@ -239,7 +239,7 @@ function LiveDashboard() {
         <span>06:00</span>
         <span>12:00</span>
         <span>18:00</span>
-        <span>Now</span>
+        <span>now</span>
       </div>
     </ServiceCard>
   );
@@ -305,7 +305,7 @@ LIMIT 100;`);
           className="mt-3 flex-1 overflow-hidden"
         >
           <div className="flex items-center justify-between text-[10px] text-gray-500 mb-2">
-            <span>Results ({results.rowCount} rows)</span>
+            <span>results ({results.rowCount} rows)</span>
             <span className="text-emerald-400">{results.executionTime}s</span>
           </div>
           <div className="border border-white/10 rounded-lg overflow-hidden">

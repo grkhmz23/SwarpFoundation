@@ -325,7 +325,7 @@ function ApiPlayground() {
       {/* Response Area */}
       <div className="flex-1 bg-[#09090b] rounded-lg border border-white/10 p-3 overflow-hidden flex flex-col">
         <div className="flex items-center justify-between mb-2 text-[10px] text-gray-500 border-b border-white/10 pb-2">
-          <span>Response</span>
+          <span>response</span>
           {response && (
             <span className={cn(
               response.status < 300 ? "text-emerald-400" : response.status < 400 ? "text-amber-400" : "text-red-400"

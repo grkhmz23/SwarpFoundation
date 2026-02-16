@@ -3,8 +3,10 @@
 import { useState } from "react";
 import { Send, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useTranslations } from "next-intl";
 
 export function FinalCTA() {
+  const t = useTranslations("finalCtaSection");
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -46,14 +48,14 @@ export function FinalCTA() {
           {/* Header */}
           <div className="text-center mb-12">
             <div className="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-swarp-blue/10 border border-swarp-blue/20 mb-6">
-              <span className="text-sm text-swarp-cyan font-medium">Let&apos;s Talk</span>
+              <span className="text-sm text-swarp-cyan font-medium">{t("badge")}</span>
             </div>
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              <span className="text-white">Launch with</span>{" "}
+              <span className="text-white">{t("titlePrefix")}</span>{" "}
               <span className="text-gradient">Swarp</span>
             </h2>
             <p className="text-lg text-gray-400 max-w-2xl mx-auto">
-              Ready to build something amazing? Whether you need a full product, specific infrastructure, or just want to explore possibilities, we&apos;re here to help.
+              {t("description")}
             </p>
           </div>
 
@@ -67,8 +69,8 @@ export function FinalCTA() {
                   <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-500/20 border border-green-500/50 mb-4">
                     <CheckCircle className="w-8 h-8 text-green-400" />
                   </div>
-                  <h3 className="text-2xl font-bold text-white mb-2">Message Sent!</h3>
-                  <p className="text-gray-400">We&apos;ll get back to you within 24 hours.</p>
+                  <h3 className="text-2xl font-bold text-white mb-2">{t("success.title")}</h3>
+                  <p className="text-gray-400">{t("success.description")}</p>
                 </div>
               ) : (
                 // Contact Form
@@ -76,7 +78,7 @@ export function FinalCTA() {
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
                       <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2">
-                        Your Name *
+                        {t("form.nameLabel")}
                       </label>
                       <input
                         type="text"
@@ -86,12 +88,12 @@ export function FinalCTA() {
                         value={formData.name}
                         onChange={handleChange}
                         className="w-full px-4 py-3 rounded-lg bg-swarp-darker border border-swarp-blue/20 text-white placeholder-gray-500 focus:outline-none focus:border-swarp-cyan transition-colors"
-                        placeholder="John Doe"
+                        placeholder={t("form.namePlaceholder")}
                       />
                     </div>
                     <div>
                       <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
-                        Email Address *
+                        {t("form.emailLabel")}
                       </label>
                       <input
                         type="email"
@@ -101,14 +103,14 @@ export function FinalCTA() {
                         value={formData.email}
                         onChange={handleChange}
                         className="w-full px-4 py-3 rounded-lg bg-swarp-darker border border-swarp-blue/20 text-white placeholder-gray-500 focus:outline-none focus:border-swarp-cyan transition-colors"
-                        placeholder="john@example.com"
+                        placeholder={t("form.emailPlaceholder")}
                       />
                     </div>
                   </div>
 
                   <div>
                     <label htmlFor="company" className="block text-sm font-medium text-gray-300 mb-2">
-                      Company / Project
+                      {t("form.companyLabel")}
                     </label>
                     <input
                       type="text"
@@ -117,13 +119,13 @@ export function FinalCTA() {
                       value={formData.company}
                       onChange={handleChange}
                       className="w-full px-4 py-3 rounded-lg bg-swarp-darker border border-swarp-blue/20 text-white placeholder-gray-500 focus:outline-none focus:border-swarp-cyan transition-colors"
-                      placeholder="Your Company"
+                      placeholder={t("form.companyPlaceholder")}
                     />
                   </div>
 
                   <div>
                     <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-2">
-                      Tell Us About Your Project *
+                      {t("form.messageLabel")}
                     </label>
                     <textarea
                       id="message"
@@ -133,7 +135,7 @@ export function FinalCTA() {
                       value={formData.message}
                       onChange={handleChange}
                       className="w-full px-4 py-3 rounded-lg bg-swarp-darker border border-swarp-blue/20 text-white placeholder-gray-500 focus:outline-none focus:border-swarp-cyan transition-colors resize-none"
-                      placeholder="I&apos;m looking to build..."
+                      placeholder={t("form.messagePlaceholder")}
                     />
                   </div>
 
@@ -143,12 +145,12 @@ export function FinalCTA() {
                     variant="gradient"
                     className="w-full group"
                   >
-                    Send Message
+                    {t("form.submit")}
                     <Send className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </Button>
 
                   <p className="text-xs text-gray-500 text-center">
-                    By submitting this form, you agree to our privacy policy and terms of service.
+                    {t("form.disclaimer")}
                   </p>
                 </form>
               )}
@@ -162,18 +164,18 @@ export function FinalCTA() {
           {/* Contact Info */}
           <div className="mt-12 grid md:grid-cols-3 gap-6 text-center">
             <div>
-              <div className="text-sm font-semibold text-gray-400 mb-1">Email</div>
+              <div className="text-sm font-semibold text-gray-400 mb-1">{t("info.emailLabel")}</div>
               <a href="mailto:hello@swarp.foundation" className="text-swarp-cyan hover:text-swarp-blue transition-colors">
                 hello@swarp.foundation
               </a>
             </div>
             <div>
-              <div className="text-sm font-semibold text-gray-400 mb-1">Response Time</div>
-              <div className="text-white">Within 24 hours</div>
+              <div className="text-sm font-semibold text-gray-400 mb-1">{t("info.responseTimeLabel")}</div>
+              <div className="text-white">{t("info.responseTimeValue")}</div>
             </div>
             <div>
-              <div className="text-sm font-semibold text-gray-400 mb-1">Support</div>
-              <div className="text-white">24/7 Available</div>
+              <div className="text-sm font-semibold text-gray-400 mb-1">{t("info.supportLabel")}</div>
+              <div className="text-white">{t("info.supportValue")}</div>
             </div>
           </div>
         </div>

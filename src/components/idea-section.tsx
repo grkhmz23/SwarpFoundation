@@ -6,6 +6,7 @@ import { motion, useInView, AnimatePresence } from "framer-motion";
 import { BellNotify } from "@/components/ui/bell-notify";
 import { KeyboardLink } from "@/components/ui/keyboard-button";
 import { ArrowRight, Zap, Shield, Rocket } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 function usePrefersReducedMotion() {
   const [reduced, setReduced] = useState(false);
@@ -49,6 +50,7 @@ function PipelineChip({
 }
 
 export function IdeaSection() {
+  const t = useTranslations("ideaSection");
   const reducedMotion = usePrefersReducedMotion();
   const sectionRef = useRef<HTMLElement>(null);
   const lampRef = useRef<HTMLDivElement>(null);
@@ -104,11 +106,11 @@ export function IdeaSection() {
 
   const chips = useMemo(
     () => [
-      { icon: <Zap className="w-3.5 h-3.5 sm:w-4 sm:h-4" />, title: "Idea" },
-      { icon: <Shield className="w-3.5 h-3.5 sm:w-4 sm:h-4" />, title: "Spec" },
-      { icon: <Rocket className="w-3.5 h-3.5 sm:w-4 sm:h-4" />, title: "Ship" },
+      { icon: <Zap className="w-3.5 h-3.5 sm:w-4 sm:h-4" />, title: t("chips.idea") },
+      { icon: <Shield className="w-3.5 h-3.5 sm:w-4 sm:h-4" />, title: t("chips.spec") },
+      { icon: <Rocket className="w-3.5 h-3.5 sm:w-4 sm:h-4" />, title: t("chips.ship") },
     ],
-    []
+    [t]
   );
 
   const lightVars: React.CSSProperties = {
@@ -121,7 +123,7 @@ export function IdeaSection() {
       ref={sectionRef}
       style={lightVars}
       className="idea-section relative w-full overflow-hidden min-h-[500px] md:min-h-[650px] flex items-center justify-center py-12 md:py-16"
-      aria-label="Got an idea section"
+      aria-label={t("ariaLabel")}
     >
       {/* Light cone effect - only visible when lightOn */}
       <div className="pointer-events-none absolute inset-0 z-0">
@@ -176,25 +178,25 @@ export function IdeaSection() {
                 className="text-center px-2 mt-16"
               >
                 <h2 className="text-3xl font-extrabold tracking-tight text-white">
-                  Got an <span className="text-cyan-400">Idea</span>?
+                  {t("titlePrefix")} <span className="text-cyan-400">{t("titleAccent")}</span>?
                 </h2>
 
                 <p className="mt-3 text-slate-300 text-base leading-relaxed">
-                  Describe it. We build it. Production-ready software, fast.
+                  {t("subtitle")}
                 </p>
 
                 <div className="mt-4 flex flex-wrap gap-3 justify-center text-xs text-slate-400">
                   <span className="flex items-center gap-1.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
-                    Scope in 24-48h
+                    {t("bullets.scope")}
                   </span>
                   <span className="flex items-center gap-1.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
-                    Fast iterations
+                    {t("bullets.iterations")}
                   </span>
                   <span className="flex items-center gap-1.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
-                    Production quality
+                    {t("bullets.quality")}
                   </span>
                 </div>
 
@@ -205,14 +207,14 @@ export function IdeaSection() {
                     size="lg"
                     icon={<ArrowRight className="w-4 h-4" />}
                   >
-                    Explore Services
+                    {t("actions.exploreServices")}
                   </KeyboardLink>
 
                   <Link
                     href="/contact"
                     className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-white/10 bg-white/5 text-slate-300 hover:text-white hover:border-cyan-400/30 transition-colors text-sm"
                   >
-                    Send a message →
+                    {t("actions.sendMessage")} →
                   </Link>
                 </div>
               </motion.div>
@@ -270,25 +272,25 @@ export function IdeaSection() {
                   className="text-center lg:text-left"
                 >
                   <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-white">
-                    Got an <span className="text-cyan-400">Idea</span>?
+                    {t("titlePrefix")} <span className="text-cyan-400">{t("titleAccent")}</span>?
                   </h2>
 
                   <p className="mt-5 text-slate-300 text-lg leading-relaxed max-w-lg">
-                    Describe it. We build it. Production-ready software, fast.
+                    {t("subtitle")}
                   </p>
 
                   <div className="mt-6 flex flex-wrap gap-4 text-sm text-slate-400">
                     <span className="flex items-center gap-2">
                       <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
-                      Scope in 24-48h
+                      {t("bullets.scope")}
                     </span>
                     <span className="flex items-center gap-2">
                       <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
-                      Fast iterations
+                      {t("bullets.iterations")}
                     </span>
                     <span className="flex items-center gap-2">
                       <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
-                      Production quality
+                      {t("bullets.quality")}
                     </span>
                   </div>
 
@@ -299,14 +301,14 @@ export function IdeaSection() {
                       size="lg"
                       icon={<ArrowRight className="w-5 h-5" />}
                     >
-                      Explore Services
+                      {t("actions.exploreServices")}
                     </KeyboardLink>
 
                     <Link
                       href="/contact"
                       className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-slate-300 hover:text-white hover:border-cyan-400/30 transition-colors text-sm"
                     >
-                      Send a message →
+                      {t("actions.sendMessage")} →
                     </Link>
                   </div>
                 </motion.div>
