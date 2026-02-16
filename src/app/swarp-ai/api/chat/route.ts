@@ -1,18 +1,170 @@
 import { NextResponse } from "next/server";
+import { createInMemoryRateLimiter } from "@/lib/rate-limit";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
-type Incoming = {
-  messages: Array<{ role: "user" | "assistant"; content: string }>;
+type ChatRole = "user" | "assistant";
+type IncomingMessage = { role: ChatRole; content: string };
+type ChatRouteEnv = {
+  moonshotApiKey: string;
+  allowedOrigins: Set<string>;
 };
 
-function jsonError(message: string, status = 400) {
-  return NextResponse.json({ error: message }, { status });
+function jsonError(message: string, status = 400, headers?: HeadersInit) {
+  return NextResponse.json({ error: message }, { status, headers });
 }
 
 function pickModel(): string {
   return process.env.SWARP_AI_MODEL || "kimi-k2-turbo-preview";
+}
+
+function parseOrigin(raw: string): string | null {
+  try {
+    return new URL(raw).origin;
+  } catch {
+    return null;
+  }
+}
+
+function parseAllowedOrigins(configured: string | undefined): Set<string> {
+  const origins = new Set<string>();
+  if (!configured) return origins;
+
+  for (const raw of configured.split(",")) {
+    const value = raw.trim();
+    if (!value) continue;
+    const origin = parseOrigin(value);
+    if (!origin) {
+      throw new Error(`Invalid SWARP_AI_ALLOWED_ORIGINS entry: "${value}"`);
+    }
+    origins.add(origin);
+  }
+
+  return origins;
+}
+
+let envCache: ChatRouteEnv | null = null;
+
+function getEnv(): ChatRouteEnv {
+  if (envCache) return envCache;
+
+  const moonshotApiKey = process.env.MOONSHOT_API_KEY?.trim();
+  if (!moonshotApiKey) {
+    throw new Error("MOONSHOT_API_KEY must be set");
+  }
+
+  const allowedOrigins = parseAllowedOrigins(process.env.SWARP_AI_ALLOWED_ORIGINS);
+  envCache = { moonshotApiKey, allowedOrigins };
+  return envCache;
+}
+
+function getRequestOrigin(req: Request): string | null {
+  const host = req.headers.get("x-forwarded-host") || req.headers.get("host");
+  if (!host) return null;
+
+  const forwardedProto = req.headers.get("x-forwarded-proto")?.split(",")[0]?.trim();
+  const protocol = forwardedProto || (host.includes("localhost") || host.startsWith("127.0.0.1") ? "http" : "https");
+  return parseOrigin(`${protocol}://${host}`);
+}
+
+function isAllowedOriginValue(origin: string, reqOrigin: string | null, env: ChatRouteEnv): boolean {
+  const normalizedOrigin = parseOrigin(origin);
+  if (!normalizedOrigin) return false;
+  if (reqOrigin && normalizedOrigin === reqOrigin) return true;
+  return env.allowedOrigins.has(normalizedOrigin);
+}
+
+function isTrustedRequest(req: Request, env: ChatRouteEnv): boolean {
+  const reqOrigin = getRequestOrigin(req);
+  const origin = req.headers.get("origin");
+  const referer = req.headers.get("referer");
+
+  if (!origin && !referer) return false;
+  if (origin && !isAllowedOriginValue(origin, reqOrigin, env)) return false;
+  if (referer) {
+    const refererOrigin = parseOrigin(referer);
+    if (!refererOrigin || !isAllowedOriginValue(refererOrigin, reqOrigin, env)) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function corsHeaders(req: Request, env: ChatRouteEnv): HeadersInit {
+  const origin = req.headers.get("origin");
+  const reqOrigin = getRequestOrigin(req);
+  if (!origin || !isAllowedOriginValue(origin, reqOrigin, env)) return {};
+
+  const normalizedOrigin = parseOrigin(origin);
+  if (!normalizedOrigin || (reqOrigin && normalizedOrigin === reqOrigin)) {
+    return {};
+  }
+
+  return {
+    "Access-Control-Allow-Origin": normalizedOrigin,
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type",
+    Vary: "Origin",
+  };
+}
+
+function getClientIp(req: Request): string {
+  const xForwardedFor = req.headers.get("x-forwarded-for");
+  if (xForwardedFor) {
+    return xForwardedFor.split(",")[0]?.trim() || "unknown";
+  }
+  return req.headers.get("x-real-ip")?.trim() || "unknown";
+}
+
+const rateLimiter = createInMemoryRateLimiter({
+  capacity: 20,
+  refillPerSecond: 20 / 60,
+  ttlMs: 10 * 60 * 1000,
+  maxEntries: 5000,
+});
+
+const MAX_MESSAGES = 30;
+const MAX_MESSAGE_CHARS = 8000;
+const MAX_TOTAL_CHARS = 32_000;
+
+function normalizeMessages(body: unknown): IncomingMessage[] | null {
+  if (!body || typeof body !== "object") return null;
+  const maybeMessages = (body as { messages?: unknown }).messages;
+  if (!Array.isArray(maybeMessages) || maybeMessages.length === 0 || maybeMessages.length > MAX_MESSAGES) return null;
+
+  const safeMessages: IncomingMessage[] = [];
+  let totalChars = 0;
+
+  for (const item of maybeMessages) {
+    if (!item || typeof item !== "object") return null;
+
+    const role = (item as { role?: unknown }).role;
+    const content = (item as { content?: unknown }).content;
+
+    if (role !== "user" && role !== "assistant") {
+      return null;
+    }
+
+    if (typeof content !== "string") {
+      return null;
+    }
+
+    const normalizedContent = content.slice(0, MAX_MESSAGE_CHARS);
+    if (normalizedContent.trim().length === 0) {
+      continue;
+    }
+
+    totalChars += normalizedContent.length;
+    if (totalChars > MAX_TOTAL_CHARS) {
+      return null;
+    }
+
+    safeMessages.push({ role, content: normalizedContent });
+  }
+
+  return safeMessages.length > 0 ? safeMessages : null;
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
@@ -316,35 +468,37 @@ IMPORTANT RESPONSE GUIDELINES:
 /* ─────────────────────────────────────────────────────────────────────────── */
 
 export async function POST(req: Request) {
-  const key = process.env.MOONSHOT_API_KEY;
-
-  if (!key) {
-    console.error("MOONSHOT_API_KEY is not set in environment variables");
-    return jsonError("Missing MOONSHOT_API_KEY on server. Please configure environment variables.", 500);
+  let env: ChatRouteEnv;
+  try {
+    env = getEnv();
+  } catch (error) {
+    console.error("Swarp AI chat env validation failed:", error);
+    return jsonError("Service temporarily unavailable.", 500);
   }
 
-  let body: Incoming;
+  if (!isTrustedRequest(req, env)) {
+    return jsonError("Forbidden.", 403);
+  }
+
+  const clientId = getClientIp(req);
+  const rateLimit = rateLimiter.consume(clientId);
+  if (!rateLimit.allowed) {
+    return jsonError("Too many requests. Please try again shortly.", 429, {
+      ...corsHeaders(req, env),
+      "Retry-After": String(rateLimit.retryAfterSec),
+    });
+  }
+
+  let body: unknown;
   try {
-    body = (await req.json()) as Incoming;
+    body = await req.json();
   } catch {
     return jsonError("Invalid JSON in request body.");
   }
 
-  if (!body?.messages || !Array.isArray(body.messages) || body.messages.length === 0) {
-    return jsonError("messages must be a non-empty array.");
-  }
-
-  // Size guardrails — keep last 30 messages, max 8000 chars each
-  const safeMessages = body.messages
-    .slice(-30)
-    .map((m) => ({
-      role: m.role,
-      content: String(m.content || "").slice(0, 8000),
-    }))
-    .filter((m) => m.content.trim().length > 0);
-
-  if (safeMessages.length === 0) {
-    return jsonError("No valid messages provided.");
+  const safeMessages = normalizeMessages(body);
+  if (!safeMessages) {
+    return jsonError("Invalid messages payload.");
   }
 
   const upstreamBody = {
@@ -362,7 +516,7 @@ export async function POST(req: Request) {
     const upstream = await fetch("https://api.moonshot.ai/v1/chat/completions", {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${key}`,
+        Authorization: `Bearer ${env.moonshotApiKey}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(upstreamBody),
@@ -372,24 +526,11 @@ export async function POST(req: Request) {
       const errorText = await upstream.text().catch(() => "Unknown error");
       console.error(`Moonshot API error: ${upstream.status}`, errorText);
 
-      if (upstream.status === 401) {
-        return jsonError("Invalid API key. Please check MOONSHOT_API_KEY.", 502);
-      }
       if (upstream.status === 429) {
         return jsonError("Rate limit exceeded. Please try again in a moment.", 429);
       }
-      if (upstream.status >= 500) {
-        return jsonError("Kimi AI service is temporarily unavailable. Please try again.", 502);
-      }
 
-      return NextResponse.json(
-        {
-          error: "Upstream API error",
-          status: upstream.status,
-          details: errorText.slice(0, 500),
-        },
-        { status: 502 }
-      );
+      return jsonError("AI service is temporarily unavailable. Please try again.", 502);
     }
 
     // Pass-through SSE stream
@@ -398,22 +539,33 @@ export async function POST(req: Request) {
     headers.set("Cache-Control", "no-cache, no-store, must-revalidate");
     headers.set("Connection", "keep-alive");
     headers.set("X-Accel-Buffering", "no");
+    for (const [key, value] of Object.entries(corsHeaders(req, env))) {
+      headers.set(key, value);
+    }
 
     return new Response(upstream.body, { status: 200, headers });
   } catch (error) {
     console.error("Network error calling Moonshot API:", error);
-    return jsonError("Failed to connect to AI service. Please check your connection.", 503);
+    return jsonError("AI service is temporarily unavailable. Please try again.", 503);
   }
 }
 
 // CORS
-export async function OPTIONS() {
+export async function OPTIONS(req: Request) {
+  let env: ChatRouteEnv;
+  try {
+    env = getEnv();
+  } catch (error) {
+    console.error("Swarp AI chat env validation failed:", error);
+    return new Response(null, { status: 500 });
+  }
+
+  if (!isTrustedRequest(req, env)) {
+    return new Response(null, { status: 403 });
+  }
+
   return new Response(null, {
     status: 204,
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "POST, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type",
-    },
+    headers: corsHeaders(req, env),
   });
 }

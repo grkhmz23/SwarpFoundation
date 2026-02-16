@@ -54,6 +54,10 @@ function safeJsonParse(line: string) {
   }
 }
 
+function isAbortError(error: unknown): boolean {
+  return error instanceof DOMException && error.name === "AbortError";
+}
+
 function useGreeting() {
   const [greeting, setGreeting] = useState("");
 
@@ -113,10 +117,78 @@ export default function SwarpAIChat() {
   const isBusy = !!activeJob;
   const hasMessages = messages.length > 0;
   const greeting = useGreeting();
+  const lastMessageContent = messages.length > 0 ? messages[messages.length - 1]?.content : undefined;
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
-  }, [messages.length, messages[messages.length - 1]?.content]);
+  }, [messages.length, lastMessageContent]);
+
+  const runChatCompletion = useCallback(
+    async (userId: string, assistantId: string) => {
+      const history = (() => {
+        const idx = messages.findIndex((m) => m.id === userId);
+        const upto = idx >= 0 ? messages.slice(0, idx + 1) : messages;
+        return upto
+          .filter((m) => m.role === "user" || m.role === "assistant")
+          .map((m) => ({ role: m.role, content: m.content }));
+      })();
+
+      abortRef.current?.abort();
+      const ac = new AbortController();
+      abortRef.current = ac;
+
+      try {
+        const resp = await fetch("/swarp-ai/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          signal: ac.signal,
+          body: JSON.stringify({ messages: history }),
+        });
+
+        if (!resp.ok) throw new Error(await resp.text().catch(() => `Request failed (${resp.status})`));
+
+        if (isSSE(resp) && resp.body) {
+          await consumeSSE(resp, assistantId);
+        } else {
+          const json = await resp.json();
+          const text = json?.choices?.[0]?.message?.content ?? json?.choices?.[0]?.text ?? json?.content ?? "";
+          setMessages((prev) =>
+            prev.map((m) =>
+              m.id === assistantId
+                ? { ...m, content: clamp(String(text)), status: "done" }
+                : m.id === userId
+                  ? { ...m, status: "done" }
+                  : m
+            )
+          );
+        }
+
+        setQueue((q) => q.slice(1));
+        setActiveJob(null);
+      } catch (error) {
+        if (isAbortError(error)) {
+          return;
+        }
+
+        setMessages((prev) =>
+          prev.map((m) =>
+            m.id === assistantId
+              ? { ...m, content: "Something went wrong. Try again?", status: "error" }
+              : m.id === userId
+                ? { ...m, status: "error" }
+                : m
+          )
+        );
+        setQueue((q) => q.slice(1));
+        setActiveJob(null);
+      } finally {
+        if (abortRef.current === ac) {
+          abortRef.current = null;
+        }
+      }
+    },
+    [messages]
+  );
 
   useEffect(() => {
     if (activeJob || queue.length === 0) return;
@@ -131,53 +203,7 @@ export default function SwarpAIChat() {
     ]);
 
     void runChatCompletion(nextUserId, assistantId);
-  }, [queue, activeJob]);
-
-  async function runChatCompletion(userId: string, assistantId: string) {
-    const history = (() => {
-      const idx = messages.findIndex((m) => m.id === userId);
-      const upto = idx >= 0 ? messages.slice(0, idx + 1) : messages;
-      return upto.filter((m) => m.role === "user" || m.role === "assistant").map((m) => ({ role: m.role, content: m.content }));
-    })();
-
-    abortRef.current?.abort();
-    const ac = new AbortController();
-    abortRef.current = ac;
-
-    try {
-      const resp = await fetch("/swarp-ai/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        signal: ac.signal,
-        body: JSON.stringify({ messages: history }),
-      });
-
-      if (!resp.ok) throw new Error(await resp.text().catch(() => `Request failed (${resp.status})`));
-
-      if (isSSE(resp) && resp.body) {
-        await consumeSSE(resp, assistantId);
-      } else {
-        const json = await resp.json();
-        const text = json?.choices?.[0]?.message?.content ?? json?.choices?.[0]?.text ?? json?.content ?? "";
-        setMessages((prev) =>
-          prev.map((m) =>
-            m.id === assistantId ? { ...m, content: clamp(String(text)), status: "done" } : m.id === userId ? { ...m, status: "done" } : m
-          )
-        );
-      }
-
-      setQueue((q) => q.slice(1));
-      setActiveJob(null);
-    } catch (e: unknown) {
-      setMessages((prev) =>
-        prev.map((m) =>
-          m.id === assistantId ? { ...m, content: "Something went wrong. Try again?", status: "error" } : m.id === userId ? { ...m, status: "error" } : m
-        )
-      );
-      setQueue((q) => q.slice(1));
-      setActiveJob(null);
-    }
-  }
+  }, [queue, activeJob, runChatCompletion]);
 
   async function consumeSSE(resp: Response, assistantId: string) {
     const reader = resp.body!.getReader();

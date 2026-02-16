@@ -38,6 +38,7 @@ export function SecureMessageGateway({
   const [message, setMessage] = useState("");
   const [email, setEmail] = useState("");
   const [success, setSuccess] = useState(false);
+  const [errorText, setErrorText] = useState("");
   const [secureId, setSecureId] = useState("00000");
 
   // Generate secure ID only on client side to avoid hydration mismatch
@@ -45,25 +46,38 @@ export function SecureMessageGateway({
     setSecureId(Math.random().toString(16).slice(2, 7).toUpperCase());
   }, []);
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!message.trim() || !email.trim() || pending) return;
 
     setPending(true);
+    setErrorText("");
+    setSuccess(false);
 
-    // Simulate sending
-    setTimeout(() => {
-      setPending(false);
-      setSuccess(true);
-      if (onSubmit) {
-        onSubmit(message, email);
+    try {
+      const res = await fetch("/contact/api/send", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, message }),
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        setErrorText(
+          typeof data?.error === "string"
+            ? data.error
+            : "Unable to send message right now. Please try again later."
+        );
+        return;
       }
-      setTimeout(() => {
-        setMessage("");
-        setEmail("");
-        setSuccess(false);
-      }, 2000);
-    }, 1500);
+
+      setSuccess(true);
+      onSubmit?.(message, email);
+    } catch {
+      setErrorText("Network error. Please check your connection and try again.");
+    } finally {
+      setPending(false);
+    }
   }
 
   return (
@@ -157,6 +171,7 @@ export function SecureMessageGateway({
                 />
               </div>
 
+              {errorText && <p className="text-red-400 text-xs font-mono">{errorText}</p>}
               <button
                 type="submit"
                 disabled={pending || !message.trim() || !email.trim()}

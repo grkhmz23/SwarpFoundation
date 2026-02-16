@@ -56,6 +56,16 @@ interface ConfigState {
   };
 }
 
+const TERMINAL_LINES = [
+  "> swarp init --template=saas-starter",
+  "✔ Validating configuration...",
+  "✔ Downloading boilerplate...",
+  "✔ Installing dependencies (modules: rbac, sso)...",
+  "> swarp ship",
+  "Building production bundle...",
+  "Done in 2.4s. App is live at https://app.swarp.dev",
+];
+
 // Sidebar Icon
 const SidebarIcon = ({
   icon: Icon,
@@ -121,21 +131,12 @@ const FileTreeItem = ({
 const TerminalSimulation = () => {
   const [lines, setLines] = useState<string[]>([]);
   const currentLineRef = useRef(0);
-  const fullText = [
-    "> swarp init --template=saas-starter",
-    "✔ Validating configuration...",
-    "✔ Downloading boilerplate...",
-    "✔ Installing dependencies (modules: rbac, sso)...",
-    "> swarp ship",
-    "Building production bundle...",
-    "Done in 2.4s. App is live at https://app.swarp.dev",
-  ];
 
   const addLine = useCallback(() => {
-    if (currentLineRef.current >= fullText.length) {
+    if (currentLineRef.current >= TERMINAL_LINES.length) {
       return;
     }
-    setLines((prev) => [...prev, fullText[currentLineRef.current]]);
+    setLines((prev) => [...prev, TERMINAL_LINES[currentLineRef.current]]);
     currentLineRef.current++;
   }, []);
 

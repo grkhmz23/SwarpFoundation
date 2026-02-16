@@ -22,6 +22,31 @@ const navItems: NavItem[] = [
   { label: "Swarp AI", href: "/swarp-ai", badge: "Beta" },
 ];
 
+function LogoMark({
+  size = 24,
+  className = "",
+}: {
+  size?: number;
+  className?: string;
+}) {
+  return (
+    <span
+      className={`inline-flex items-center justify-center rounded-full ${className}`}
+      style={{ width: size, height: size }}
+      aria-hidden="true"
+    >
+      <Image
+        src="/logo_transparent.png"
+        alt="Swarp"
+        width={size}
+        height={size}
+        sizes={`${size}px`}
+        className="h-full w-full object-contain"
+      />
+    </span>
+  );
+}
+
 // Mobile Menu Component
 function MobileMenu({ isOpen, onClose, activeLabel, setActiveLabel }: {
   isOpen: boolean;
@@ -76,14 +101,8 @@ function MobileMenu({ isOpen, onClose, activeLabel, setActiveLabel }: {
             {/* Header */}
             <div className="flex items-center justify-between p-4 border-b border-white/10">
               <div className="flex items-center gap-3">
-                <Image
-                  src="/logo_transparent.png"
-                  alt="Swarp"
-                  width={28}
-                  height={28}
-                  className="object-contain"
-                />
-                <span className="text-lg font-semibold text-cyan-400">Swarp</span>
+                <LogoMark size={30} className="shrink-0 drop-shadow-[0_0_12px_rgba(0,255,240,0.28)]" />
+                <span className="text-lg font-semibold leading-none text-cyan-400">Swarp</span>
               </div>
               <button
                 onClick={onClose}
@@ -314,14 +333,8 @@ function DesktopNavPill({ activeLabel, setActiveLabel }: {
       <div className="relative z-10 h-full flex items-center justify-center px-5">
         {/* Collapsed state */}
         {!expanded && (
-          <div className="flex items-center gap-2">
-            <Image
-              src="/logo_transparent.png"
-              alt="Swarp"
-              width={24}
-              height={24}
-              className="object-contain"
-            />
+          <div className="flex items-center gap-2.5">
+            <LogoMark size={26} className="shrink-0 drop-shadow-[0_0_12px_rgba(0,255,240,0.28)]" />
             <AnimatePresence mode="wait">
               <motion.span
                 key={activeLabel}
@@ -329,7 +342,7 @@ function DesktopNavPill({ activeLabel, setActiveLabel }: {
                 animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                 exit={{ opacity: 0, y: -8, filter: "blur(4px)" }}
                 transition={{ duration: 0.3, ease: [0.4, 0.0, 0.2, 1] }}
-                className="text-[15px] font-semibold text-cyan-400 whitespace-nowrap tracking-wide"
+                className="text-[15px] font-semibold leading-none text-cyan-400 whitespace-nowrap tracking-wide"
                 style={{
                   textShadow: "0 0 20px rgba(0, 255, 240, 0.5)",
                 }}
@@ -433,15 +446,9 @@ function MobileNavButton({ onClick, activeLabel }: { onClick: () => void; active
         border: "1px solid rgba(0, 255, 240, 0.2)",
       }}
     >
-      <Image
-        src="/logo_transparent.png"
-        alt="Swarp"
-        width={24}
-        height={24}
-        className="object-contain"
-      />
+      <LogoMark size={24} className="shrink-0 drop-shadow-[0_0_10px_rgba(0,255,240,0.25)]" />
       <span
-        className="text-sm font-semibold text-cyan-400"
+        className="text-sm font-semibold leading-none text-cyan-400"
         style={{ textShadow: "0 0 20px rgba(0, 255, 240, 0.5)" }}
       >
         {activeLabel}
