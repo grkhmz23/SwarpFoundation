@@ -15,6 +15,7 @@ import {
   Rocket,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTranslations } from "next-intl";
 
 type ChatMsg = {
   id: string;
@@ -58,19 +59,6 @@ function isAbortError(error: unknown): boolean {
   return error instanceof DOMException && error.name === "AbortError";
 }
 
-function useGreeting() {
-  const [greeting, setGreeting] = useState("");
-
-  useEffect(() => {
-    const hour = new Date().getHours();
-    if (hour < 12) setGreeting("Good morning");
-    else if (hour < 18) setGreeting("Good afternoon");
-    else setGreeting("Good evening");
-  }, []);
-
-  return greeting;
-}
-
 function useAutoResizeTextarea({ minHeight, maxHeight }: { minHeight: number; maxHeight?: number }) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -97,14 +85,8 @@ function useAutoResizeTextarea({ minHeight, maxHeight }: { minHeight: number; ma
   return { textareaRef, adjustHeight };
 }
 
-const quickActions = [
-  { icon: <Code className="w-4 h-4" />, label: "Code" },
-  { icon: <FileText className="w-4 h-4" />, label: "Docs" },
-  { icon: <Lightbulb className="w-4 h-4" />, label: "Ideas" },
-  { icon: <Rocket className="w-4 h-4" />, label: "Build" },
-];
-
 export default function SwarpAIChat() {
+  const t = useTranslations("swarpAi.chat");
   const [messages, setMessages] = useState<ChatMsg[]>([]);
   const [draft, setDraft] = useState("");
   const [queue, setQueue] = useState<string[]>([]);
@@ -116,7 +98,18 @@ export default function SwarpAIChat() {
 
   const isBusy = !!activeJob;
   const hasMessages = messages.length > 0;
-  const greeting = useGreeting();
+  const greeting = (() => {
+    const hour = new Date().getHours();
+    if (hour < 12) return t("greetingMorning");
+    if (hour < 18) return t("greetingAfternoon");
+    return t("greetingEvening");
+  })();
+  const quickActions = [
+    { icon: <Code className="w-4 h-4" />, label: t("quickActions.code") },
+    { icon: <FileText className="w-4 h-4" />, label: t("quickActions.docs") },
+    { icon: <Lightbulb className="w-4 h-4" />, label: t("quickActions.ideas") },
+    { icon: <Rocket className="w-4 h-4" />, label: t("quickActions.build") },
+  ];
   const lastMessageContent = messages.length > 0 ? messages[messages.length - 1]?.content : undefined;
 
   useEffect(() => {
@@ -173,7 +166,7 @@ export default function SwarpAIChat() {
         setMessages((prev) =>
           prev.map((m) =>
             m.id === assistantId
-              ? { ...m, content: "Something went wrong. Try again?", status: "error" }
+              ? { ...m, content: t("errorMessage"), status: "error" }
               : m.id === userId
                 ? { ...m, status: "error" }
                 : m
@@ -317,11 +310,11 @@ export default function SwarpAIChat() {
                     adjustHeight();
                   }}
                   onKeyDown={onKeyDown}
-                  placeholder="How can I help you today?"
+                  placeholder={t("placeholderDesktop")}
                   className="w-full px-5 py-4 pr-24 resize-none bg-transparent text-white/90 text-[15px] focus:outline-none placeholder:text-white/30 min-h-[56px] max-h-[200px]"
                 />
                 <div className="absolute right-3 bottom-3 flex items-center gap-2">
-                  <span className="text-[11px] text-[#00FFF0]/50 hidden sm:block">Swarp AI</span>
+                  <span className="text-[11px] text-[#00FFF0]/50 hidden sm:block">{t("brand")}</span>
                   <button
                     onClick={onSend}
                     disabled={!draft.trim()}
@@ -343,7 +336,7 @@ export default function SwarpAIChat() {
                   <button
                     key={action.label}
                     onClick={() => {
-                      setDraft(`Help me with ${action.label.toLowerCase()}: `);
+                      setDraft(t("quickActionPrompt", { topic: action.label.toLowerCase() }));
                       textareaRef.current?.focus();
                     }}
                     className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm text-white/60 hover:text-[#00FFF0] border border-white/10 hover:border-[#00D4FF]/30 hover:bg-[#00D4FF]/5 transition-all"
@@ -385,7 +378,7 @@ export default function SwarpAIChat() {
                     adjustHeight();
                   }}
                   onKeyDown={onKeyDown}
-                  placeholder="Message Swarp AI..."
+                  placeholder={t("placeholderMobile")}
                   className="w-full px-4 py-3 pr-12 resize-none bg-transparent text-white/90 text-sm focus:outline-none placeholder:text-white/30 min-h-[48px] max-h-[200px]"
                 />
                 <button
@@ -407,20 +400,20 @@ export default function SwarpAIChat() {
                   {isBusy ? (
                     <button onClick={stop} className="flex items-center gap-1.5 px-3 py-1.5 text-xs text-white/40 hover:text-[#00FFF0] transition-colors">
                       <StopCircle className="w-3.5 h-3.5" />
-                      <span>Stop</span>
+                      <span>{t("stop")}</span>
                     </button>
                   ) : (
                     <button onClick={retryLast} className="flex items-center gap-1.5 px-3 py-1.5 text-xs text-white/40 hover:text-[#00FFF0] transition-colors">
                       <RefreshCw className="w-3.5 h-3.5" />
-                      <span>Retry</span>
+                      <span>{t("retry")}</span>
                     </button>
                   )}
                   <button onClick={clearChat} className="flex items-center gap-1.5 px-3 py-1.5 text-xs text-white/40 hover:text-red-400 transition-colors">
                     <Trash2 className="w-3.5 h-3.5" />
-                    <span>Clear</span>
+                    <span>{t("clear")}</span>
                   </button>
                 </div>
-                <span className="text-[10px] text-white/25">Press Enter to send</span>
+                <span className="text-[10px] text-white/25">{t("pressEnter")}</span>
               </div>
             </div>
           </motion.div>

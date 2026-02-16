@@ -5,21 +5,24 @@ import { motion, useSpring, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { Menu, X } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { usePathname } from "next/navigation";
 
 interface NavItem {
-  label: string;
+  key: string;
   href: string;
-  badge?: string;
+  badgeKey?: string;
 }
 
 const navItems: NavItem[] = [
-  { label: "Home", href: "/" },
-  { label: "Products", href: "/products" },
-  { label: "Services", href: "/services" },
-  { label: "Works", href: "/works" },
-  { label: "About", href: "/about" },
-  { label: "Contact", href: "/contact" },
-  { label: "Swarp AI", href: "/swarp-ai", badge: "Beta" },
+  { key: "home", href: "/" },
+  { key: "products", href: "/products" },
+  { key: "services", href: "/services" },
+  { key: "works", href: "/works" },
+  { key: "about", href: "/about" },
+  { key: "contact", href: "/contact" },
+  { key: "swarpAi", href: "/swarp-ai", badgeKey: "beta" },
 ];
 
 function LogoMark({
@@ -54,6 +57,10 @@ function MobileMenu({ isOpen, onClose, activeLabel, setActiveLabel }: {
   activeLabel: string;
   setActiveLabel: (label: string) => void;
 }) {
+  const t = useTranslations("nav");
+  const locale = useLocale();
+  const isRtl = locale === "ar";
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -99,23 +106,27 @@ function MobileMenu({ isOpen, onClose, activeLabel, setActiveLabel }: {
             />
 
             {/* Header */}
-            <div className="flex items-center justify-between p-4 border-b border-white/10">
+            <div className={`flex items-center justify-between p-4 border-b border-white/10 ${isRtl ? "flex-row-reverse" : ""}`}>
               <div className="flex items-center gap-3">
                 <LogoMark size={30} className="shrink-0 drop-shadow-[0_0_12px_rgba(0,255,240,0.28)]" />
                 <span className="text-lg font-semibold leading-none text-cyan-400">Swarp</span>
               </div>
-              <button
-                onClick={onClose}
-                className="p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors"
-              >
-                <X className="w-5 h-5 text-gray-400" />
-              </button>
+              <div className={`flex items-center gap-2 ${isRtl ? "flex-row-reverse" : ""}`}>
+                <LanguageSwitcher />
+                <button
+                  onClick={onClose}
+                  className="p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors"
+                >
+                  <X className="w-5 h-5 text-gray-400" />
+                </button>
+              </div>
             </div>
 
             {/* Nav Items */}
             <nav className="p-4 space-y-1">
               {navItems.map((item, index) => {
-                const isActive = item.label === activeLabel;
+                const label = t(`items.${item.key}`);
+                const isActive = label === activeLabel;
                 return (
                   <motion.div
                     key={item.href}
@@ -126,7 +137,7 @@ function MobileMenu({ isOpen, onClose, activeLabel, setActiveLabel }: {
                     <Link
                       href={item.href}
                       onClick={() => {
-                        setActiveLabel(item.label);
+                        setActiveLabel(label);
                         onClose();
                       }}
                       className="flex items-center justify-between px-4 py-3 rounded-xl transition-all"
@@ -141,9 +152,9 @@ function MobileMenu({ isOpen, onClose, activeLabel, setActiveLabel }: {
                           color: isActive ? "#00fff0" : "#9ca3af",
                         }}
                       >
-                        {item.label}
+                        {label}
                       </span>
-                      {item.badge && (
+                      {item.badgeKey && (
                         <span
                           className="rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider"
                           style={{
@@ -152,7 +163,7 @@ function MobileMenu({ isOpen, onClose, activeLabel, setActiveLabel }: {
                             color: "#00fff0",
                           }}
                         >
-                          {item.badge}
+                          {t(item.badgeKey)}
                         </span>
                       )}
                     </Link>
@@ -172,6 +183,7 @@ function DesktopNavPill({ activeLabel, setActiveLabel }: {
   activeLabel: string;
   setActiveLabel: (label: string) => void;
 }) {
+  const t = useTranslations("nav");
   const [expanded, setExpanded] = useState(false);
   const [hovering, setHovering] = useState(false);
   const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -357,7 +369,8 @@ function DesktopNavPill({ activeLabel, setActiveLabel }: {
         {expanded && (
           <div className="flex items-center justify-evenly w-full">
             {navItems.map((item, index) => {
-              const isActive = item.label === activeLabel;
+              const label = t(`items.${item.key}`);
+              const isActive = label === activeLabel;
 
               return (
                 <motion.div
@@ -373,7 +386,7 @@ function DesktopNavPill({ activeLabel, setActiveLabel }: {
                 >
                   <Link
                     href={item.href}
-                    onClick={() => handleNavClick(item.label)}
+                    onClick={() => handleNavClick(label)}
                     className="relative cursor-pointer transition-all duration-200 px-3 py-2 flex items-center gap-1.5"
                     style={{
                       fontSize: isActive ? "15px" : "14px",
@@ -400,8 +413,8 @@ function DesktopNavPill({ activeLabel, setActiveLabel }: {
                       }
                     }}
                   >
-                    {item.label}
-                    {item.badge && (
+                    {label}
+                    {item.badgeKey && (
                       <span
                         className="rounded-full px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wider"
                         style={{
@@ -411,7 +424,7 @@ function DesktopNavPill({ activeLabel, setActiveLabel }: {
                           textShadow: "0 0 10px rgba(0, 255, 240, 0.5)",
                         }}
                       >
-                        {item.badge}
+                        {t(item.badgeKey)}
                       </span>
                     )}
                   </Link>
@@ -460,9 +473,16 @@ function MobileNavButton({ onClick, activeLabel }: { onClick: () => void; active
 
 // Main NavPill3D Component - handles responsive switching
 export function NavPill3D() {
-  const [activeLabel, setActiveLabel] = useState("Home");
+  const t = useTranslations("nav");
+  const pathname = usePathname();
+  const [activeLabel, setActiveLabel] = useState(t("items.home"));
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const current = navItems.find((item) => pathname === item.href || pathname.startsWith(`${item.href}/`));
+    setActiveLabel(t(`items.${current?.key ?? "home"}`));
+  }, [pathname, t]);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -512,6 +532,8 @@ export function NavPill3D() {
 
 export function Header3D() {
   const [scrolled, setScrolled] = useState(false);
+  const locale = useLocale();
+  const isRtl = locale === "ar";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -527,8 +549,11 @@ export function Header3D() {
         scrolled ? "py-2 md:py-3" : "py-3 md:py-5"
       }`}
     >
-      <div className="container mx-auto px-4 flex items-center justify-center">
+      <div className={`container mx-auto px-4 flex items-center justify-center relative ${isRtl ? "flex-row-reverse" : ""}`}>
         <NavPill3D />
+        <div className={`absolute top-1/2 -translate-y-1/2 ${isRtl ? "left-4" : "right-4"} hidden md:block`}>
+          <LanguageSwitcher />
+        </div>
       </div>
     </header>
   );

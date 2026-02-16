@@ -1,8 +1,11 @@
 import Link from "next/link";
 import { AetherBackground } from "@/components/ui/aether-background";
 import SwarpAIChat from "./_components/SwarpAIChat";
+import { getTranslations } from "next-intl/server";
 
-export default function SwarpAiPage() {
+export default async function SwarpAiPage() {
+  const t = await getTranslations("swarpAi.page");
+
   return (
     <AetherBackground className="min-h-[100svh]">
       <main className="min-h-[100svh] text-zinc-100 flex flex-col">
@@ -27,13 +30,13 @@ export default function SwarpAiPage() {
                     d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
                   />
                 </svg>
-                <span className="text-sm">Back</span>
+                <span className="text-sm">{t("back")}</span>
               </Link>
 
               <div className="flex items-center gap-3">
                 <div className="flex items-center gap-1.5">
                   <div className="h-1.5 w-1.5 rounded-full bg-[#00FFF0] shadow-[0_0_8px_rgba(0,255,240,0.6)]" />
-                  <span className="text-[11px] text-white/40">Online</span>
+                  <span className="text-[11px] text-white/40">{t("online")}</span>
                 </div>
                 <span 
                   className="rounded-full px-2.5 py-1 text-[10px] font-medium uppercase tracking-wider text-[#00FFF0]"
@@ -43,7 +46,7 @@ export default function SwarpAiPage() {
                     boxShadow: "0 0 20px rgba(0, 212, 255, 0.1)",
                   }}
                 >
-                  Beta
+                  {t("beta")}
                 </span>
               </div>
             </div>

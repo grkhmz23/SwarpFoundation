@@ -1,0 +1,121 @@
+{
+  "metadata": {
+    "title": "Swarp Foundation",
+    "description": "Développement logiciel full-stack du concept à la production.",
+    "services": {
+      "title": "Services | Swarp Foundation",
+      "description": "Services de développement logiciel full-stack du concept à la production. Web et mobile, systèmes AI, blockchain, Cloud et DevOps, et plus encore.",
+      "openGraphDescription": "Services de développement logiciel full-stack du concept à la production."
+    },
+    "swarpAi": {
+      "title": "Swarp AI | Swarp Foundation",
+      "description": "Assistant de chat Swarp AI propulsé par Kimi AI - Bêta"
+    }
+  },
+  "language": {
+    "select": "Choisir la langue",
+    "en": "Anglais",
+    "it": "Italien",
+    "fr": "Français",
+    "es": "Espagnol",
+    "de": "Allemand",
+    "ar": "Arabe"
+  },
+  "nav": {
+    "items": {
+      "home": "Accueil",
+      "products": "Produits",
+      "services": "Services",
+      "works": "Réalisations",
+      "about": "À propos",
+      "contact": "Contact",
+      "swarpAi": "Swarp AI"
+    },
+    "beta": "Bêta"
+  },
+  "swarpAi": {
+    "page": {
+      "back": "Retour",
+      "online": "En ligne",
+      "beta": "Bêta"
+    },
+    "chat": {
+      "brand": "Swarp AI",
+      "greetingMorning": "Bonjour",
+      "greetingAfternoon": "Bon après-midi",
+      "greetingEvening": "Bonsoir",
+      "placeholderDesktop": "Comment puis-je vous aider aujourd'hui ?",
+      "placeholderMobile": "Message à Swarp AI...",
+      "errorMessage": "Une erreur est survenue. Réessayer ?",
+      "stop": "Arrêter",
+      "retry": "Réessayer",
+      "clear": "Effacer",
+      "pressEnter": "Appuyez sur Entrée pour envoyer",
+      "quickActionPrompt": "Aidez-moi avec {topic} : ",
+      "quickActions": {
+        "code": "Code",
+        "docs": "Docs",
+        "ideas": "Idées",
+        "build": "Créer"
+      }
+    }
+  },
+  "footer": {
+    "brand": {
+      "tagline": "Infrastructure native logicielle",
+      "description": "Développement logiciel full-stack du concept à la production. Nous construisons une infrastructure blockchain, des systèmes AI et des plateformes web évolutives."
+    },
+    "products": {
+      "title": "Produits",
+      "swarpPay": "SwarpPay",
+      "swarpId": "SwarpID",
+      "psolProtocol": "Protocole pSOL",
+      "swarpLaunch": "SwarpLaunch"
+    },
+    "services": {
+      "title": "Services",
+      "aiSystems": "Systèmes AI",
+      "webMobile": "Web et Mobile",
+      "blockchain": "Blockchain",
+      "securityAudits": "Audits de Sécurité"
+    },
+    "explore": {
+      "title": "Explorer",
+      "swarpAi": "Swarp AI",
+      "works": "Réalisations",
+      "aboutUs": "À propos",
+      "contact": "Contact"
+    },
+    "legal": {
+      "title": "Juridique",
+      "privacyPolicy": "Politique de Confidentialité",
+      "termsOfService": "Conditions d'utilisation",
+      "security": "Sécurité",
+      "cookiePolicy": "Politique des Cookies"
+    },
+    "stats": {
+      "projects": "Projets",
+      "uptime": "Disponibilité",
+      "countries": "Pays",
+      "products": "Produits"
+    },
+    "tip": {
+      "label": "Astuce :",
+      "press": "appuyez sur",
+      "forLog": "pour le journal système"
+    },
+    "company": {
+      "title": "Entreprise"
+    },
+    "contact": {
+      "title": "Contact"
+    },
+    "copyright": "© 2026 SWARP FOUNDATION S.R.L. Tous droits réservés.",
+    "bottom": {
+      "privacy": "Confidentialité",
+      "terms": "Conditions",
+      "security": "Sécurité",
+      "cookies": "Cookies"
+    }
+  }
+}

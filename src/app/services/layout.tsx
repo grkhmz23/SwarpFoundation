@@ -1,14 +1,19 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 
-export const metadata: Metadata = {
-  title: "Services | Swarp Foundation",
-  description: "Full-stack software development services from concept to production. Web & Mobile, AI Systems, Blockchain, Cloud & DevOps, and more.",
-  openGraph: {
-    title: "Services | Swarp Foundation",
-    description: "Full-stack software development services from concept to production.",
-    type: "website",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("metadata.services");
+
+  return {
+    title: t("title"),
+    description: t("description"),
+    openGraph: {
+      title: t("title"),
+      description: t("openGraphDescription"),
+      type: "website",
+    },
+  };
+}
 
 export default function ServicesLayout({
   children,

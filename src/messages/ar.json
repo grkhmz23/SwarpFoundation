@@ -1,0 +1,121 @@
+{
+  "metadata": {
+    "title": "Swarp Foundation",
+    "description": "تطوير برمجيات full-stack من الفكرة إلى الإنتاج.",
+    "services": {
+      "title": "الخدمات | Swarp Foundation",
+      "description": "خدمات تطوير برمجيات full-stack من الفكرة إلى الإنتاج. الويب والموبايل، أنظمة AI، blockchain، Cloud وDevOps والمزيد.",
+      "openGraphDescription": "خدمات تطوير برمجيات full-stack من الفكرة إلى الإنتاج."
+    },
+    "swarpAi": {
+      "title": "Swarp AI | Swarp Foundation",
+      "description": "مساعد الدردشة Swarp AI المدعوم بـ Kimi AI - تجريبي"
+    }
+  },
+  "language": {
+    "select": "اختر اللغة",
+    "en": "الإنجليزية",
+    "it": "الإيطالية",
+    "fr": "الفرنسية",
+    "es": "الإسبانية",
+    "de": "الألمانية",
+    "ar": "العربية"
+  },
+  "nav": {
+    "items": {
+      "home": "الرئيسية",
+      "products": "المنتجات",
+      "services": "الخدمات",
+      "works": "الأعمال",
+      "about": "من نحن",
+      "contact": "اتصل بنا",
+      "swarpAi": "Swarp AI"
+    },
+    "beta": "تجريبي"
+  },
+  "swarpAi": {
+    "page": {
+      "back": "رجوع",
+      "online": "متصل",
+      "beta": "تجريبي"
+    },
+    "chat": {
+      "brand": "Swarp AI",
+      "greetingMorning": "صباح الخير",
+      "greetingAfternoon": "مساء الخير",
+      "greetingEvening": "مساء الخير",
+      "placeholderDesktop": "كيف يمكنني مساعدتك اليوم؟",
+      "placeholderMobile": "أرسل رسالة إلى Swarp AI...",
+      "errorMessage": "حدث خطأ ما. هل تريد المحاولة مرة أخرى؟",
+      "stop": "إيقاف",
+      "retry": "إعادة المحاولة",
+      "clear": "مسح",
+      "pressEnter": "اضغط Enter للإرسال",
+      "quickActionPrompt": "ساعدني في {topic}: ",
+      "quickActions": {
+        "code": "Code",
+        "docs": "Docs",
+        "ideas": "Ideas",
+        "build": "Build"
+      }
+    }
+  },
+  "footer": {
+    "brand": {
+      "tagline": "بنية تحتية software-native",
+      "description": "تطوير برمجيات full-stack من الفكرة إلى الإنتاج. نبني بنية تحتية blockchain، وأنظمة AI، ومنصات ويب قابلة للتوسع."
+    },
+    "products": {
+      "title": "المنتجات",
+      "swarpPay": "SwarpPay",
+      "swarpId": "SwarpID",
+      "psolProtocol": "بروتوكول pSOL",
+      "swarpLaunch": "SwarpLaunch"
+    },
+    "services": {
+      "title": "الخدمات",
+      "aiSystems": "أنظمة AI",
+      "webMobile": "الويب والموبايل",
+      "blockchain": "Blockchain",
+      "securityAudits": "تدقيقات الأمان"
+    },
+    "explore": {
+      "title": "استكشف",
+      "swarpAi": "Swarp AI",
+      "works": "الأعمال",
+      "aboutUs": "من نحن",
+      "contact": "اتصل بنا"
+    },
+    "legal": {
+      "title": "القانوني",
+      "privacyPolicy": "سياسة الخصوصية",
+      "termsOfService": "شروط الخدمة",
+      "security": "الأمان",
+      "cookiePolicy": "سياسة ملفات تعريف الارتباط"
+    },
+    "stats": {
+      "projects": "المشاريع",
+      "uptime": "زمن التشغيل",
+      "countries": "الدول",
+      "products": "المنتجات"
+    },
+    "tip": {
+      "label": "نصيحة:",
+      "press": "اضغط",
+      "forLog": "لعرض سجل النظام"
+    },
+    "company": {
+      "title": "الشركة"
+    },
+    "contact": {
+      "title": "التواصل"
+    },
+    "copyright": "© 2026 SWARP FOUNDATION S.R.L. جميع الحقوق محفوظة.",
+    "bottom": {
+      "privacy": "الخصوصية",
+      "terms": "الشروط",
+      "security": "الأمان",
+      "cookies": "ملفات الارتباط"
+    }
+  }
+}

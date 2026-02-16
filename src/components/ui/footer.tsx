@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import swarpLogo from "@/assets/swarplogo.png";
 import { useLegalModal } from "./legal-modal";
+import { useTranslations } from "next-intl";
 
 /* ─────────────────────────────────────────────
    useScramble — hacker decode effect
@@ -69,55 +70,55 @@ function useScramble(text: string) {
    DATA
    ───────────────────────────────────────────── */
 
-type FooterLink = { name: string; href?: string; legal?: string; badge?: string };
-type FooterSection = { title: string; links: FooterLink[] };
+type FooterLink = { nameKey: string; href?: string; legal?: string; badge?: string };
+type FooterSection = { titleKey: string; links: FooterLink[] };
 
 const footerSections: FooterSection[] = [
   {
-    title: "Products",
+    titleKey: "products.title",
     links: [
-      { name: "SwarpPay", href: "/products" },
-      { name: "SwarpID", href: "/products/swarp-id" },
-      { name: "pSOL Protocol", href: "/products" },
-      { name: "SwarpLaunch", href: "/products" },
+      { nameKey: "products.swarpPay", href: "/products" },
+      { nameKey: "products.swarpId", href: "/products/swarp-id" },
+      { nameKey: "products.psolProtocol", href: "/products" },
+      { nameKey: "products.swarpLaunch", href: "/products" },
     ],
   },
   {
-    title: "Services",
+    titleKey: "services.title",
     links: [
-      { name: "AI Systems", href: "/services" },
-      { name: "Web & Mobile", href: "/services" },
-      { name: "Blockchain", href: "/services" },
-      { name: "Security Audits", href: "/services" },
+      { nameKey: "services.aiSystems", href: "/services" },
+      { nameKey: "services.webMobile", href: "/services" },
+      { nameKey: "services.blockchain", href: "/services" },
+      { nameKey: "services.securityAudits", href: "/services" },
     ],
   },
   {
-    title: "Explore",
+    titleKey: "explore.title",
     links: [
-      { name: "Swarp AI", href: "/swarp-ai", badge: "BETA" },
-      { name: "Works", href: "/works" },
-      { name: "About Us", href: "/about" },
-      { name: "Contact", href: "/contact" },
+      { nameKey: "explore.swarpAi", href: "/swarp-ai", badge: "BETA" },
+      { nameKey: "explore.works", href: "/works" },
+      { nameKey: "explore.aboutUs", href: "/about" },
+      { nameKey: "explore.contact", href: "/contact" },
     ],
   },
   {
-    title: "Legal",
+    titleKey: "legal.title",
     links: [
-      { name: "Privacy Policy", legal: "privacy" },
-      { name: "Terms of Service", legal: "terms" },
-      { name: "Security", legal: "security" },
-      { name: "Cookie Policy", legal: "cookies" },
+      { nameKey: "legal.privacyPolicy", legal: "privacy" },
+      { nameKey: "legal.termsOfService", legal: "terms" },
+      { nameKey: "legal.security", legal: "security" },
+      { nameKey: "legal.cookiePolicy", legal: "cookies" },
     ],
   },
 ];
 
-type Stat = { target: number; label: string; duration: number; suffix?: string };
+type Stat = { target: number; labelKey: string; duration: number; suffix?: string };
 
 const stats: Stat[] = [
-  { target: 50, label: "Projects", duration: 1400, suffix: "+" },
-  { target: 99, label: "Uptime", duration: 1800, suffix: "%" },
-  { target: 25, label: "Countries", duration: 1600 },
-  { target: 10, label: "Products", duration: 1200, suffix: "+" },
+  { target: 50, labelKey: "stats.projects", duration: 1400, suffix: "+" },
+  { target: 99, labelKey: "stats.uptime", duration: 1800, suffix: "%" },
+  { target: 25, labelKey: "stats.countries", duration: 1600 },
+  { target: 10, labelKey: "stats.products", duration: 1200, suffix: "+" },
 ];
 
 type SocialLink = { name: string; url: string; icon: React.ReactNode };
@@ -441,6 +442,7 @@ function SocialIcons() {
    ───────────────────────────────────────────── */
 
 export function Footer() {
+  const t = useTranslations("footer");
   const reducedMotion = usePrefersReducedMotion();
   const [devOpen, setDevOpen] = useState(false);
   const { openLegal } = useLegalModal();
@@ -473,7 +475,7 @@ export function Footer() {
           <div className="mb-10 pb-10 border-b border-white/[0.08]">
             <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-12">
               {stats.map((stat, i) => (
-                <DotTelemetryCard key={i} target={stat.target} label={stat.label} duration={stat.duration} suffix={stat.suffix ?? ""} reducedMotion={reducedMotion} />
+                <DotTelemetryCard key={i} target={stat.target} label={t(stat.labelKey)} duration={stat.duration} suffix={stat.suffix ?? ""} reducedMotion={reducedMotion} />
               ))}
             </div>
             <div className="mt-8"><CircuitDivider reducedMotion={reducedMotion} /></div>
@@ -490,12 +492,12 @@ export function Footer() {
                 </div>
                 <div className="flex flex-col leading-tight">
                   <span className="text-lg font-semibold tracking-tight text-white">Swarp Foundation</span>
-                  <span className="text-[11px] tracking-[0.22em] uppercase text-white/50">Software-native infrastructure</span>
+                  <span className="text-[11px] tracking-[0.22em] uppercase text-white/50">{t("brand.tagline")}</span>
                 </div>
               </Link>
 
               <p className="text-sm text-white/60 leading-relaxed max-w-xs">
-                Full-stack software development from concept to production. We build blockchain infrastructure, AI systems, and scalable web platforms.
+                {t("brand.description")}
               </p>
 
               {/* Social icons */}
@@ -504,36 +506,36 @@ export function Footer() {
               </div>
 
               <div className="text-[11px] text-white/30">
-                <span className="font-mono">Tip:</span> press{" "}
+                <span className="font-mono">{t("tip.label")}</span> {t("tip.press")}{" "}
                 <kbd className="font-mono text-[10px] px-1.5 py-0.5 rounded-md border border-white/15 bg-white/[0.06] text-white/80 mx-0.5">~</kbd>
-                {" "}for system log
+                {" "}{t("tip.forLog")}
               </div>
             </div>
 
             {/* Link columns — with scramble effect */}
             <div className="lg:col-span-8 grid grid-cols-2 sm:grid-cols-4 gap-8">
               {footerSections.map((section) => (
-                <div key={section.title}>
+                <div key={section.titleKey}>
                   <h3 className="text-[10px] font-extrabold tracking-[0.22em] uppercase text-[#00FFF0]/80 mb-5">
-                    {section.title}
+                    {t(section.titleKey)}
                   </h3>
                   <ul className="list-none p-0 m-0">
                     {section.links.map((link) =>
                       link.legal ? (
                         <ScrambleButton
-                          key={link.name}
+                          key={link.nameKey}
                           onClick={() => openLegal(link.legal!)}
                           badge={link.badge}
                         >
-                          {link.name}
+                          {t(link.nameKey)}
                         </ScrambleButton>
                       ) : (
                         <ScrambleLink
-                          key={link.name}
+                          key={link.nameKey}
                           href={link.href!}
                           badge={link.badge}
                         >
-                          {link.name}
+                          {t(link.nameKey)}
                         </ScrambleLink>
                       )
                     )}
@@ -547,13 +549,13 @@ export function Footer() {
           <div className="mt-10 pt-6 border-t border-white/[0.06]">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-[11px] text-white/30 leading-relaxed">
               <div className="space-y-1.5">
-                <p className="text-white/50 font-semibold font-mono text-[10px] tracking-[0.1em] uppercase mb-2">Company</p>
+                <p className="text-white/50 font-semibold font-mono text-[10px] tracking-[0.1em] uppercase mb-2">{t("company.title")}</p>
                 <p><span className="text-white/45">SWARP FOUNDATION S.R.L.</span> — Società a Responsabilità Limitata</p>
                 <p>Viale Tunisia 22, 20124, Milano (MI), Italy</p>
                 <p>Reg. No: 14284090967 &nbsp;·&nbsp; REA: MI-2771688 &nbsp;·&nbsp; P.IVA: 14284090967</p>
               </div>
               <div className="space-y-1.5">
-                <p className="text-white/50 font-semibold font-mono text-[10px] tracking-[0.1em] uppercase mb-2">Contact</p>
+                <p className="text-white/50 font-semibold font-mono text-[10px] tracking-[0.1em] uppercase mb-2">{t("contact.title")}</p>
                 <p>PEC: <a href="mailto:swarpfoundation@pec.it" className="text-[#00D4FF]/60 hover:text-[#00FFF0] transition-colors">swarpfoundation@pec.it</a></p>
                 <p>Email: <a href="mailto:info@swarppay.com" className="text-[#00D4FF]/60 hover:text-[#00FFF0] transition-colors">info@swarppay.com</a></p>
               </div>
@@ -564,13 +566,13 @@ export function Footer() {
           {/* ── BOTTOM BAR ── */}
           <div className="mt-6 pt-5 border-t border-white/[0.08] flex flex-col sm:flex-row justify-between items-center gap-4">
             <p className="text-[12px] text-white/50 font-medium font-mono">
-              © 2026 SWARP FOUNDATION S.R.L. All rights reserved.
+              {t("copyright")}
             </p>
             <div className="flex items-center gap-6">
-              <ScrambleBottomLink onClick={() => openLegal("privacy")}>Privacy</ScrambleBottomLink>
-              <ScrambleBottomLink onClick={() => openLegal("terms")}>Terms</ScrambleBottomLink>
-              <ScrambleBottomLink onClick={() => openLegal("security")}>Security</ScrambleBottomLink>
-              <ScrambleBottomLink onClick={() => openLegal("cookies")}>Cookies</ScrambleBottomLink>
+              <ScrambleBottomLink onClick={() => openLegal("privacy")}>{t("bottom.privacy")}</ScrambleBottomLink>
+              <ScrambleBottomLink onClick={() => openLegal("terms")}>{t("bottom.terms")}</ScrambleBottomLink>
+              <ScrambleBottomLink onClick={() => openLegal("security")}>{t("bottom.security")}</ScrambleBottomLink>
+              <ScrambleBottomLink onClick={() => openLegal("cookies")}>{t("bottom.cookies")}</ScrambleBottomLink>
               <button
                 type="button"
                 onClick={() => setDevOpen((v) => !v)}

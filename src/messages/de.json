@@ -1,0 +1,121 @@
+{
+  "metadata": {
+    "title": "Swarp Foundation",
+    "description": "Full-Stack-Softwareentwicklung vom Konzept bis zur Produktion.",
+    "services": {
+      "title": "Services | Swarp Foundation",
+      "description": "Full-Stack-Softwareentwicklungsservices vom Konzept bis zur Produktion. Web und Mobile, AI-Systeme, blockchain, Cloud und DevOps und mehr.",
+      "openGraphDescription": "Full-Stack-Softwareentwicklungsservices vom Konzept bis zur Produktion."
+    },
+    "swarpAi": {
+      "title": "Swarp AI | Swarp Foundation",
+      "description": "Swarp AI Chat-Assistent mit Kimi AI - Beta"
+    }
+  },
+  "language": {
+    "select": "Sprache auswählen",
+    "en": "Englisch",
+    "it": "Italienisch",
+    "fr": "Französisch",
+    "es": "Spanisch",
+    "de": "Deutsch",
+    "ar": "Arabisch"
+  },
+  "nav": {
+    "items": {
+      "home": "Start",
+      "products": "Produkte",
+      "services": "Services",
+      "works": "Projekte",
+      "about": "Über uns",
+      "contact": "Kontakt",
+      "swarpAi": "Swarp AI"
+    },
+    "beta": "Beta"
+  },
+  "swarpAi": {
+    "page": {
+      "back": "Zurück",
+      "online": "Online",
+      "beta": "Beta"
+    },
+    "chat": {
+      "brand": "Swarp AI",
+      "greetingMorning": "Guten Morgen",
+      "greetingAfternoon": "Guten Tag",
+      "greetingEvening": "Guten Abend",
+      "placeholderDesktop": "Wie kann ich heute helfen?",
+      "placeholderMobile": "Nachricht an Swarp AI...",
+      "errorMessage": "Etwas ist schiefgelaufen. Erneut versuchen?",
+      "stop": "Stopp",
+      "retry": "Wiederholen",
+      "clear": "Löschen",
+      "pressEnter": "Drücken Sie Enter zum Senden",
+      "quickActionPrompt": "Hilf mir mit {topic}: ",
+      "quickActions": {
+        "code": "Code",
+        "docs": "Docs",
+        "ideas": "Ideen",
+        "build": "Bauen"
+      }
+    }
+  },
+  "footer": {
+    "brand": {
+      "tagline": "Software-native Infrastruktur",
+      "description": "Full-Stack-Softwareentwicklung vom Konzept bis zur Produktion. Wir bauen blockchain-Infrastruktur, AI-Systeme und skalierbare Webplattformen."
+    },
+    "products": {
+      "title": "Produkte",
+      "swarpPay": "SwarpPay",
+      "swarpId": "SwarpID",
+      "psolProtocol": "pSOL-Protokoll",
+      "swarpLaunch": "SwarpLaunch"
+    },
+    "services": {
+      "title": "Services",
+      "aiSystems": "AI-Systeme",
+      "webMobile": "Web & Mobile",
+      "blockchain": "Blockchain",
+      "securityAudits": "Sicherheitsaudits"
+    },
+    "explore": {
+      "title": "Entdecken",
+      "swarpAi": "Swarp AI",
+      "works": "Projekte",
+      "aboutUs": "Über uns",
+      "contact": "Kontakt"
+    },
+    "legal": {
+      "title": "Rechtliches",
+      "privacyPolicy": "Datenschutzerklärung",
+      "termsOfService": "Nutzungsbedingungen",
+      "security": "Sicherheit",
+      "cookiePolicy": "Cookie-Richtlinie"
+    },
+    "stats": {
+      "projects": "Projekte",
+      "uptime": "Uptime",
+      "countries": "Länder",
+      "products": "Produkte"
+    },
+    "tip": {
+      "label": "Tipp:",
+      "press": "drücken Sie",
+      "forLog": "für das Systemprotokoll"
+    },
+    "company": {
+      "title": "Unternehmen"
+    },
+    "contact": {
+      "title": "Kontakt"
+    },
+    "copyright": "© 2026 SWARP FOUNDATION S.R.L. Alle Rechte vorbehalten.",
+    "bottom": {
+      "privacy": "Datenschutz",
+      "terms": "Bedingungen",
+      "security": "Sicherheit",
+      "cookies": "Cookies"
+    }
+  }
+}

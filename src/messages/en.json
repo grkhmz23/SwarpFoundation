@@ -1,0 +1,121 @@
+{
+  "metadata": {
+    "title": "Swarp Foundation",
+    "description": "Full-stack software development from concept to production.",
+    "services": {
+      "title": "Services | Swarp Foundation",
+      "description": "Full-stack software development services from concept to production. Web & Mobile, AI Systems, Blockchain, Cloud & DevOps, and more.",
+      "openGraphDescription": "Full-stack software development services from concept to production."
+    },
+    "swarpAi": {
+      "title": "Swarp AI | Swarp Foundation",
+      "description": "Swarp AI chat assistant powered by Kimi AI - Beta"
+    }
+  },
+  "language": {
+    "select": "Select language",
+    "en": "English",
+    "it": "Italian",
+    "fr": "French",
+    "es": "Spanish",
+    "de": "German",
+    "ar": "Arabic"
+  },
+  "nav": {
+    "items": {
+      "home": "Home",
+      "products": "Products",
+      "services": "Services",
+      "works": "Works",
+      "about": "About",
+      "contact": "Contact",
+      "swarpAi": "Swarp AI"
+    },
+    "beta": "Beta"
+  },
+  "swarpAi": {
+    "page": {
+      "back": "Back",
+      "online": "Online",
+      "beta": "Beta"
+    },
+    "chat": {
+      "brand": "Swarp AI",
+      "greetingMorning": "Good morning",
+      "greetingAfternoon": "Good afternoon",
+      "greetingEvening": "Good evening",
+      "placeholderDesktop": "How can I help you today?",
+      "placeholderMobile": "Message Swarp AI...",
+      "errorMessage": "Something went wrong. Try again?",
+      "stop": "Stop",
+      "retry": "Retry",
+      "clear": "Clear",
+      "pressEnter": "Press Enter to send",
+      "quickActionPrompt": "Help me with {topic}: ",
+      "quickActions": {
+        "code": "Code",
+        "docs": "Docs",
+        "ideas": "Ideas",
+        "build": "Build"
+      }
+    }
+  },
+  "footer": {
+    "brand": {
+      "tagline": "Software-native infrastructure",
+      "description": "Full-stack software development from concept to production. We build blockchain infrastructure, AI systems, and scalable web platforms."
+    },
+    "products": {
+      "title": "Products",
+      "swarpPay": "SwarpPay",
+      "swarpId": "SwarpID",
+      "psolProtocol": "pSOL Protocol",
+      "swarpLaunch": "SwarpLaunch"
+    },
+    "services": {
+      "title": "Services",
+      "aiSystems": "AI Systems",
+      "webMobile": "Web & Mobile",
+      "blockchain": "Blockchain",
+      "securityAudits": "Security Audits"
+    },
+    "explore": {
+      "title": "Explore",
+      "swarpAi": "Swarp AI",
+      "works": "Works",
+      "aboutUs": "About Us",
+      "contact": "Contact"
+    },
+    "legal": {
+      "title": "Legal",
+      "privacyPolicy": "Privacy Policy",
+      "termsOfService": "Terms of Service",
+      "security": "Security",
+      "cookiePolicy": "Cookie Policy"
+    },
+    "stats": {
+      "projects": "Projects",
+      "uptime": "Uptime",
+      "countries": "Countries",
+      "products": "Products"
+    },
+    "tip": {
+      "label": "Tip:",
+      "press": "press",
+      "forLog": "for system log"
+    },
+    "company": {
+      "title": "Company"
+    },
+    "contact": {
+      "title": "Contact"
+    },
+    "copyright": "© 2026 SWARP FOUNDATION S.R.L. All rights reserved.",
+    "bottom": {
+      "privacy": "Privacy",
+      "terms": "Terms",
+      "security": "Security",
+      "cookies": "Cookies"
+    }
+  }
+}
