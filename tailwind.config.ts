@@ -118,6 +118,9 @@ const config: Config = {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic": "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      transitionTimingFunction: {
+        "smooth": "cubic-bezier(0.16, 1, 0.3, 1)",
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],

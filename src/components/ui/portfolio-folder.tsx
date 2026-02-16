@@ -63,7 +63,7 @@ const ProjectCard = forwardRef<HTMLDivElement, ProjectCardProps>(
       >
         <div className={cn(
           "w-full h-full rounded-lg overflow-hidden shadow-xl bg-gray-900 border border-cyan-500/20 relative",
-          "transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]",
+          "transition-all duration-500 ease-smooth",
           "group-hover/card:-translate-y-6 group-hover/card:shadow-2xl group-hover/card:shadow-cyan-500/40 group-hover/card:ring-2 group-hover/card:ring-cyan-500 group-hover/card:scale-125"
         )}>
           <Image 
@@ -296,7 +296,7 @@ const ImageLightbox: React.FC<ImageLightboxProps> = ({
         <div className={cn("relative overflow-hidden rounded-[inherit] bg-gray-900 border border-cyan-500/30 shadow-[0_35px_60px_-15px_rgba(0,255,240,0.2)]")}>
           <div className="relative overflow-hidden aspect-[4/3] md:aspect-[16/10]">
             <div
-              className="flex w-full h-full transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
+              className="flex w-full h-full transition-transform duration-500 ease-smooth"
               style={{
                 transform: `translateX(-${internalIndex * 100}%)`,
                 transition: isSliding ? "transform 500ms cubic-bezier(0.16, 1, 0.3, 1)" : "none",
@@ -402,7 +402,7 @@ export const AnimatedFolder: React.FC<AnimatedFolderProps> = ({ title, projects,
   return (
     <>
       <div
-        className={cn("relative flex flex-col items-center justify-center p-8 rounded-2xl cursor-pointer bg-gray-900/50 border border-cyan-500/20 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] hover:shadow-2xl hover:shadow-cyan-500/20 hover:border-cyan-500/50 group", className)}
+        className={cn("relative flex flex-col items-center justify-center p-8 rounded-2xl cursor-pointer bg-gray-900/50 border border-cyan-500/20 transition-all duration-700 ease-smooth hover:shadow-2xl hover:shadow-cyan-500/20 hover:border-cyan-500/50 group", className)}
         style={{ minWidth: "280px", minHeight: "320px", perspective: "1200px", transform: isHovered ? "scale(1.04) rotate(-1.5deg)" : "scale(1) rotate(0deg)" }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
