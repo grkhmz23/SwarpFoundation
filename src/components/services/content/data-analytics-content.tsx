@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { useIntervalWhenVisible } from "@/components/services/service-content-wrapper";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Database, BarChart3, PieChart, Activity, TrendingUp, Table2, 
@@ -50,21 +51,18 @@ function ETLPipeline() {
     { id: "3", name: "Event Stream", type: "stream", status: "connected", records: 89000 },
   ]);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setStages(prev => prev.map(stage => {
-        if (stage.status === "running") {
-          return {
-            ...stage,
-            records: stage.records + Math.floor(Math.random() * 100),
-            throughput: Math.floor(Math.random() * 500) + 1500,
-          };
-        }
-        return stage;
-      }));
-    }, 2000);
-    return () => clearInterval(interval);
-  }, []);
+  useIntervalWhenVisible(() => {
+    setStages(prev => prev.map(stage => {
+      if (stage.status === "running") {
+        return {
+          ...stage,
+          records: stage.records + Math.floor(Math.random() * 100),
+          throughput: Math.floor(Math.random() * 500) + 1500,
+        };
+      }
+      return stage;
+    }));
+  }, 2000);
 
   const runPipeline = () => {
     setStages(prev => prev.map((s, i) => ({ 
@@ -180,19 +178,16 @@ function LiveDashboard() {
 
   const [chartData, setChartData] = useState([30, 45, 35, 55, 48, 62, 58, 75, 68, 82, 78, 90]);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setMetrics(prev => ({
-        revenue: prev.revenue + Math.floor(Math.random() * 1000) - 200,
-        users: prev.users + Math.floor(Math.random() * 10),
-        conversion: Math.max(0, prev.conversion + (Math.random() - 0.5) * 0.1),
-        activeNow: Math.floor(Math.random() * 100) + 300,
-      }));
+  useIntervalWhenVisible(() => {
+    setMetrics(prev => ({
+      revenue: prev.revenue + Math.floor(Math.random() * 1000) - 200,
+      users: prev.users + Math.floor(Math.random() * 10),
+      conversion: Math.max(0, prev.conversion + (Math.random() - 0.5) * 0.1),
+      activeNow: Math.floor(Math.random() * 100) + 300,
+    }));
 
-      setChartData(prev => [...prev.slice(1), Math.floor(Math.random() * 40) + 50]);
-    }, 3000);
-    return () => clearInterval(interval);
-  }, []);
+    setChartData(prev => [...prev.slice(1), Math.floor(Math.random() * 40) + 50]);
+  }, 3000);
 
   return (
     <ServiceCard accentColor="purple" icon={<BarChart3 className="w-5 h-5 text-swarp-purple" />} title="Live Dashboard">

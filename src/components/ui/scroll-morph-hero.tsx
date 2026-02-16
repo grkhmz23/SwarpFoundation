@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useMemo, useRef } from "react";
+import Image from "next/image";
 import { motion, useTransform, useSpring, useMotionValue } from "framer-motion";
 
 interface FlipCardProps {
@@ -27,7 +28,7 @@ function FlipCard({ src, index, target }: FlipCardProps) {
         whileHover={{ rotateY: 180 }}
       >
         <div className="absolute inset-0 h-full w-full overflow-hidden rounded-lg shadow-lg bg-neutral-800" style={{ backfaceVisibility: "hidden" }}>
-          <img src={src} alt={`card-${index}`} className="h-full w-full object-cover" />
+          <Image src={src} alt={`card-${index}`} fill sizes="40px" className="object-cover" unoptimized />
           <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors" />
         </div>
         <div className="absolute inset-0 h-full w-full overflow-hidden rounded-lg shadow-lg bg-neutral-900 flex items-center justify-center border border-cyan-500/30" style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}>

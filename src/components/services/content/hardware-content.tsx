@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { useIntervalWhenVisible } from "@/components/services/service-content-wrapper";
 import Link from "next/link";
 import {
   motion,
@@ -283,19 +284,30 @@ const RealisticDeviceRender = ({
 // ============================================================================
 const ScrambleText = ({ text, trigger }: { text: string; trigger: unknown }) => {
   const [display, setDisplay] = useState(text);
+  const [isDone, setIsDone] = useState(false);
+  const iterationRef = useRef(0);
+  const textRef = useRef(text);
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
+  // Reset when text or trigger changes
   useEffect(() => {
-    let iteration = 0;
-    const interval = setInterval(() => {
-      setDisplay(
-        text.split("").map((l, i) => (i < iteration ? text[i] : chars[Math.floor(Math.random() * chars.length)])).join("")
-      );
-      if (iteration >= text.length) clearInterval(interval);
-      iteration += 0.5;
-    }, 30);
-    return () => clearInterval(interval);
+    textRef.current = text;
+    iterationRef.current = 0;
+    setIsDone(false);
+    setDisplay(text);
   }, [text, trigger]);
+
+  useIntervalWhenVisible(() => {
+    const currentText = textRef.current;
+    setDisplay(
+      currentText.split("").map((l, i) => (i < iterationRef.current ? currentText[i] : chars[Math.floor(Math.random() * chars.length)])).join("")
+    );
+    if (iterationRef.current >= currentText.length) {
+      setIsDone(true);
+    } else {
+      iterationRef.current += 0.5;
+    }
+  }, isDone ? null : 30);
 
   return <span>{display}</span>;
 };

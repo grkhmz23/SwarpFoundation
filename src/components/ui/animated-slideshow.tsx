@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { HTMLMotionProps, MotionConfig, motion } from "motion/react"
+import { HTMLMotionProps, MotionConfig, motion } from "framer-motion"
 import { cn } from "@/lib/utils"
 
 interface TextStaggerHoverProps {

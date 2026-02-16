@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import { useIntervalWhenVisible } from "@/components/services/service-content-wrapper";
 import {
   Terminal,
   Settings,
@@ -119,6 +120,7 @@ const FileTreeItem = ({
 // Terminal Simulation
 const TerminalSimulation = () => {
   const [lines, setLines] = useState<string[]>([]);
+  const currentLineRef = useRef(0);
   const fullText = [
     "> swarp init --template=saas-starter",
     "✔ Validating configuration...",
@@ -129,19 +131,20 @@ const TerminalSimulation = () => {
     "Done in 2.4s. App is live at https://app.swarp.dev",
   ];
 
+  const addLine = useCallback(() => {
+    if (currentLineRef.current >= fullText.length) {
+      return;
+    }
+    setLines((prev) => [...prev, fullText[currentLineRef.current]]);
+    currentLineRef.current++;
+  }, []);
+
   useEffect(() => {
     setLines([]);
-    let currentLine = 0;
-    const interval = setInterval(() => {
-      if (currentLine >= fullText.length) {
-        clearInterval(interval);
-        return;
-      }
-      setLines((prev) => [...prev, fullText[currentLine]]);
-      currentLine++;
-    }, 800);
-    return () => clearInterval(interval);
+    currentLineRef.current = 0;
   }, []);
+
+  useIntervalWhenVisible(addLine, 800);
 
   return (
     <div className="h-full font-mono text-xs overflow-y-auto">

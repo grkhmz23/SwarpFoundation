@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useIntervalWhenVisible } from "@/components/services/service-content-wrapper";
 import {
   Shield, ShieldAlert, ShieldCheck, Terminal, Search, Bug, Lock, Unlock,
   Server, Globe, AlertTriangle, CheckCircle2, XCircle, Activity, Radar,
@@ -42,24 +43,20 @@ function ThreatRadar() {
   const [threats, setThreats] = useState<Threat[]>([]);
   const [isScanning, setIsScanning] = useState(true);
 
-  useEffect(() => {
+  useIntervalWhenVisible(() => {
     if (!isScanning) return;
 
-    const interval = setInterval(() => {
-      const newThreat: Threat = {
-        id: Math.random().toString(36).substr(2, 9),
-        type: ["SQL Injection", "XSS Attempt", "DDoS", "Brute Force", "Malware"][Math.floor(Math.random() * 5)],
-        origin: ["192.168.x.x", "10.0.x.x", "172.16.x.x"][Math.floor(Math.random() * 3)],
-        timestamp: new Date(),
-        blocked: true,
-        severity: ["high", "medium", "low"][Math.floor(Math.random() * 3)] as any,
-      };
+    const newThreat: Threat = {
+      id: Math.random().toString(36).substr(2, 9),
+      type: ["SQL Injection", "XSS Attempt", "DDoS", "Brute Force", "Malware"][Math.floor(Math.random() * 5)],
+      origin: ["192.168.x.x", "10.0.x.x", "172.16.x.x"][Math.floor(Math.random() * 3)],
+      timestamp: new Date(),
+      blocked: true,
+      severity: ["high", "medium", "low"][Math.floor(Math.random() * 3)] as any,
+    };
 
-      setThreats(prev => [newThreat, ...prev].slice(0, 8));
-    }, 2500);
-
-    return () => clearInterval(interval);
-  }, [isScanning]);
+    setThreats(prev => [newThreat, ...prev].slice(0, 8));
+  }, 2500);
 
   return (
     <div className="relative bg-[#0c0e12] rounded-xl border border-red-500/20 p-4 overflow-hidden h-full">
@@ -161,20 +158,23 @@ function VulnScanner() {
     { id: "4", name: "Security Misconfiguration", severity: "medium", category: "Config", status: "scanning", cwe: "CWE-16" },
   ]);
 
+  const [scanDelay, setScanDelay] = useState<number | null>(null);
+
+  useIntervalWhenVisible(() => {
+    setProgress(prev => {
+      if (prev >= 100) {
+        setScanning(false);
+        setScanDelay(null);
+        return 100;
+      }
+      return prev + 2;
+    });
+  }, scanDelay);
+
   const startScan = () => {
     setScanning(true);
     setProgress(0);
-
-    const interval = setInterval(() => {
-      setProgress(prev => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          setScanning(false);
-          return 100;
-        }
-        return prev + 2;
-      });
-    }, 100);
+    setScanDelay(100);
   };
 
   const getSeverityColor = (s: string) => {
@@ -288,17 +288,16 @@ function PentestTerminal() {
     { cmd: "burp-scan --scope=api", output: "JWT signature not verified, CORS misconfiguration detected, Rate limiting bypass possible" },
   ];
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (currentCommand < commands.length) {
-        const command = commands[currentCommand];
-        setLines(prev => [...prev, `$ ${command.cmd}`, `[RESULT] ${command.output}`]);
-        setCurrentCommand(prev => prev + 1);
-      }
-    }, 3000);
+  const currentCommandRef = useRef(currentCommand);
+  currentCommandRef.current = currentCommand;
 
-    return () => clearInterval(interval);
-  }, [currentCommand]);
+  useIntervalWhenVisible(() => {
+    if (currentCommandRef.current < commands.length) {
+      const command = commands[currentCommandRef.current];
+      setLines(prev => [...prev, `$ ${command.cmd}`, `[RESULT] ${command.output}`]);
+      setCurrentCommand(prev => prev + 1);
+    }
+  }, 3000);
 
   return (
     <div className="bg-[#09090b] rounded-xl border border-emerald-500/20 p-4 font-mono text-xs h-full flex flex-col">
@@ -353,18 +352,14 @@ function SecurityScore() {
   const [score, setScore] = useState(0);
   const targetScore = 87;
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setScore(prev => {
-        if (prev >= targetScore) {
-          clearInterval(interval);
-          return targetScore;
-        }
-        return prev + 1;
-      });
-    }, 20);
-    return () => clearInterval(interval);
-  }, []);
+  useIntervalWhenVisible(() => {
+    setScore(prev => {
+      if (prev >= targetScore) {
+        return targetScore;
+      }
+      return prev + 1;
+    });
+  }, 20);
 
   const checks = [
     { name: "SSL/TLS Configuration", status: true },

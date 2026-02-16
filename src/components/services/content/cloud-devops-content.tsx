@@ -19,6 +19,7 @@ import {
   ServiceTab,
   ServiceCTA,
 } from "@/components/services/service-content-layout";
+import { useIntervalWhenVisible } from "@/components/services/service-content-wrapper";
 
 // ==================== TYPES ====================
 interface Node {
@@ -105,17 +106,14 @@ function K8sCluster() {
   const [isDeploying, setIsDeploying] = useState(false);
   const [showTooltip, setShowTooltip] = useState<string | null>(null);
 
-  // Simulate live metrics updates
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setNodes(prev => prev.map(node => ({
-        ...node,
-        cpu: Math.max(10, Math.min(95, node.cpu + (Math.random() - 0.5) * 8)),
-        memory: Math.max(20, Math.min(95, node.memory + (Math.random() - 0.5) * 6)),
-      })));
-    }, 2500);
-    return () => clearInterval(interval);
-  }, []);
+  // Simulate live metrics updates - pauses when off-screen
+  useIntervalWhenVisible(() => {
+    setNodes(prev => prev.map(node => ({
+      ...node,
+      cpu: Math.max(10, Math.min(95, node.cpu + (Math.random() - 0.5) * 8)),
+      memory: Math.max(20, Math.min(95, node.memory + (Math.random() - 0.5) * 6)),
+    })));
+  }, 2500);
 
   const handleScale = useCallback((delta: number) => {
     setIsDeploying(true);
@@ -422,31 +420,26 @@ function CICDPipeline() {
   const [selectedStage, setSelectedStage] = useState<PipelineStage | null>(null);
   const [autoScroll, setAutoScroll] = useState(true);
 
-  // Auto-advance pipeline
-  useEffect(() => {
+  // Auto-advance pipeline - pauses when off-screen
+  useIntervalWhenVisible(() => {
     if (!isRunning) return;
-
-    const interval = setInterval(() => {
-      setStages(prev => {
-        const newStages = [...prev];
-        for (let i = 0; i < newStages.length; i++) {
-          if (newStages[i].status === "running") {
-            if (Math.random() > 0.75) {
-              newStages[i].status = "success";
-              newStages[i].logs.push("✓ Stage completed successfully");
-            }
-          }
-          if (i > 0 && newStages[i-1].status === "success" && newStages[i].status === "pending") {
-            newStages[i].status = "running";
-            newStages[i].logs.push("→ Starting stage...");
+    setStages(prev => {
+      const newStages = [...prev];
+      for (let i = 0; i < newStages.length; i++) {
+        if (newStages[i].status === "running") {
+          if (Math.random() > 0.75) {
+            newStages[i].status = "success";
+            newStages[i].logs.push("✓ Stage completed successfully");
           }
         }
-        return newStages;
-      });
-    }, 2500);
-
-    return () => clearInterval(interval);
-  }, [isRunning]);
+        if (i > 0 && newStages[i-1].status === "success" && newStages[i].status === "pending") {
+          newStages[i].status = "running";
+          newStages[i].logs.push("→ Starting stage...");
+        }
+      }
+      return newStages;
+    });
+  }, isRunning ? 2500 : null);
 
   const restartPipeline = () => {
     setStages(prev => prev.map(s => ({ 
@@ -659,19 +652,17 @@ function InfraMetrics() {
   const [history, setHistory] = useState<MetricData[]>([]);
   const [timeRange, setTimeRange] = useState<"1m" | "5m" | "1h">("1m");
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const newMetrics = {
-        cpu: Math.floor(Math.random() * 25) + 35,
-        memory: Math.floor(Math.random() * 15) + 50,
-        disk: Math.floor(Math.random() * 8) + 30,
-        network: Math.floor(Math.random() * 30) + 45,
-      };
-      setMetrics(newMetrics);
-      setHistory(prev => [...prev.slice(-20), newMetrics]);
-    }, 2000);
-    return () => clearInterval(interval);
-  }, []);
+  // Live metrics updates - pauses when off-screen
+  useIntervalWhenVisible(() => {
+    const newMetrics = {
+      cpu: Math.floor(Math.random() * 25) + 35,
+      memory: Math.floor(Math.random() * 15) + 50,
+      disk: Math.floor(Math.random() * 8) + 30,
+      network: Math.floor(Math.random() * 30) + 45,
+    };
+    setMetrics(newMetrics);
+    setHistory(prev => [...prev.slice(-20), newMetrics]);
+  }, 2000);
 
   const MetricCard = ({ label, value, icon: Icon, color, trend }: { 
     label: string; 

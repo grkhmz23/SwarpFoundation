@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect, useLayoutEffect, useCallback, forwardRef } from "react";
+import Image from "next/image";
 import { X, ExternalLink, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -65,13 +66,16 @@ const ProjectCard = forwardRef<HTMLDivElement, ProjectCardProps>(
           "transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]",
           "group-hover/card:-translate-y-6 group-hover/card:shadow-2xl group-hover/card:shadow-cyan-500/40 group-hover/card:ring-2 group-hover/card:ring-cyan-500 group-hover/card:scale-125"
         )}>
-          <img 
+          <Image 
             src={image || PLACEHOLDER_IMAGE} 
-            alt={title} 
-            className="w-full h-full object-cover"
-            onError={(e) => {
-              (e.target as HTMLImageElement).src = PLACEHOLDER_IMAGE;
+            alt={title}
+            fill
+            sizes="80px"
+            className="object-cover"
+            onError={() => {
+              // Fallback handled by parent component
             }}
+            unoptimized={image?.startsWith('http')}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
           <p className="absolute bottom-1.5 left-1.5 right-1.5 text-[9px] font-black uppercase tracking-tighter text-white truncate drop-shadow-md">
@@ -298,13 +302,19 @@ const ImageLightbox: React.FC<ImageLightboxProps> = ({
                 transition: isSliding ? "transform 500ms cubic-bezier(0.16, 1, 0.3, 1)" : "none",
               }}
             >
-              {projects.map((project) => (
+              {projects.map((project, idx) => (
                 <div key={project.id} className="min-w-full h-full relative">
-                  <img
+                  <Image
                     src={project.image || PLACEHOLDER_IMAGE}
                     alt={project.title}
-                    className="w-full h-full object-cover select-none"
-                    onError={(e) => { (e.target as HTMLImageElement).src = PLACEHOLDER_IMAGE; }}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 80vw"
+                    className="object-cover select-none"
+                    onError={() => {
+                      // Fallback handled by parent component
+                    }}
+                    unoptimized={project.image?.startsWith('http')}
+                    priority={currentIndex === idx}
                   />
                   <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/40 pointer-events-none" />
                 </div>

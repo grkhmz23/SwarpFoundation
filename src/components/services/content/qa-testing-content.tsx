@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useIntervalWhenVisible } from "@/components/services/service-content-wrapper";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Bug, CheckCircle2, XCircle, AlertCircle, Play, Pause, RefreshCw,
@@ -319,21 +320,19 @@ function LoadTesting() {
     if (!isRunning) {
       setMetrics({ rps: 0, latency: 0, errors: 0, users: 0 });
       setChartData(Array(20).fill(0));
-      return;
     }
-
-    const interval = setInterval(() => {
-      setMetrics({
-        rps: Math.floor(Math.random() * 500) + 1000,
-        latency: Math.floor(Math.random() * 50) + 80,
-        errors: Math.floor(Math.random() * 5),
-        users: Math.floor(Math.random() * 1000) + 5000,
-      });
-      setChartData(prev => [...prev.slice(1), Math.floor(Math.random() * 80) + 20]);
-    }, 500);
-
-    return () => clearInterval(interval);
   }, [isRunning]);
+
+  useIntervalWhenVisible(() => {
+    if (!isRunning) return;
+    setMetrics({
+      rps: Math.floor(Math.random() * 500) + 1000,
+      latency: Math.floor(Math.random() * 50) + 80,
+      errors: Math.floor(Math.random() * 5),
+      users: Math.floor(Math.random() * 1000) + 5000,
+    });
+    setChartData(prev => [...prev.slice(1), Math.floor(Math.random() * 80) + 20]);
+  }, 500);
 
   return (
     <div className="bg-swarp-dark/80 rounded-xl border border-swarp-blue/20 p-4">

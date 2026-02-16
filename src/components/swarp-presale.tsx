@@ -5,7 +5,7 @@ import Image from "next/image";
 
 export function SwarpPresale() {
   return (
-    <section className="py-16 md:py-24 relative">
+    <section className="py-16 md:py-24 relative backdrop-blur-sm">
       <div className="max-w-[720px] mx-auto px-4">
         <motion.a
           href="https://swarppay.com"
@@ -21,10 +21,10 @@ export function SwarpPresale() {
           {/* SVG Schematic */}
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 1080 1080"
+            viewBox="0 80 1080 920"
             role="img"
             aria-label="SWARP Luxury Utility Schematic"
-            className="w-full h-auto"
+            className="w-full h-auto max-h-[600px] md:max-h-[700px] object-contain"
           >
             <defs>
               <radialGradient id="auroraTopLeft" cx="0" cy="0" r="1">
@@ -75,7 +75,7 @@ export function SwarpPresale() {
                 <feComposite operator="over" in="SourceGraphic" in2="grain"/>
               </filter>
               <pattern id="dotGrid" width="40" height="40" patternUnits="userSpaceOnUse">
-                <circle cx="2" cy="2" r="1.5" fill="#FFFFFF" fillOpacity="0.07"/>
+                <circle cx="2" cy="2" r="1.5" fill="#FFFFFF" fillOpacity="0.03"/>
               </pattern>
               <filter id="logoGlow" x="-100%" y="-100%" width="300%" height="300%">
                 <feGaussianBlur stdDeviation="8" result="coloredBlur"/>
@@ -102,7 +102,7 @@ export function SwarpPresale() {
                 .pulsing { animation: pulse 3s infinite ease-in-out; }`}
               </style>
             </defs>
-            <rect width="1080" height="1080" fill="#050714" fillOpacity="0.3"/>
+            <rect width="1080" height="1080" fill="#050714" fillOpacity="0.15"/>
             <circle cx="0" cy="0" r="800" fill="url(#auroraTopLeft)" opacity="0.3"/>
             <circle cx="1080" cy="1080" r="800" fill="url(#auroraBottomRight)" opacity="0.3"/>
             <rect width="1080" height="1080" fill="url(#dotGrid)"/>
@@ -187,26 +187,26 @@ export function SwarpPresale() {
                 <rect x="260" y="40" width="60" height="20" rx="10" fill="rgba(0,255,240,0.1)"/>
                 <text className="mono" x="290" y="54" textAnchor="middle" fill="#00FFF0" fontSize="10">ACTIVE</text>
               </g>
-              <g transform="translate(90, 100)">
+              <g transform="translate(200, 100)">
                 <path d="M 0 0 L 20 0 L 25 5 L 20 10 L 0 10 Z" fill="#00D4FF"/>
                 <text className="sans-bold" x="35" y="10" fill="white" fontSize="24" letterSpacing="0.1em">SWARP</text>
                 <text className="mono" x="135" y="10" fill="#00FFF0" fontSize="14" opacity="0.9" fontWeight="700">{`/// PRESALE_INIT_SOON`}</text>
               </g>
-              <g transform="translate(690, 80)">
-                <path d="M 300 0 L 300 80 L 20 80 L 0 60 L 0 0 Z" fill="url(#glassSurface)" stroke="url(#glassBorder)" strokeWidth="1"/>
+              <g transform="translate(580, 80)">
+                <path d="M 260 0 L 260 80 L 20 80 L 0 60 L 0 0 Z" fill="url(#glassSurface)" stroke="url(#glassBorder)" strokeWidth="1"/>
                 <path d="M 0 60 L 20 80" stroke="#00FFF0" strokeWidth="2" opacity="0.5"/>
-                <rect x="0" y="0" width="300" height="2" fill="#00FFF0"/>
+                <rect x="0" y="0" width="260" height="2" fill="#00FFF0"/>
                 <g transform="translate(20, 30)">
                   <text className="mono" x="0" y="0" fill="#00FFF0" fontSize="10" letterSpacing="0.1em">TOKEN PRICE</text>
                   <text className="sans-bold" x="0" y="20" fill="white" fontSize="18">$0.03 <tspan fill="#555" fontSize="14" fontWeight="400">/ SWARP</tspan></text>
-                  <line x1="120" y1="-5" x2="120" y2="25" stroke="white" strokeOpacity="0.1"/>
-                  <text className="mono" x="140" y="0" fill="#9D4EDD" fontSize="10" letterSpacing="0.1em">ALLOCATION (CAP)</text>
-                  <text className="sans-bold" x="140" y="20" fill="white" fontSize="18">50,000,000</text>
+                  <line x1="110" y1="-5" x2="110" y2="25" stroke="white" strokeOpacity="0.1"/>
+                  <text className="mono" x="130" y="0" fill="#9D4EDD" fontSize="10" letterSpacing="0.1em">ALLOCATION</text>
+                  <text className="sans-bold" x="130" y="20" fill="white" fontSize="18">50,000,000</text>
                 </g>
               </g>
-              <g transform="translate(90, 1020)">
+              <g transform="translate(200, 1000)">
                 <text className="mono" x="0" y="0" fill="#555" fontSize="12">SCHEMATIC RENDER [1080x1080] • NO FINANCIAL ADVICE</text>
-                <text className="mono" x="900" y="0" textAnchor="end" fill="#555" fontSize="12">DESIGNED BY SWARP</text>
+                <text className="mono" x="680" y="0" textAnchor="end" fill="#555" fontSize="12">DESIGNED BY SWARP</text>
               </g>
             </g>
             <radialGradient id="vignetteOverlay" cx="50%" cy="50%" r="50%">
@@ -216,20 +216,21 @@ export function SwarpPresale() {
             <rect width="1080" height="1080" fill="url(#vignetteOverlay)"/>
           </svg>
 
-          {/* Overlaid Logo - Centered in reactor area */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[calc(50%+12px)] w-20 h-20 md:w-24 md:h-24">
+          {/* Overlaid Logo - Positioned higher in reactor area */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[calc(50%+35px)] w-[100px] h-[100px] md:w-[140px] md:h-[140px]">
             <motion.div
               className="relative w-full h-full"
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.3 }}
             >
               {/* Glow effect container - transparent background */}
-              <div className="absolute inset-0 rounded-full bg-transparent transition-all duration-300 group-hover:shadow-[0_0_40px_rgba(0,212,255,0.6)] shadow-[0_0_25px_rgba(0,212,255,0.4)] pointer-events-none" />
+              <div className="absolute inset-0 rounded-full bg-transparent transition-all duration-300 group-hover:shadow-[0_0_50px_rgba(0,212,255,0.8)] shadow-[0_0_30px_rgba(0,212,255,0.6)] pointer-events-none" />
               <Image
                 src="/logo_transparent.png"
                 alt="SWARP Logo"
-                fill
-                className="object-contain drop-shadow-[0_0_15px_rgba(0,212,255,0.5)] transition-all duration-300 group-hover:drop-shadow-[0_0_25px_rgba(0,212,255,0.8)]"
+                width={140}
+                height={140}
+                className="object-contain drop-shadow-[0_0_20px_rgba(0,212,255,0.6)] transition-all duration-300 group-hover:drop-shadow-[0_0_35px_rgba(0,212,255,0.9)]"
                 priority
               />
             </motion.div>

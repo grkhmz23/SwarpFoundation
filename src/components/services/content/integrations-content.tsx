@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { useIntervalWhenVisible } from "@/components/services/service-content-wrapper";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Plug, Zap, Server, CreditCard, Phone, Cloud, Mail, MessageSquare,
@@ -390,23 +391,18 @@ function WebhookTester() {
   ]);
   const [isListening, setIsListening] = useState(true);
 
-  useEffect(() => {
+  useIntervalWhenVisible(() => {
     if (!isListening) return;
-
-    const interval = setInterval(() => {
-      const eventTypes = ["invoice.paid", "subscription.created", "payment_failed"];
-      const eventType = eventTypes[Math.floor(Math.random() * 3)];
-      const newEvent = {
-        id: Math.random().toString(),
-        event: eventType,
-        payload: { id: `evt_${Date.now()}`, amount: Math.floor(Math.random() * 10000) + 1000 },
-        timestamp: "just now",
-      };
-      setEvents(prev => [newEvent, ...prev].slice(0, 5));
-    }, 8000);
-
-    return () => clearInterval(interval);
-  }, [isListening]);
+    const eventTypes = ["invoice.paid", "subscription.created", "payment_failed"];
+    const eventType = eventTypes[Math.floor(Math.random() * 3)];
+    const newEvent = {
+      id: Math.random().toString(),
+      event: eventType,
+      payload: { id: `evt_${Date.now()}`, amount: Math.floor(Math.random() * 10000) + 1000 },
+      timestamp: "just now",
+    };
+    setEvents(prev => [newEvent, ...prev].slice(0, 5));
+  }, 8000);
 
   return (
     <ServiceCard accentColor="cyan">
@@ -474,17 +470,14 @@ function ApiMetrics() {
     errors: 0.02,
   });
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setMetrics(prev => ({
-        requests: prev.requests + Math.floor(Math.random() * 10),
-        success: 99.5 + Math.random() * 0.5,
-        latency: Math.floor(120 + Math.random() * 50),
-        errors: Math.random() * 0.05,
-      }));
-    }, 3000);
-    return () => clearInterval(interval);
-  }, []);
+  useIntervalWhenVisible(() => {
+    setMetrics(prev => ({
+      requests: prev.requests + Math.floor(Math.random() * 10),
+      success: 99.5 + Math.random() * 0.5,
+      latency: Math.floor(120 + Math.random() * 50),
+      errors: Math.random() * 0.05,
+    }));
+  }, 3000);
 
   return (
     <ServiceCard accentColor="cyan">

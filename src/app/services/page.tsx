@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import dynamic from "next/dynamic";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Calendar, Clock, Globe, Wrench, Bot, 
@@ -10,22 +11,23 @@ import {
 import { cn } from "@/lib/utils";
 import { KeyboardLink } from "@/components/ui/keyboard-button";
 import { AetherBackground } from "@/components/ui/aether-background";
+import { ServiceContentWrapper } from "@/components/services/service-content-wrapper";
 
 // ═══════════════════════════════════════════════════════════════════════════
-// ALL 12 CONTENT COMPONENTS IMPORTED
+// ALL 12 CONTENT COMPONENTS - DYNAMICALLY IMPORTED FOR PERFORMANCE
 // ═══════════════════════════════════════════════════════════════════════════
-import { WebMobileContent } from "@/components/services/content/web-mobile-content";
-import { SoftwareToolsContent } from "@/components/services/content/software-tools-content";
-import { AISystemsContent } from "@/components/services/content/ai-systems-content";
-import { BlockchainContent } from "@/components/services/content/blockchain-content";
-import { SecurityContent } from "@/components/services/content/security-content";
-import { HardwareContent } from "@/components/services/content/hardware-content";
-import { CloudDevOpsContent } from "@/components/services/content/cloud-devops-content";
-import { EngineeringContent } from "@/components/services/content/engineering-content";
-import { IntegrationsContent } from "@/components/services/content/integrations-content";
-import { DataAnalyticsContent } from "@/components/services/content/data-analytics-content";
-import { QATestingContent } from "@/components/services/content/qa-testing-content";
-import { UIUXDesignContent } from "@/components/services/content/uiux-design-content";
+const WebMobileContent = dynamic(() => import("@/components/services/content/web-mobile-content").then(m => ({ default: m.WebMobileContent })), { ssr: false });
+const SoftwareToolsContent = dynamic(() => import("@/components/services/content/software-tools-content").then(m => ({ default: m.SoftwareToolsContent })), { ssr: false });
+const AISystemsContent = dynamic(() => import("@/components/services/content/ai-systems-content").then(m => ({ default: m.AISystemsContent })), { ssr: false });
+const BlockchainContent = dynamic(() => import("@/components/services/content/blockchain-content").then(m => ({ default: m.BlockchainContent })), { ssr: false });
+const SecurityContent = dynamic(() => import("@/components/services/content/security-content").then(m => ({ default: m.SecurityContent })), { ssr: false });
+const HardwareContent = dynamic(() => import("@/components/services/content/hardware-content").then(m => ({ default: m.HardwareContent })), { ssr: false });
+const CloudDevOpsContent = dynamic(() => import("@/components/services/content/cloud-devops-content").then(m => ({ default: m.CloudDevOpsContent })), { ssr: false });
+const EngineeringContent = dynamic(() => import("@/components/services/content/engineering-content").then(m => ({ default: m.EngineeringContent })), { ssr: false });
+const IntegrationsContent = dynamic(() => import("@/components/services/content/integrations-content").then(m => ({ default: m.IntegrationsContent })), { ssr: false });
+const DataAnalyticsContent = dynamic(() => import("@/components/services/content/data-analytics-content").then(m => ({ default: m.DataAnalyticsContent })), { ssr: false });
+const QATestingContent = dynamic(() => import("@/components/services/content/qa-testing-content").then(m => ({ default: m.QATestingContent })), { ssr: false });
+const UIUXDesignContent = dynamic(() => import("@/components/services/content/uiux-design-content").then(m => ({ default: m.UIUXDesignContent })), { ssr: false });
 
 interface Service {
   id: string;
@@ -409,21 +411,23 @@ function ServicePreview({ service }: { service: Service | null }) {
             </div>
 
             {/* ════════════════════════════════════════════════════════════ */}
-            {/* ALL 12 SERVICES WIRED HERE */}
+            {/* ALL 12 SERVICES WIRED HERE - Wrapped with Intersection Observer */}
             {/* ════════════════════════════════════════════════════════════ */}
             <div className="bg-black/20 rounded-2xl border border-white/5 overflow-hidden">
-              {service.id === "web-mobile" && <WebMobileContent />}
-              {service.id === "software-tools" && <SoftwareToolsContent />}
-              {service.id === "ai-systems" && <AISystemsContent />}
-              {service.id === "blockchain" && <BlockchainContent />}
-              {service.id === "security" && <SecurityContent />}
-              {service.id === "hardware" && <HardwareContent />}
-              {service.id === "cloud" && <CloudDevOpsContent />}
-              {service.id === "retainer" && <EngineeringContent />}
-              {service.id === "integrations" && <IntegrationsContent />}
-              {service.id === "data" && <DataAnalyticsContent />}
-              {service.id === "qa" && <QATestingContent />}
-              {service.id === "design" && <UIUXDesignContent />}
+              <ServiceContentWrapper>
+                {service.id === "web-mobile" && <WebMobileContent />}
+                {service.id === "software-tools" && <SoftwareToolsContent />}
+                {service.id === "ai-systems" && <AISystemsContent />}
+                {service.id === "blockchain" && <BlockchainContent />}
+                {service.id === "security" && <SecurityContent />}
+                {service.id === "hardware" && <HardwareContent />}
+                {service.id === "cloud" && <CloudDevOpsContent />}
+                {service.id === "retainer" && <EngineeringContent />}
+                {service.id === "integrations" && <IntegrationsContent />}
+                {service.id === "data" && <DataAnalyticsContent />}
+                {service.id === "qa" && <QATestingContent />}
+                {service.id === "design" && <UIUXDesignContent />}
+              </ServiceContentWrapper>
             </div>
           </div>
         ) : (

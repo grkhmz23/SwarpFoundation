@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useIntervalWhenVisible } from "@/components/services/service-content-wrapper";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Bot,
@@ -965,25 +966,19 @@ function OpsDemo() {
 
   const [latSeries, setLatSeries] = useState<number[]>([165, 172, 181, 177, 191, 184, 178, 182, 176, 188, 179, 182]);
 
-  useEffect(() => {
-    if (!live) return;
+  useIntervalWhenVisible(() => {
+    // deterministic-ish movement
+    setLat((v) => clamp(Math.round(v + (Math.random() * 18 - 9)), 120, 320));
+    setCost((v) => clamp(parseFloat((v + (Math.random() * 0.008 - 0.004)).toFixed(3)), 0.006, 0.035));
+    setGround((v) => clamp(parseFloat((v + (Math.random() * 0.04 - 0.02)).toFixed(2)), 0.72, 0.95));
+    setErr((v) => clamp(parseFloat((v + (Math.random() * 0.5 - 0.25)).toFixed(1)), 0.0, 2.5));
+    setTps((v) => clamp(parseFloat((v + (Math.random() * 2.2 - 1.1)).toFixed(1)), 10, 60));
 
-    const id = window.setInterval(() => {
-      // deterministic-ish movement
-      setLat((v) => clamp(Math.round(v + (Math.random() * 18 - 9)), 120, 320));
-      setCost((v) => clamp(parseFloat((v + (Math.random() * 0.008 - 0.004)).toFixed(3)), 0.006, 0.035));
-      setGround((v) => clamp(parseFloat((v + (Math.random() * 0.04 - 0.02)).toFixed(2)), 0.72, 0.95));
-      setErr((v) => clamp(parseFloat((v + (Math.random() * 0.5 - 0.25)).toFixed(1)), 0.0, 2.5));
-      setTps((v) => clamp(parseFloat((v + (Math.random() * 2.2 - 1.1)).toFixed(1)), 10, 60));
-
-      setLatSeries((prev) => {
-        const next = [...prev.slice(1), clamp(prev[prev.length - 1]! + (Math.random() * 26 - 13), 120, 320)];
-        return next;
-      });
-    }, 1100);
-
-    return () => window.clearInterval(id);
-  }, [live]);
+    setLatSeries((prev) => {
+      const next = [...prev.slice(1), clamp(prev[prev.length - 1]! + (Math.random() * 26 - 13), 120, 320)];
+      return next;
+    });
+  }, live ? 1100 : null);
 
   const configText = useMemo(() => {
     const lines: string[] = [];
