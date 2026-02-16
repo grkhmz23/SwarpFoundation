@@ -21,6 +21,13 @@ import {
   Copy,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import {
+  ServiceContentLayout,
+  ServiceHeader,
+  ServiceCard,
+  ServiceTab,
+  ServiceCTA,
+} from "../service-content-layout";
 
 type Tab = "assistant" | "knowledge" | "ops";
 type AgentMode = "support" | "analyst" | "dev";
@@ -196,7 +203,7 @@ function Pill({
       className={cn(
         "inline-flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-[10px] font-medium transition-colors",
         active
-          ? "bg-emerald-500/15 border-emerald-500/30 text-emerald-300"
+          ? "bg-swarp-blue/15 border-swarp-blue/30 text-swarp-blue"
           : "bg-white/5 border-white/10 text-gray-400 hover:text-white hover:border-white/20"
       )}
     >
@@ -228,7 +235,7 @@ function ToggleRow({
         className={cn(
           "relative h-6 w-11 shrink-0 rounded-full border transition-colors",
           enabled
-            ? "bg-emerald-500/25 border-emerald-500/35"
+            ? "bg-swarp-blue/25 border-swarp-blue/35"
             : "bg-black/30 border-white/10"
         )}
         aria-pressed={enabled}
@@ -237,7 +244,7 @@ function ToggleRow({
         <span
           className={cn(
             "absolute top-1 h-4 w-4 rounded-full transition-all",
-            enabled ? "left-6 bg-emerald-300" : "left-1 bg-white/40"
+            enabled ? "left-6 bg-swarp-blue" : "left-1 bg-white/40"
           )}
         />
       </button>
@@ -267,9 +274,9 @@ function PipelineBar({
             className={cn(
               "inline-flex items-center gap-1.5 rounded-lg border px-2 py-1 text-[10px] font-medium",
               done || finalDone
-                ? "bg-emerald-500/12 border-emerald-500/25 text-emerald-300"
+                ? "bg-swarp-blue/12 border-swarp-blue/25 text-swarp-blue"
                 : active
-                ? "bg-emerald-500/18 border-emerald-500/35 text-white"
+                ? "bg-swarp-blue/18 border-swarp-blue/35 text-white"
                 : "bg-white/5 border-white/10 text-gray-500"
             )}
           >
@@ -277,7 +284,7 @@ function PipelineBar({
               <CheckCircle2 className="h-3.5 w-3.5" />
             ) : active ? (
               <motion.span
-                className="h-2 w-2 rounded-full bg-emerald-400"
+                className="h-2 w-2 rounded-full bg-swarp-blue"
                 animate={{ opacity: [0.4, 1, 0.4] }}
                 transition={{ duration: 1.1, repeat: Infinity }}
               />
@@ -343,7 +350,7 @@ function AssistantDemo({
       role: "assistant",
       ts: Date.now(),
       content:
-        "Hey — pick a mode, then ask a real question. I’ll show the pipeline (retrieve → cite → guardrails) like it runs in production.",
+        "Hey — pick a mode, then ask a real question. I'll show the pipeline (retrieve → cite → guardrails) like it runs in production.",
     },
   ]);
 
@@ -383,24 +390,24 @@ function AssistantDemo({
           return "I can draft a clean refund reply + policy excerpt and log the case. Want the short version or detailed steps for the user?";
         }
         if (lower.includes("integrat") || lower.includes("api")) {
-          return "Yep. We can ship an in-app assistant with citations + an agent to file tickets / update CRM. I’ll show the architecture in the right panel.";
+          return "Yep. We can ship an in-app assistant with citations + an agent to file tickets / update CRM. I'll show the architecture in the right panel.";
         }
         return "Got it. I can summarize, draft a response, and (optionally) call tools like tickets/CRM. What channel is this for — email, chat, or helpdesk?";
       }
 
       if (mode === "analyst") {
         if (lower.includes("kpi") || lower.includes("retention") || lower.includes("growth")) {
-          return "I can compute the KPI deltas and explain drivers. If you enable Knowledge, I’ll cite definitions and dashboards (so the report is consistent).";
+          return "I can compute the KPI deltas and explain drivers. If you enable Knowledge, I'll cite definitions and dashboards (so the report is consistent).";
         }
         return "I can turn that into an analysis: assumptions, metric definition, and a short executive summary. Want a 1-pager or a dashboard-style readout?";
       }
 
       // dev
       if (lower.includes("latency") || lower.includes("timeout")) {
-        return "We’d instrument the full chain (retrieval + model + tools), add caching, and route by budget/SLO. The Ops tab shows how we ship this safely.";
+        return "We'd instrument the full chain (retrieval + model + tools), add caching, and route by budget/SLO. The Ops tab shows how we ship this safely.";
       }
       if (lower.includes("rag")) {
-        return "For RAG, we chunk + embed + index with re-ranking, then generate answers with citations. You’ll get replayable traces for debugging.";
+        return "For RAG, we chunk + embed + index with re-ranking, then generate answers with citations. You'll get replayable traces for debugging.";
       }
       return "I can build this as a production-grade service: model routing, eval harness, guardrails, and monitoring. Tell me the target product surface (web app, mobile, internal tool).";
     })();
@@ -493,18 +500,18 @@ function AssistantDemo({
   }, [messages, typing]);
 
   return (
-    <div className="h-full rounded-xl border border-emerald-500/20 bg-[#0c0e12] overflow-hidden">
+    <div className="h-full rounded-xl border border-swarp-blue/20 bg-[#0c0e12] overflow-hidden">
       {/* Header */}
-      <div className="flex items-center justify-between gap-3 border-b border-emerald-500/15 bg-emerald-950/15 px-4 py-3">
+      <div className="flex items-center justify-between gap-3 border-b border-swarp-blue/15 bg-swarp-blue/10 px-4 py-3">
         <div className="flex items-center gap-3 min-w-0">
-          <div className="h-9 w-9 rounded-xl bg-emerald-500/18 border border-emerald-500/25 flex items-center justify-center">
-            <Bot className="h-4 w-4 text-emerald-300" />
+          <div className="h-9 w-9 rounded-xl bg-swarp-blue/18 border border-swarp-blue/25 flex items-center justify-center">
+            <Bot className="h-4 w-4 text-swarp-blue" />
           </div>
           <div className="min-w-0">
             <div className="text-sm font-semibold text-white leading-tight">
               AI Assistant Demo
             </div>
-            <div className="text-[10px] text-emerald-300/80">
+            <div className="text-[10px] text-swarp-blue/80">
               Mode + optional Knowledge + Guardrails
             </div>
           </div>
@@ -576,12 +583,12 @@ function AssistantDemo({
               className={cn(
                 "h-8 w-8 rounded-lg border flex items-center justify-center shrink-0",
                 m.role === "assistant"
-                  ? "bg-emerald-500/15 border-emerald-500/25"
+                  ? "bg-swarp-blue/15 border-swarp-blue/25"
                   : "bg-white/5 border-white/10"
               )}
             >
               {m.role === "assistant" ? (
-                <Bot className="h-4 w-4 text-emerald-300" />
+                <Bot className="h-4 w-4 text-swarp-blue" />
               ) : (
                 <span className="text-[10px] font-bold text-gray-200">You</span>
               )}
@@ -591,7 +598,7 @@ function AssistantDemo({
               className={cn(
                 "max-w-[82%] rounded-xl border px-3 py-2.5 text-xs leading-relaxed",
                 m.role === "assistant"
-                  ? "bg-emerald-950/18 border-emerald-500/18 text-gray-200"
+                  ? "bg-swarp-blue/10 border-swarp-blue/20 text-gray-200"
                   : "bg-white/5 border-white/10 text-gray-200"
               )}
             >
@@ -605,7 +612,7 @@ function AssistantDemo({
 
               {m.citations && m.citations.length > 0 && (
                 <div className="mt-2 pt-2 border-t border-white/10">
-                  <div className="text-[10px] font-semibold text-emerald-200/90">
+                  <div className="text-[10px] font-semibold text-swarp-blue/90">
                     Citations
                   </div>
                   <div className="mt-1 space-y-1">
@@ -642,26 +649,26 @@ function AssistantDemo({
             animate={{ opacity: 1 }}
             className="flex gap-3"
           >
-            <div className="h-8 w-8 rounded-lg bg-emerald-500/15 border border-emerald-500/25 flex items-center justify-center">
-              <Bot className="h-4 w-4 text-emerald-300" />
+            <div className="h-8 w-8 rounded-lg bg-swarp-blue/15 border border-swarp-blue/25 flex items-center justify-center">
+              <Bot className="h-4 w-4 text-swarp-blue" />
             </div>
-            <div className="rounded-xl border border-emerald-500/18 bg-emerald-950/18 px-3 py-2 flex items-center gap-1.5">
+            <div className="rounded-xl border border-swarp-blue/20 bg-swarp-blue/10 px-3 py-2 flex items-center gap-1.5">
               <motion.span
-                className="h-1.5 w-1.5 rounded-full bg-emerald-300"
+                className="h-1.5 w-1.5 rounded-full bg-swarp-blue"
                 animate={{ y: [0, -3, 0] }}
                 transition={{ duration: 0.7, repeat: Infinity, delay: 0 }}
               />
               <motion.span
-                className="h-1.5 w-1.5 rounded-full bg-emerald-300"
+                className="h-1.5 w-1.5 rounded-full bg-swarp-blue"
                 animate={{ y: [0, -3, 0] }}
                 transition={{ duration: 0.7, repeat: Infinity, delay: 0.12 }}
               />
               <motion.span
-                className="h-1.5 w-1.5 rounded-full bg-emerald-300"
+                className="h-1.5 w-1.5 rounded-full bg-swarp-blue"
                 animate={{ y: [0, -3, 0] }}
                 transition={{ duration: 0.7, repeat: Infinity, delay: 0.24 }}
               />
-              <span className="ml-1 text-[10px] text-emerald-200/80">
+              <span className="ml-1 text-[10px] text-swarp-blue/80">
                 thinking…
               </span>
             </div>
@@ -681,17 +688,17 @@ function AssistantDemo({
               }}
               placeholder={
                 mode === "support"
-                  ? "Ask: “Draft a refund reply for a subscription charge”"
+                  ? 'Ask: "Draft a refund reply for a subscription charge"'
                   : mode === "analyst"
-                  ? "Ask: “Summarize KPIs and what changed vs last month”"
-                  : "Ask: “How do we make RAG fast + debuggable?”"
+                  ? 'Ask: "Summarize KPIs and what changed vs last month"'
+                  : 'Ask: "How do we make RAG fast + debuggable?"'
               }
-              className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-xs text-white placeholder:text-gray-600 focus:outline-none focus:border-emerald-500/35"
+              className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-xs text-white placeholder:text-gray-600 focus:outline-none focus:border-swarp-blue/35"
             />
           </div>
           <button
             onClick={send}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-emerald-500/25 bg-emerald-500/15 px-3 py-2 text-xs font-semibold text-emerald-200 hover:bg-emerald-500/20 transition-colors"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-swarp-blue/25 bg-swarp-blue/15 px-3 py-2 text-xs font-semibold text-swarp-blue hover:bg-swarp-blue/20 transition-colors"
           >
             <Send className="h-4 w-4" />
             Send
@@ -755,13 +762,13 @@ function KnowledgeDemo() {
   );
 
   return (
-    <div className="h-full rounded-xl border border-emerald-500/20 bg-[#0c0e12] overflow-hidden">
+    <div className="h-full rounded-xl border border-swarp-blue/20 bg-[#0c0e12] overflow-hidden">
       {/* Header */}
       <div className="border-b border-white/10 bg-black/25 px-4 py-3">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
             <div className="text-sm font-semibold text-white flex items-center gap-2">
-              <Database className="h-4 w-4 text-emerald-300" />
+              <Database className="h-4 w-4 text-swarp-blue" />
               Knowledge Search (RAG)
             </div>
             <div className="text-[10px] text-gray-500">
@@ -789,7 +796,7 @@ function KnowledgeDemo() {
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              className="w-full rounded-lg border border-white/10 bg-white/5 pl-9 pr-3 py-2 text-xs text-white placeholder:text-gray-600 focus:outline-none focus:border-emerald-500/35"
+              className="w-full rounded-lg border border-white/10 bg-white/5 pl-9 pr-3 py-2 text-xs text-white placeholder:text-gray-600 focus:outline-none focus:border-swarp-blue/35"
               placeholder="Search the knowledge base…"
             />
           </div>
@@ -802,7 +809,7 @@ function KnowledgeDemo() {
               step={1}
               value={topK}
               onChange={(e) => setTopK(parseInt(e.target.value, 10))}
-              className="w-full accent-emerald-500"
+              className="w-full accent-swarp-blue"
               aria-label="Top K"
             />
             <div className="mt-1 flex justify-between text-[9px] text-gray-600">
@@ -824,7 +831,7 @@ function KnowledgeDemo() {
             <div className="mt-2 space-y-2">
               {results.length === 0 ? (
                 <div className="rounded-lg border border-white/10 bg-white/5 p-3 text-xs text-gray-400">
-                  No matches yet — try “RAG citations”, “guardrails”, or “observability”.
+                  No matches yet — try &quot;RAG citations&quot;, &quot;guardrails&quot;, or &quot;observability&quot;.
                 </div>
               ) : (
                 results.map((r) => {
@@ -836,7 +843,7 @@ function KnowledgeDemo() {
                       className={cn(
                         "w-full rounded-lg border px-3 py-2 text-left transition-colors",
                         active
-                          ? "bg-emerald-500/12 border-emerald-500/25"
+                          ? "bg-swarp-blue/12 border-swarp-blue/25"
                           : "bg-white/5 border-white/10 hover:border-white/20"
                       )}
                     >
@@ -884,7 +891,7 @@ function KnowledgeDemo() {
                   {selected.category} • {selected.tags.join(" · ")}
                 </div>
               </div>
-              <span className="inline-flex items-center gap-1.5 rounded-lg border border-emerald-500/22 bg-emerald-500/12 px-2.5 py-1 text-[10px] font-semibold text-emerald-200">
+              <span className="inline-flex items-center gap-1.5 rounded-lg border border-swarp-blue/25 bg-swarp-blue/12 px-2.5 py-1 text-[10px] font-semibold text-swarp-blue">
                 <FileText className="h-3.5 w-3.5" />
                 source
               </span>
@@ -902,13 +909,13 @@ function KnowledgeDemo() {
                 This is how the assistant answers when Knowledge is enabled.
               </div>
 
-              <div className="mt-3 rounded-lg border border-emerald-500/18 bg-emerald-950/18 p-3">
+              <div className="mt-3 rounded-lg border border-swarp-blue/20 bg-swarp-blue/10 p-3">
                 <div className="text-xs text-gray-200 leading-relaxed">
                   We implement production RAG with retrieval + re-ranking and
                   attach citations for trust and debugging. For safety, we add
                   guardrails and keep audit logs so you can reproduce answers.
                 </div>
-                <div className="mt-2 text-[10px] font-semibold text-emerald-200">
+                <div className="mt-2 text-[10px] font-semibold text-swarp-blue">
                   Citations
                 </div>
                 <div className="mt-1 space-y-1">
@@ -1005,13 +1012,13 @@ function OpsDemo() {
   const { copied, copy } = useClipboardToast();
 
   return (
-    <div className="h-full rounded-xl border border-emerald-500/20 bg-[#0c0e12] overflow-hidden">
+    <div className="h-full rounded-xl border border-swarp-blue/20 bg-[#0c0e12] overflow-hidden">
       {/* Header */}
       <div className="border-b border-white/10 bg-black/25 px-4 py-3">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
             <div className="text-sm font-semibold text-white flex items-center gap-2">
-              <LineChart className="h-4 w-4 text-emerald-300" />
+              <LineChart className="h-4 w-4 text-swarp-blue" />
               Production Ops
             </div>
             <div className="text-[10px] text-gray-500">
@@ -1052,7 +1059,7 @@ function OpsDemo() {
                   {lat}
                   <span className="text-[10px] text-gray-500 ml-1">ms</span>
                 </div>
-                <div className="text-emerald-300">
+                <div className="text-swarp-blue">
                   <Sparkline values={latSeries} />
                 </div>
               </div>
@@ -1100,16 +1107,16 @@ function OpsDemo() {
                 <div className="text-xs font-semibold text-white">Throughput</div>
                 <div className="text-[10px] text-gray-500">requests / second</div>
               </div>
-              <div className="text-lg font-bold text-emerald-200">{tps.toFixed(1)}</div>
+              <div className="text-lg font-bold text-swarp-blue">{tps.toFixed(1)}</div>
             </div>
             <div className="mt-2 flex items-center gap-2 text-[10px] text-gray-500">
               <span className="inline-flex items-center gap-1">
-                <CheckCircle2 className="h-3.5 w-3.5 text-emerald-300" />
+                <CheckCircle2 className="h-3.5 w-3.5 text-swarp-blue" />
                 autoscaling ready
               </span>
               <span className="h-1 w-1 rounded-full bg-white/20" />
               <span className="inline-flex items-center gap-1">
-                <Shield className="h-3.5 w-3.5 text-emerald-300" />
+                <Shield className="h-3.5 w-3.5 text-swarp-blue" />
                 audit logs
               </span>
             </div>
@@ -1117,7 +1124,7 @@ function OpsDemo() {
 
           <div className="rounded-xl border border-white/10 bg-white/5 p-3">
             <div className="text-xs font-semibold text-white flex items-center gap-2">
-              <Shield className="h-4 w-4 text-emerald-300" />
+              <Shield className="h-4 w-4 text-swarp-blue" />
               Production switches
             </div>
             <div className="mt-3 space-y-2">
@@ -1148,15 +1155,15 @@ function OpsDemo() {
             </div>
           </div>
 
-          <div className="rounded-xl border border-emerald-500/18 bg-emerald-950/15 p-3">
+          <div className="rounded-xl border border-swarp-blue/20 bg-swarp-blue/10 p-3">
             <div className="flex items-start gap-2">
-              <AlertTriangle className="h-4 w-4 text-emerald-300 mt-0.5" />
+              <AlertTriangle className="h-4 w-4 text-swarp-blue mt-0.5" />
               <div>
                 <div className="text-xs font-semibold text-white">
                   What you get in delivery
                 </div>
                 <div className="text-[10px] text-gray-500 mt-0.5">
-                  Tracing + eval harness + rollback plan + dashboards — so AI features don’t break silently.
+                  Tracing + eval harness + rollback plan + dashboards — so AI features don&apos;t break silently.
                 </div>
               </div>
             </div>
@@ -1222,7 +1229,7 @@ function OpsDemo() {
                   key={x.k}
                   className="rounded-lg border border-white/10 bg-black/25 p-2 text-center"
                 >
-                  <div className="text-sm font-bold text-emerald-200">{x.v}</div>
+                  <div className="text-sm font-bold text-swarp-blue">{x.v}</div>
                   <div className="text-[9px] text-gray-500">{x.k}</div>
                 </div>
               ))}
@@ -1241,74 +1248,42 @@ export function AISystemsContent() {
   const [tab, setTab] = useState<Tab>("assistant");
 
   return (
-    <div className="relative h-full bg-[#0a0f1a] text-gray-200 overflow-hidden">
-      {/* Subtle emerald grid */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-[0.035]"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(16,185,129,0.55) 1px, transparent 1px), linear-gradient(90deg, rgba(16,185,129,0.55) 1px, transparent 1px)",
-          backgroundSize: "42px 42px",
-        }}
-      />
-      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_30%_20%,rgba(16,185,129,0.18),transparent_55%),radial-gradient(circle_at_80%_60%,rgba(34,211,238,0.10),transparent_55%)]" />
-
-      <div className="relative z-10 h-full flex flex-col">
+    <ServiceContentLayout accentColor="cyan">
+      <div className="h-full flex flex-col">
         {/* Top header */}
-        <div className="flex items-center justify-between gap-3 px-4 py-3 border-b border-white/10 bg-white/5">
-          <div className="flex items-center gap-3 min-w-0">
-            <div className="h-10 w-10 rounded-xl bg-emerald-500/18 border border-emerald-500/25 flex items-center justify-center">
-              <Sparkles className="h-5 w-5 text-emerald-300" />
-            </div>
-            <div className="min-w-0">
-              <div className="text-base font-bold text-white leading-tight">
-                AI Systems
-              </div>
-              <div className="text-[10px] text-emerald-200/80">
-                LLM features that ship: assistants • RAG • agents • observability
-              </div>
-            </div>
-          </div>
-
+        <ServiceHeader
+          icon={<Bot className="h-5 w-5" />}
+          title="AI Systems"
+          subtitle="LLM & Chat Interfaces"
+          accentColor="cyan"
+        >
           <div className="flex items-center gap-2 rounded-lg border border-white/10 bg-black/35 p-1">
-            <button
+            <ServiceTab
+              isActive={tab === "assistant"}
               onClick={() => setTab("assistant")}
-              className={cn(
-                "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[10px] font-semibold transition-colors",
-                tab === "assistant"
-                  ? "bg-emerald-500/15 border border-emerald-500/25 text-emerald-200"
-                  : "text-gray-500 hover:text-white"
-              )}
+              accentColor="cyan"
             >
               <Bot className="h-3.5 w-3.5" />
               Assistant
-            </button>
-            <button
+            </ServiceTab>
+            <ServiceTab
+              isActive={tab === "knowledge"}
               onClick={() => setTab("knowledge")}
-              className={cn(
-                "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[10px] font-semibold transition-colors",
-                tab === "knowledge"
-                  ? "bg-emerald-500/15 border border-emerald-500/25 text-emerald-200"
-                  : "text-gray-500 hover:text-white"
-              )}
+              accentColor="cyan"
             >
               <Database className="h-3.5 w-3.5" />
               Knowledge
-            </button>
-            <button
+            </ServiceTab>
+            <ServiceTab
+              isActive={tab === "ops"}
               onClick={() => setTab("ops")}
-              className={cn(
-                "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[10px] font-semibold transition-colors",
-                tab === "ops"
-                  ? "bg-emerald-500/15 border border-emerald-500/25 text-emerald-200"
-                  : "text-gray-500 hover:text-white"
-              )}
+              accentColor="cyan"
             >
               <LineChart className="h-3.5 w-3.5" />
               Ops
-            </button>
+            </ServiceTab>
           </div>
-        </div>
+        </ServiceHeader>
 
         {/* Body */}
         <div className="flex-1 overflow-hidden p-4">
@@ -1354,32 +1329,32 @@ export function AISystemsContent() {
 
             {/* Right: clarity + vision (what clients need to understand quickly) */}
             <div className="h-full overflow-y-auto custom-scrollbar space-y-3">
-              <div className="rounded-xl border border-white/10 bg-[#0c0e12] p-4">
-                <div className="text-xs font-semibold text-white flex items-center gap-2">
-                  <Zap className="h-4 w-4 text-emerald-300" />
-                  What we build
-                </div>
-                <div className="mt-2 grid grid-cols-2 gap-2">
+              <ServiceCard
+                title="What we build"
+                icon={<Zap className="h-4 w-4" />}
+                accentColor="cyan"
+              >
+                <div className="grid grid-cols-2 gap-2">
                   {[
                     {
                       title: "Customer assistants",
                       desc: "Support, onboarding, self-serve help",
-                      icon: <Bot className="h-4 w-4 text-emerald-300" />,
+                      icon: <Bot className="h-4 w-4 text-swarp-blue" />,
                     },
                     {
                       title: "Knowledge search",
                       desc: "Docs + tickets + CRM, with citations",
-                      icon: <Database className="h-4 w-4 text-emerald-300" />,
+                      icon: <Database className="h-4 w-4 text-swarp-blue" />,
                     },
                     {
                       title: "Guardrails",
                       desc: "PII redaction + jailbreak resistance",
-                      icon: <Shield className="h-4 w-4 text-emerald-300" />,
+                      icon: <Shield className="h-4 w-4 text-swarp-blue" />,
                     },
                     {
                       title: "Production ops",
                       desc: "Routing, evals, dashboards, SLOs",
-                      icon: <LineChart className="h-4 w-4 text-emerald-300" />,
+                      icon: <LineChart className="h-4 w-4 text-swarp-blue" />,
                     },
                   ].map((x) => (
                     <div
@@ -1387,7 +1362,7 @@ export function AISystemsContent() {
                       className="rounded-lg border border-white/10 bg-white/5 p-3"
                     >
                       <div className="flex items-center gap-2">
-                        <div className="h-8 w-8 rounded-lg border border-emerald-500/20 bg-emerald-500/10 flex items-center justify-center">
+                        <div className="h-8 w-8 rounded-lg border border-swarp-blue/20 bg-swarp-blue/10 flex items-center justify-center">
                           {x.icon}
                         </div>
                         <div className="min-w-0">
@@ -1402,11 +1377,14 @@ export function AISystemsContent() {
                     </div>
                   ))}
                 </div>
-              </div>
+              </ServiceCard>
 
-              <div className="rounded-xl border border-white/10 bg-[#0c0e12] p-4">
-                <div className="text-xs font-semibold text-white">Delivery flow</div>
-                <div className="mt-2 space-y-2">
+              <ServiceCard
+                title="Delivery flow"
+                icon={<CheckCircle2 className="h-4 w-4" />}
+                accentColor="cyan"
+              >
+                <div className="space-y-2">
                   {[
                     {
                       step: "Week 1",
@@ -1434,10 +1412,10 @@ export function AISystemsContent() {
                       className="rounded-lg border border-white/10 bg-white/5 px-3 py-2"
                     >
                       <div className="flex items-center justify-between gap-2">
-                        <div className="text-[10px] font-semibold text-emerald-200">
+                        <div className="text-[10px] font-semibold text-swarp-blue">
                           {s.step}
                         </div>
-                        <CheckCircle2 className="h-4 w-4 text-emerald-300/80" />
+                        <CheckCircle2 className="h-4 w-4 text-swarp-blue/80" />
                       </div>
                       <div className="text-xs font-semibold text-white">
                         {s.title}
@@ -1446,7 +1424,7 @@ export function AISystemsContent() {
                     </div>
                   ))}
                 </div>
-              </div>
+              </ServiceCard>
 
               <div className="grid grid-cols-3 gap-2">
                 {[
@@ -1458,7 +1436,7 @@ export function AISystemsContent() {
                     key={x.k}
                     className="rounded-xl border border-white/10 bg-white/5 p-3 text-center"
                   >
-                    <div className="text-sm font-bold text-emerald-200">
+                    <div className="text-sm font-bold text-swarp-blue">
                       {x.v}
                     </div>
                     <div className="text-[9px] text-gray-500">{x.k}</div>
@@ -1466,15 +1444,11 @@ export function AISystemsContent() {
                 ))}
               </div>
 
-              <div className="rounded-xl border border-emerald-500/18 bg-emerald-950/15 p-4">
-                <div className="text-xs font-semibold text-white">
-                  Why this matters
-                </div>
-                <div className="mt-1 text-[10px] text-gray-400 leading-relaxed">
-                  Most AI demos fail in production because they’re not observable, not grounded, and not safe.
-                  We ship AI like software: evals, traces, budgets, and rollback.
-                </div>
-              </div>
+              <ServiceCTA
+                title="Why this matters"
+                description="Most AI demos fail in production because they're not observable, not grounded, and not safe. We ship AI like software: evals, traces, budgets, and rollback."
+                accentColor="cyan"
+              />
             </div>
           </div>
         </div>
@@ -1482,11 +1456,11 @@ export function AISystemsContent() {
         {/* Footer hint */}
         <div className="px-4 pb-4 -mt-2">
           <div className="text-[10px] text-gray-600">
-            Tip: Click <span className="text-emerald-200 font-semibold">Knowledge</span> to see citations, then <span className="text-emerald-200 font-semibold">Ops</span> for routing + SLOs.
+            Tip: Click <span className="text-swarp-blue font-semibold">Knowledge</span> to see citations, then <span className="text-swarp-blue font-semibold">Ops</span> for routing + SLOs.
           </div>
         </div>
       </div>
-    </div>
+    </ServiceContentLayout>
   );
 }
 

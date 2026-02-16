@@ -17,10 +17,17 @@ import {
   Wallet,
   FileCode,
   Database,
+  Blocks,
 } from "lucide-react";
+import {
+  ServiceContentLayout,
+  ServiceHeader,
+  ServiceCard,
+  ServiceCTA,
+} from "../service-content-layout";
 
 // Service Card Component
-function ServiceCard({ title, icon, description, lightSource, index }: {
+function BlockchainServiceCard({ title, icon, description, lightSource, index }: {
   title: string;
   icon: React.ReactNode;
   description: string;
@@ -34,26 +41,26 @@ function ServiceCard({ title, icon, description, lightSource, index }: {
 
   return (
     <div
-      className="group relative p-5 border border-cyan-900/30 bg-neutral-900/40 backdrop-blur-sm rounded-lg overflow-hidden hover:border-cyan-500/50 transition-colors duration-300"
+      className="group relative p-5 border border-swarp-blue/20 bg-swarp-dark/60 backdrop-blur-sm rounded-lg overflow-hidden hover:border-swarp-blue/50 transition-colors duration-300"
       style={{
-        boxShadow: `0 0 ${intensity * 30}px rgba(6,182,212, ${intensity * 0.2})`,
+        boxShadow: `0 0 ${intensity * 30}px rgba(0,212,255, ${intensity * 0.2})`,
       }}
     >
-      <div className="absolute inset-0 bg-gradient-to-b from-cyan-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      <div className="absolute inset-0 bg-gradient-to-b from-swarp-blue/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
       <div className="relative z-10 flex flex-col gap-3">
-        <div className="w-10 h-10 rounded bg-cyan-950/50 border border-cyan-500/20 flex items-center justify-center text-cyan-400 group-hover:text-white group-hover:border-cyan-400 transition-colors">
+        <div className="w-10 h-10 rounded bg-swarp-blue/10 border border-swarp-blue/20 flex items-center justify-center text-swarp-blue group-hover:text-white group-hover:border-swarp-blue transition-colors">
           {icon}
         </div>
-        <h3 className="text-base font-bold text-slate-100 group-hover:text-cyan-400 transition-colors">
+        <h3 className="text-base font-bold text-gray-100 group-hover:text-swarp-blue transition-colors">
           {title}
         </h3>
-        <p className="text-sm text-slate-400 leading-relaxed">{description}</p>
+        <p className="text-sm text-gray-400 leading-relaxed">{description}</p>
       </div>
 
       <div className="absolute top-2 right-2 flex gap-1 opacity-20 group-hover:opacity-50 transition-opacity">
-        <div className="w-1 h-1 bg-cyan-500 rounded-full" />
-        <div className="w-1 h-1 bg-cyan-500 rounded-full" />
+        <div className="w-1 h-1 bg-swarp-blue rounded-full" />
+        <div className="w-1 h-1 bg-swarp-blue rounded-full" />
       </div>
     </div>
   );
@@ -96,171 +103,173 @@ export function BlockchainContent() {
   ];
 
   return (
-    <div className="relative min-h-full bg-neutral-950 text-cyan-50 overflow-hidden">
-      {/* Interactive Background */}
-      <div className="absolute inset-0 z-0">
-        <VectorPad
-          className="pointer-events-auto"
-          onUpdate={setLightSource}
-          onLockStatus={setIsLocked}
-        />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#0a0a0a_90%)] pointer-events-none" />
-      </div>
+    <ServiceContentLayout accentColor="purple">
+      <div className="relative min-h-full">
+        {/* Interactive Background */}
+        <div className="absolute inset-0 z-0">
+          <VectorPad
+            className="pointer-events-auto"
+            onUpdate={setLightSource}
+            onLockStatus={setIsLocked}
+          />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#0a0a0a_90%)] pointer-events-none" />
+        </div>
 
-      {/* Content */}
-      <div className="relative z-10 pointer-events-none">
-        {/* Hero */}
-        <div className="pt-12 pb-8 px-6 text-center pointer-events-auto">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-cyan-800/50 bg-cyan-950/30 text-cyan-400 text-[10px] font-mono tracking-widest mb-4">
-            <span
-              className={cn(
-                "w-1.5 h-1.5 rounded-full",
-                isLocked ? "bg-red-500 animate-pulse" : "bg-emerald-500"
-              )}
+        {/* Content */}
+        <div className="relative z-10 pointer-events-none">
+          {/* Hero */}
+          <div className="pt-12 pb-8 px-6 text-center pointer-events-auto">
+            <ServiceHeader
+              icon={<Blocks className="w-5 h-5" />}
+              title="Blockchain"
+              subtitle="DeFi & Smart Contracts"
+              accentColor="purple"
             />
-            SYSTEM_ONLINE // {lightSource.x.toFixed(0)}:{lightSource.y.toFixed(0)}
-          </div>
 
-          <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-b from-white via-cyan-100 to-cyan-900/50 drop-shadow-[0_0_30px_rgba(6,182,212,0.3)] mb-4">
-            BLOCKCHAIN & WEB3
-          </h1>
-
-          <p className="text-sm text-cyan-100/60 max-w-lg mx-auto leading-relaxed mb-6">
-            We architect high-performance DApps, smart contracts, and Web3 dashboards.
-            Interact with the controller to calibrate your requirements.
-          </p>
-
-          <div className="flex items-center justify-center gap-3">
-            {["Audited Code", "Gas Optimized", "Multi-chain"].map((badge) => (
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-swarp-purple/30 bg-swarp-purple/10 text-swarp-purple text-[10px] font-mono tracking-widest mb-4 mt-6">
               <span
-                key={badge}
-                className="px-3 py-1 rounded-full border border-cyan-800/50 bg-cyan-950/30 text-[10px] text-cyan-400 font-mono"
-              >
-                {badge}
-              </span>
-            ))}
-          </div>
-        </div>
-
-        {/* Interaction Zone Label */}
-        <div className="h-32 flex items-center justify-center pointer-events-none">
-          <div className="text-[10px] text-cyan-900/50 font-mono tracking-[0.5em] uppercase animate-pulse">
-            ↕ Drag to Control Light Source ↕
-          </div>
-        </div>
-
-        {/* Services Grid */}
-        <div className="px-6 pb-8 pointer-events-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto">
-            {services.map((service, index) => (
-              <ServiceCard
-                key={service.title}
-                title={service.title}
-                icon={service.icon}
-                description={service.description}
-                lightSource={lightSource}
-                index={index}
+                className={cn(
+                  "w-1.5 h-1.5 rounded-full",
+                  isLocked ? "bg-red-500 animate-pulse" : "bg-emerald-500"
+                )}
               />
-            ))}
-          </div>
-        </div>
-
-        {/* Telemetry Section */}
-        <div className="px-6 pb-8 pointer-events-auto">
-          <div className="border border-cyan-900/30 bg-neutral-950/80 backdrop-blur-md rounded-lg p-6 max-w-3xl mx-auto relative overflow-hidden">
-            {/* Dynamic Glow */}
-            <div
-              className="absolute w-[300px] h-[300px] bg-cyan-500/10 blur-[80px] rounded-full transition-all duration-300 -z-10"
-              style={{
-                left: `${lightSource.x}%`,
-                top: `${lightSource.y}%`,
-                transform: "translate(-50%, -50%)",
-              }}
-            />
-
-            <div className="flex items-center gap-3 text-cyan-400 mb-4">
-              <Activity className="w-5 h-5" />
-              <h3 className="text-sm font-mono tracking-widest uppercase">
-                Real-time Telemetry
-              </h3>
+              SYSTEM_ONLINE // {lightSource.x.toFixed(0)}:{lightSource.y.toFixed(0)}
             </div>
 
-            <h2 className="text-xl font-bold text-white mb-3">
-              Monitor your Protocol{" "}
-              <span className="text-cyan-500">On-Chain & Live.</span>
-            </h2>
+            <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-b from-white via-swarp-blue/80 to-swarp-blue/20 drop-shadow-[0_0_30px_rgba(0,212,255,0.3)] mb-4">
+              BLOCKCHAIN & WEB3
+            </h1>
 
-            <p className="text-sm text-neutral-400 mb-4">
-              Our dashboards provide instant visibility into TVL, volume, and user activity
-              with custom indexers for actionable insights.
+            <p className="text-sm text-swarp-blue/60 max-w-lg mx-auto leading-relaxed mb-6">
+              We architect high-performance DApps, smart contracts, and Web3 dashboards.
+              Interact with the controller to calibrate your requirements.
             </p>
 
-            {/* Mock Dashboard */}
-            <div className="h-32 border border-cyan-500/20 bg-black/50 rounded overflow-hidden font-mono text-[9px]">
-              <div className="bg-cyan-950/50 p-2 border-b border-cyan-900/30 flex justify-between text-cyan-500/70">
-                <span>STATUS: OPTIMAL</span>
-                <span>BLOCK: 18,239,102</span>
-              </div>
-              <div className="p-3 h-24">
-                <div className="flex items-end justify-between h-full gap-0.5">
-                  {Array.from({ length: 24 }).map((_, i) => (
-                    <motion.div
-                      key={i}
-                      className="flex-1 bg-cyan-500/40 rounded-t"
-                      initial={{ height: "10%" }}
-                      animate={{
-                        height: [`${20 + Math.random() * 50}%`, `${30 + Math.random() * 60}%`],
-                      }}
-                      transition={{
-                        duration: 1.5 + Math.random(),
-                        repeat: Infinity,
-                        repeatType: "reverse",
-                      }}
-                    />
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Deliverables */}
-        <div className="px-6 pb-8 pointer-events-auto">
-          <div className="max-w-3xl mx-auto">
-            <h3 className="text-center text-xs uppercase tracking-widest text-gray-500 mb-4">
-              What You Get
-            </h3>
-            <div className="flex flex-wrap justify-center gap-3">
-              {deliverables.map((item) => (
-                <div
-                  key={item.text}
-                  className="flex items-center gap-2 px-4 py-2 rounded-lg bg-cyan-950/30 border border-cyan-900/30"
+            <div className="flex items-center justify-center gap-3">
+              {["Audited Code", "Gas Optimized", "Multi-chain"].map((badge) => (
+                <span
+                  key={badge}
+                  className="px-3 py-1 rounded-full border border-swarp-blue/30 bg-swarp-blue/10 text-[10px] text-swarp-blue font-mono"
                 >
-                  <item.icon className="w-4 h-4 text-cyan-400" />
-                  <span className="text-sm text-gray-300">{item.text}</span>
-                </div>
+                  {badge}
+                </span>
               ))}
             </div>
           </div>
-        </div>
 
-        {/* CTA */}
-        <div className="px-6 py-12 text-center pointer-events-auto border-t border-cyan-900/20">
-          <h2 className="text-xl font-bold text-white mb-2">Ready to Deploy?</h2>
-          <p className="text-sm text-neutral-400 mb-6">
-            Schedule a technical consultation with our blockchain engineers.
-          </p>
-          <Link
-            href="/contact"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-cyan-500 hover:bg-cyan-400 text-black font-bold text-sm rounded-lg transition-all shadow-[0_0_20px_rgba(6,182,212,0.4)]"
-          >
-            <Zap className="w-4 h-4" />
-            Start Project
-            <ArrowRight className="w-4 h-4" />
-          </Link>
+          {/* Interaction Zone Label */}
+          <div className="h-32 flex items-center justify-center pointer-events-none">
+            <div className="text-[10px] text-swarp-blue/30 font-mono tracking-[0.5em] uppercase animate-pulse">
+              ↕ Drag to Control Light Source ↕
+            </div>
+          </div>
+
+          {/* Services Grid */}
+          <div className="px-6 pb-8 pointer-events-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto">
+              {services.map((service, index) => (
+                <BlockchainServiceCard
+                  key={service.title}
+                  title={service.title}
+                  icon={service.icon}
+                  description={service.description}
+                  lightSource={lightSource}
+                  index={index}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Telemetry Section */}
+          <div className="px-6 pb-8 pointer-events-auto">
+            <ServiceCard accentColor="purple" className="max-w-3xl mx-auto relative overflow-hidden">
+              {/* Dynamic Glow */}
+              <div
+                className="absolute w-[300px] h-[300px] bg-swarp-blue/10 blur-[80px] rounded-full transition-all duration-300 -z-10"
+                style={{
+                  left: `${lightSource.x}%`,
+                  top: `${lightSource.y}%`,
+                  transform: "translate(-50%, -50%)",
+                }}
+              />
+
+              <div className="flex items-center gap-3 text-swarp-blue mb-4">
+                <Activity className="w-5 h-5" />
+                <h3 className="text-sm font-mono tracking-widest uppercase">
+                  Real-time Telemetry
+                </h3>
+              </div>
+
+              <h2 className="text-xl font-bold text-white mb-3">
+                Monitor your Protocol{" "}
+                <span className="text-swarp-blue">On-Chain & Live.</span>
+              </h2>
+
+              <p className="text-sm text-gray-400 mb-4">
+                Our dashboards provide instant visibility into TVL, volume, and user activity
+                with custom indexers for actionable insights.
+              </p>
+
+              {/* Mock Dashboard */}
+              <div className="h-32 border border-swarp-blue/20 bg-black/50 rounded overflow-hidden font-mono text-[9px]">
+                <div className="bg-swarp-blue/10 p-2 border-b border-swarp-blue/20 flex justify-between text-swarp-blue/70">
+                  <span>STATUS: OPTIMAL</span>
+                  <span>BLOCK: 18,239,102</span>
+                </div>
+                <div className="p-3 h-24">
+                  <div className="flex items-end justify-between h-full gap-0.5">
+                    {Array.from({ length: 24 }).map((_, i) => (
+                      <motion.div
+                        key={i}
+                        className="flex-1 bg-swarp-blue/40 rounded-t"
+                        initial={{ height: "10%" }}
+                        animate={{
+                          height: [`${20 + Math.random() * 50}%`, `${30 + Math.random() * 60}%`],
+                        }}
+                        transition={{
+                          duration: 1.5 + Math.random(),
+                          repeat: Infinity,
+                          repeatType: "reverse",
+                        }}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </ServiceCard>
+          </div>
+
+          {/* Deliverables */}
+          <div className="px-6 pb-8 pointer-events-auto">
+            <div className="max-w-3xl mx-auto">
+              <h3 className="text-center text-xs uppercase tracking-widest text-gray-500 mb-4">
+                What You Get
+              </h3>
+              <div className="flex flex-wrap justify-center gap-3">
+                {deliverables.map((item) => (
+                  <div
+                    key={item.text}
+                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-swarp-blue/10 border border-swarp-blue/20"
+                  >
+                    <item.icon className="w-4 h-4 text-swarp-blue" />
+                    <span className="text-sm text-gray-300">{item.text}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* CTA */}
+          <div className="px-6 py-12 text-center pointer-events-auto border-t border-swarp-blue/20">
+            <ServiceCTA
+              title="Ready to Deploy?"
+              description="Schedule a technical consultation with our blockchain engineers."
+              accentColor="purple"
+            />
+          </div>
         </div>
       </div>
-    </div>
+    </ServiceContentLayout>
   );
 }
 

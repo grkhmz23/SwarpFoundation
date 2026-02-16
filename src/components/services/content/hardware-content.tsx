@@ -5,26 +5,27 @@ import Link from "next/link";
 import {
   motion,
   AnimatePresence,
-  useMotionValue,
-  useSpring,
-  useTransform,
 } from "framer-motion";
 import {
   ArrowRight,
   Server,
   Cpu,
-  Zap,
   Box,
   BrainCircuit,
   Database,
   Layers,
   Activity,
-  Bot,
   Share2,
-  Wifi,
   Shield,
   Scan,
 } from "lucide-react";
+import {
+  ServiceContentLayout,
+  ServiceHeader,
+  ServiceCard,
+  ServiceTab,
+  ServiceCTA,
+} from "../service-content-layout";
 
 // ============================================================================
 // SVG HARDWARE ILLUSTRATIONS (Swarp Branded)
@@ -357,49 +358,31 @@ export function HardwareContent() {
   };
 
   return (
-    <div className="min-h-full bg-[#0a0f1a] text-gray-200 overflow-hidden relative">
-      {/* Grid Background */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-[0.06]"
-        style={{
-          backgroundImage: "linear-gradient(rgba(0,212,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(0,212,255,0.5) 1px, transparent 1px)",
-          backgroundSize: "24px 24px",
-        }}
+    <ServiceContentLayout accentColor="purple">
+      <ServiceHeader
+        icon={<Cpu className="w-5 h-5 text-white" />}
+        title="Hardware"
+        subtitle="Devices & IoT"
+        accentColor="purple"
       />
 
-      <div className="relative z-10 px-4 py-5">
-        {/* Header */}
-        <div className="mb-3">
-          <div className="inline-flex items-center gap-2 px-2 py-1 rounded-full bg-cyan-950/40 border border-cyan-800/50 mb-2">
-            <span className="relative flex h-1.5 w-1.5">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-cyan-500" />
-            </span>
-            <span className="text-[8px] font-medium text-cyan-400 tracking-wide uppercase">Fabrication Lab</span>
-          </div>
-          <h1 className="text-lg font-bold text-white mb-1">
-            Hardware <span className="text-gray-500">&</span> Devices
-          </h1>
-        </div>
-
+      <div className="px-4 py-3">
         {/* View Toggle */}
         <div className="flex gap-1 mb-3 bg-black/40 p-1 rounded-lg border border-gray-800 w-fit">
-          <button
+          <ServiceTab
+            isActive={activeView === "gallery"}
             onClick={() => setActiveView("gallery")}
-            className={`px-3 py-1 rounded text-[8px] font-bold tracking-wider flex items-center gap-1 transition-all ${
-              activeView === "gallery" ? "bg-cyan-500 text-black" : "text-gray-500"
-            }`}
+            accentColor="purple"
           >
             <Layers className="w-3 h-3" /> COMPONENTS
-          </button>
-          <button
+          </ServiceTab>
+          <ServiceTab
+            isActive={activeView === "config"}
             onClick={() => setActiveView("config")}
-            className={`px-3 py-1 rounded text-[8px] font-bold tracking-wider flex items-center gap-1 transition-all ${
-              activeView === "config" ? "bg-cyan-500 text-black" : "text-gray-500"
-            }`}
+            accentColor="purple"
           >
             <Activity className="w-3 h-3" /> CONFIGURATOR
-          </button>
+          </ServiceTab>
         </div>
 
         <AnimatePresence mode="wait">
@@ -412,7 +395,7 @@ export function HardwareContent() {
               className="space-y-3"
             >
               {/* Hardware Gallery */}
-              <div className="relative bg-gradient-to-br from-[#0d1a2d] to-[#0a0f1a] border border-cyan-900/30 rounded-xl overflow-hidden h-[280px] p-4">
+              <ServiceCard className="relative h-[280px] p-4 overflow-hidden" accentColor="purple">
                 {/* Floating Components */}
                 <motion.div
                   className="absolute top-2 left-2 w-[100px]"
@@ -471,8 +454,8 @@ export function HardwareContent() {
                 </motion.div>
 
                 {/* Center Glow */}
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,212,255,0.08),transparent_70%)] pointer-events-none" />
-              </div>
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(157,78,221,0.08),transparent_70%)] pointer-events-none" />
+              </ServiceCard>
 
               {/* Component Labels */}
               <div className="grid grid-cols-4 gap-2">
@@ -482,19 +465,20 @@ export function HardwareContent() {
                   { icon: Layers, label: "Boards" },
                   { icon: Box, label: "Enclosures" },
                 ].map((item, i) => (
-                  <div key={i} className="p-2 rounded-lg bg-cyan-950/20 border border-cyan-900/30 text-center">
-                    <item.icon className="w-4 h-4 mx-auto mb-1 text-cyan-400" />
+                  <ServiceCard key={i} className="p-2 text-center" accentColor="purple">
+                    <item.icon className="w-4 h-4 mx-auto mb-1 text-swarp-purple" />
                     <span className="text-[8px] text-gray-400">{item.label}</span>
-                  </div>
+                  </ServiceCard>
                 ))}
               </div>
 
-              <Link
-                href="/contact"
-                className="w-full bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-2 rounded-lg flex items-center justify-center gap-2 transition-all text-xs"
-              >
-                START PROJECT <ArrowRight className="w-3 h-3" />
-              </Link>
+              {/* CTA */}
+              <ServiceCTA
+                title="Start Hardware Project"
+                description="Custom devices, IoT solutions, and edge computing hardware"
+                accentColor="purple"
+                onClick={() => window.location.href = "/contact"}
+              />
             </motion.div>
           ) : (
             <motion.div
@@ -505,16 +489,16 @@ export function HardwareContent() {
               className="space-y-3"
             >
               {/* 3D Preview */}
-              <div className="relative bg-gradient-to-br from-gray-900 to-black border border-gray-800 rounded-xl overflow-hidden h-[100px]">
+              <ServiceCard className="relative h-[100px] overflow-hidden bg-gradient-to-br from-gray-900 to-black" accentColor="purple">
                 <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:16px_16px]" />
                 <RealisticDeviceRender config={config} animating={animating} />
-              </div>
+              </ServiceCard>
 
               {/* Configurator */}
-              <div className="bg-gray-900/40 border border-gray-800 rounded-xl p-3 space-y-3">
+              <ServiceCard className="space-y-3" accentColor="purple">
                 {/* Form Factor */}
                 <div>
-                  <label className="text-[7px] font-mono text-cyan-400 uppercase tracking-widest flex items-center gap-1 mb-1.5">
+                  <label className="text-[7px] font-mono text-swarp-purple uppercase tracking-widest flex items-center gap-1 mb-1.5">
                     <Box className="w-2.5 h-2.5" /> Chassis
                   </label>
                   <div className="grid grid-cols-4 gap-1.5">
@@ -527,11 +511,11 @@ export function HardwareContent() {
                           onClick={() => setConfig({ ...config, formFactor: key })}
                           className={`p-1.5 rounded-lg border text-center transition-all ${
                             config.formFactor === key
-                              ? "bg-cyan-950/40 border-cyan-500 text-cyan-300"
+                              ? "bg-swarp-purple/20 border-swarp-purple text-swarp-purple"
                               : "bg-black/40 border-gray-800 text-gray-500"
                           }`}
                         >
-                          <Icon className={`w-3 h-3 mx-auto mb-0.5 ${config.formFactor === key ? "text-cyan-400" : "text-gray-600"}`} />
+                          <Icon className={`w-3 h-3 mx-auto mb-0.5 ${config.formFactor === key ? "text-swarp-purple" : "text-gray-600"}`} />
                           <span className="block text-[7px] font-bold">{SPECS.formFactor[key].name}</span>
                         </button>
                       );
@@ -541,7 +525,7 @@ export function HardwareContent() {
 
                 {/* Compute */}
                 <div>
-                  <label className="text-[7px] font-mono text-cyan-400 uppercase tracking-widest flex items-center gap-1 mb-1.5">
+                  <label className="text-[7px] font-mono text-swarp-purple uppercase tracking-widest flex items-center gap-1 mb-1.5">
                     <BrainCircuit className="w-2.5 h-2.5" /> Core
                   </label>
                   <div className="grid grid-cols-3 gap-1.5">
@@ -568,7 +552,7 @@ export function HardwareContent() {
 
                 {/* I/O */}
                 <div>
-                  <label className="text-[7px] font-mono text-cyan-400 uppercase tracking-widest flex items-center gap-1 mb-1.5">
+                  <label className="text-[7px] font-mono text-swarp-purple uppercase tracking-widest flex items-center gap-1 mb-1.5">
                     <Share2 className="w-2.5 h-2.5" /> I/O
                   </label>
                   <div className="flex gap-1.5">
@@ -580,7 +564,7 @@ export function HardwareContent() {
                           onClick={() => setConfig({ ...config, io: key })}
                           className={`flex-1 py-1 text-[8px] border rounded transition-all ${
                             config.io === key
-                              ? "border-cyan-500 bg-cyan-900/20 text-cyan-300"
+                              ? "border-swarp-purple bg-swarp-purple/20 text-swarp-purple"
                               : "border-gray-800 text-gray-600"
                           }`}
                         >
@@ -590,15 +574,15 @@ export function HardwareContent() {
                     })}
                   </div>
                 </div>
-              </div>
+              </ServiceCard>
 
               {/* Specs */}
-              <div className="bg-gray-900/40 border border-gray-800 rounded-xl p-2.5 font-mono text-[9px]">
+              <ServiceCard className="font-mono text-[9px]" accentColor="purple">
                 <div className="flex justify-between items-center mb-2 border-b border-gray-800 pb-1.5">
                   <span className="text-gray-500 flex items-center gap-1">
                     <Scan className="w-2.5 h-2.5" /> MANIFEST
                   </span>
-                  <span className="text-cyan-400 bg-cyan-950/30 px-1.5 py-0.5 rounded">SWARP-{manifestId}</span>
+                  <span className="text-swarp-purple bg-swarp-purple/10 px-1.5 py-0.5 rounded">SWARP-{manifestId}</span>
                 </div>
                 <div className="space-y-1 mb-2">
                   <div className="flex justify-between">
@@ -616,16 +600,16 @@ export function HardwareContent() {
                 </div>
                 <Link
                   href="/contact"
-                  className="w-full bg-cyan-600 hover:bg-cyan-500 text-white font-sans font-bold py-1.5 rounded-lg flex items-center justify-center gap-1.5 transition-all text-[10px]"
+                  className="w-full bg-swarp-purple hover:bg-swarp-blue text-white font-sans font-bold py-1.5 rounded-lg flex items-center justify-center gap-1.5 transition-all text-[10px]"
                 >
                   REQUEST QUOTE <ArrowRight className="w-3 h-3" />
                 </Link>
-              </div>
+              </ServiceCard>
             </motion.div>
           )}
         </AnimatePresence>
       </div>
-    </div>
+    </ServiceContentLayout>
   );
 }
 

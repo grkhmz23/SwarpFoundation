@@ -10,6 +10,13 @@ import {
   Clock, Target, Radio, Wifi, WifiOff, AlertCircle
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import {
+  ServiceContentLayout,
+  ServiceHeader,
+  ServiceCard,
+  ServiceTab,
+  ServiceCTA,
+} from "../service-content-layout";
 
 // Types
 interface Vulnerability {
@@ -439,53 +446,37 @@ export function SecurityContent() {
     { icon: FileSearch, title: "Compliance", desc: "GDPR, ISO 27001, SOC2" },
   ];
 
+  const tabs = [
+    { id: "overview", label: "Overview", icon: Activity },
+    { id: "pentest", label: "PenTest", icon: Terminal },
+    { id: "compliance", label: "Compliance", icon: FileSearch },
+  ];
+
   return (
-    <div className="h-full bg-[#0a0f1a] text-gray-200 overflow-hidden">
-      {/* Background Grid */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-[0.03]"
-        style={{
-          backgroundImage: "linear-gradient(rgba(220,38,38,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(220,38,38,0.5) 1px, transparent 1px)",
-          backgroundSize: "40px 40px",
-        }}
-      />
-
-      <div className="relative z-10 h-full flex flex-col">
-        {/* Header */}
-        <div className="flex items-center justify-between px-4 py-3 border-b border-white/10 bg-white/5">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-red-500/20 border border-red-500/30 flex items-center justify-center">
-              <ShieldAlert className="w-5 h-5 text-red-400" />
-            </div>
-            <div>
-              <h3 className="text-base font-bold text-white">Security Operations</h3>
-              <p className="text-[10px] text-red-400">Whitehat Testing & Defense</p>
-            </div>
-          </div>
-
+    <ServiceContentLayout accentColor="cyan">
+      <div className="h-full flex flex-col">
+        {/* Header with Tabs */}
+        <ServiceHeader
+          icon={<ShieldAlert className="w-5 h-5" />}
+          title="Security"
+          subtitle="Audit & Pen-testing"
+          accentColor="cyan"
+        >
           {/* Tabs */}
           <div className="flex bg-black/40 p-1 rounded-lg border border-white/10">
-            {[
-              { id: "overview", label: "Overview", icon: Activity },
-              { id: "pentest", label: "PenTest", icon: Terminal },
-              { id: "compliance", label: "Compliance", icon: FileSearch },
-            ].map((tab) => (
-              <button
+            {tabs.map((tab) => (
+              <ServiceTab
                 key={tab.id}
+                isActive={activeTab === tab.id}
                 onClick={() => setActiveTab(tab.id as any)}
-                className={cn(
-                  "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[10px] font-medium transition-all",
-                  activeTab === tab.id
-                    ? "bg-red-500/20 text-red-400 border border-red-500/30"
-                    : "text-gray-500 hover:text-white"
-                )}
+                accentColor="cyan"
               >
                 <tab.icon className="w-3.5 h-3.5" />
                 {tab.label}
-              </button>
+              </ServiceTab>
             ))}
           </div>
-        </div>
+        </ServiceHeader>
 
         {/* Content */}
         <div className="flex-1 overflow-hidden p-4">
@@ -497,7 +488,7 @@ export function SecurityContent() {
                   <ThreatRadar />
                   <div className="grid grid-cols-2 gap-4">
                     <SecurityScore />
-                    <div className="bg-[#0c0e12] rounded-xl border border-white/10 p-4">
+                    <ServiceCard accentColor="cyan">
                       <h4 className="text-sm font-bold text-white mb-3">OWASP Coverage</h4>
                       <div className="space-y-2">
                         {["Injection", "Broken Auth", "Sensitive Data", "XXE", "Access Control"].map((item, i) => (
@@ -507,13 +498,13 @@ export function SecurityContent() {
                           </div>
                         ))}
                       </div>
-                    </div>
+                    </ServiceCard>
                   </div>
                 </>
               )}
               {activeTab === "pentest" && <PentestTerminal />}
               {activeTab === "compliance" && (
-                <div className="bg-[#0c0e12] rounded-xl border border-white/10 p-6 text-center">
+                <ServiceCard accentColor="cyan" className="text-center p-6">
                   <FileSearch className="w-12 h-12 text-cyan-400 mx-auto mb-4" />
                   <h4 className="text-lg font-bold text-white mb-2">Compliance Ready</h4>
                   <p className="text-sm text-gray-400 mb-4">We help you meet industry standards</p>
@@ -524,7 +515,7 @@ export function SecurityContent() {
                       </span>
                     ))}
                   </div>
-                </div>
+                </ServiceCard>
               )}
             </div>
 
@@ -533,43 +524,33 @@ export function SecurityContent() {
               <VulnScanner />
 
               {/* Services Grid */}
-              <div className="bg-[#0c0e12] rounded-xl border border-white/10 p-4">
-                <h4 className="text-sm font-bold text-white mb-3">Our Services</h4>
+              <ServiceCard accentColor="cyan" title="Our Services">
                 <div className="grid grid-cols-2 gap-2">
-                  {services.map((service, i) => (
+                  {services.map((service) => (
                     <motion.div
                       key={service.title}
                       whileHover={{ scale: 1.02 }}
-                      className="p-3 rounded-lg bg-black/40 border border-white/5 hover:border-red-500/30 transition-colors cursor-pointer group"
+                      className="p-3 rounded-lg bg-black/40 border border-white/5 hover:border-cyan-500/30 transition-colors cursor-pointer group"
                     >
-                      <service.icon className="w-5 h-5 text-red-400 mb-2 group-hover:scale-110 transition-transform" />
+                      <service.icon className="w-5 h-5 text-cyan-400 mb-2 group-hover:scale-110 transition-transform" />
                       <div className="text-xs font-medium text-white">{service.title}</div>
                       <div className="text-[9px] text-gray-500">{service.desc}</div>
                     </motion.div>
                   ))}
                 </div>
-              </div>
+              </ServiceCard>
 
               {/* CTA */}
-              <div className="bg-gradient-to-r from-red-500/20 to-orange-500/20 rounded-xl border border-red-500/30 p-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-red-500/20 flex items-center justify-center">
-                    <Target className="w-5 h-5 text-red-400" />
-                  </div>
-                  <div className="flex-1">
-                    <h4 className="text-sm font-bold text-white">Request Security Audit</h4>
-                    <p className="text-[10px] text-gray-400">Get detailed report in 2-4 weeks</p>
-                  </div>
-                  <button className="p-2 rounded-lg bg-red-500 hover:bg-red-400 text-white transition-colors">
-                    <ChevronRight className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
+              <ServiceCTA
+                title="Request Security Audit"
+                description="Get detailed report in 2-4 weeks"
+                accentColor="cyan"
+              />
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </ServiceContentLayout>
   );
 }
 

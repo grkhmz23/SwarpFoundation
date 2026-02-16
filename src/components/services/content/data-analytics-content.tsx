@@ -11,6 +11,13 @@ import {
   DatabaseBackup, LineChart, AreaChart, Play
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import {
+  ServiceContentLayout,
+  ServiceHeader,
+  ServiceCard,
+  ServiceTab,
+  ServiceCTA,
+} from "../service-content-layout";
 
 // Types
 interface PipelineStage {
@@ -75,22 +82,18 @@ function ETLPipeline() {
   const getStatusColor = (status: string) => {
     switch(status) {
       case "completed": return "text-emerald-400 bg-emerald-500/10 border-emerald-500/30";
-      case "running": return "text-blue-400 bg-blue-500/10 border-blue-500/30 animate-pulse";
+      case "running": return "text-swarp-blue bg-swarp-blue/10 border-swarp-blue/30 animate-pulse";
       case "failed": return "text-red-400 bg-red-500/10 border-red-500/30";
       default: return "text-gray-500 bg-gray-500/10 border-gray-500/30";
     }
   };
 
   return (
-    <div className="bg-[#0c0e12] rounded-xl border border-violet-500/20 p-4 h-full flex flex-col">
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-2">
-          <Layers className="w-5 h-5 text-violet-400" />
-          <h4 className="text-sm font-bold text-white">ETL Pipeline</h4>
-        </div>
+    <ServiceCard accentColor="purple" className="h-full flex flex-col" icon={<Layers className="w-5 h-5 text-swarp-purple" />} title="ETL Pipeline">
+      <div className="flex items-center justify-end mb-4">
         <button
           onClick={runPipeline}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-violet-500/10 border border-violet-500/30 text-violet-400 text-xs font-medium hover:bg-violet-500/20 transition-colors"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-swarp-purple/10 border border-swarp-purple/30 text-swarp-purple text-xs font-medium hover:bg-swarp-purple/20 transition-colors"
         >
           <RefreshCw className="w-3.5 h-3.5" />
           Run Pipeline
@@ -104,7 +107,7 @@ function ETLPipeline() {
           {sources.map((source) => (
             <div key={source.id} className="p-2 rounded-lg bg-black/40 border border-white/5">
               <div className="flex items-center gap-2 mb-1">
-                {source.type === "database" ? <Database className="w-3.5 h-3.5 text-blue-400" /> :
+                {source.type === "database" ? <Database className="w-3.5 h-3.5 text-swarp-blue" /> :
                  source.type === "api" ? <Code2 className="w-3.5 h-3.5 text-amber-400" /> :
                  <Activity className="w-3.5 h-3.5 text-red-400" />}
                 <span className="text-[10px] text-gray-300">{source.name}</span>
@@ -147,13 +150,13 @@ function ETLPipeline() {
       </div>
 
       {/* Destination */}
-      <div className="mt-4 p-3 rounded-lg bg-gradient-to-r from-violet-500/10 to-purple-500/10 border border-violet-500/30">
+      <div className="mt-4 p-3 rounded-lg bg-gradient-to-r from-swarp-purple/10 to-swarp-blue/10 border border-swarp-purple/30">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <DatabaseBackup className="w-5 h-5 text-violet-400" />
+            <DatabaseBackup className="w-5 h-5 text-swarp-purple" />
             <div>
               <div className="text-xs font-bold text-white">Data Warehouse</div>
-              <div className="text-[9px] text-violet-400">Snowflake • 42K records loaded</div>
+              <div className="text-[9px] text-swarp-purple">Snowflake • 42K records loaded</div>
             </div>
           </div>
           <div className="text-right">
@@ -162,7 +165,7 @@ function ETLPipeline() {
           </div>
         </div>
       </div>
-    </div>
+    </ServiceCard>
   );
 }
 
@@ -192,12 +195,8 @@ function LiveDashboard() {
   }, []);
 
   return (
-    <div className="bg-[#0c0e12] rounded-xl border border-pink-500/20 p-4">
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-2">
-          <BarChart3 className="w-5 h-5 text-pink-400" />
-          <h4 className="text-sm font-bold text-white">Live Dashboard</h4>
-        </div>
+    <ServiceCard accentColor="purple" icon={<BarChart3 className="w-5 h-5 text-swarp-purple" />} title="Live Dashboard">
+      <div className="flex items-center justify-end mb-4">
         <div className="flex items-center gap-1 text-[10px] text-emerald-400">
           <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
           Live
@@ -213,12 +212,12 @@ function LiveDashboard() {
         </div>
         <div className="p-3 rounded-lg bg-black/40 border border-white/5">
           <div className="text-[10px] text-gray-500 mb-1">Active Users</div>
-          <div className="text-xl font-bold text-pink-400">{metrics.users.toLocaleString()}</div>
+          <div className="text-xl font-bold text-swarp-purple">{metrics.users.toLocaleString()}</div>
           <div className="text-[9px] text-emerald-400">+5.2%</div>
         </div>
         <div className="p-3 rounded-lg bg-black/40 border border-white/5">
           <div className="text-[10px] text-gray-500 mb-1">Conversion</div>
-          <div className="text-xl font-bold text-violet-400">{metrics.conversion.toFixed(2)}%</div>
+          <div className="text-xl font-bold text-swarp-blue">{metrics.conversion.toFixed(2)}%</div>
           <div className="text-[9px] text-red-400">-0.3%</div>
         </div>
         <div className="p-3 rounded-lg bg-black/40 border border-white/5">
@@ -233,7 +232,7 @@ function LiveDashboard() {
         {chartData.map((value, i) => (
           <motion.div
             key={i}
-            className="flex-1 bg-gradient-to-t from-violet-500/50 to-pink-500/50 rounded-t"
+            className="flex-1 bg-gradient-to-t from-swarp-purple/50 to-swarp-blue/50 rounded-t"
             initial={{ height: 0 }}
             animate={{ height: `${value}%` }}
             transition={{ duration: 0.5 }}
@@ -247,7 +246,7 @@ function LiveDashboard() {
         <span>18:00</span>
         <span>Now</span>
       </div>
-    </div>
+    </ServiceCard>
   );
 }
 
@@ -284,16 +283,12 @@ LIMIT 100;`);
   };
 
   return (
-    <div className="bg-[#09090b] rounded-xl border border-white/10 p-4 font-mono text-xs h-full flex flex-col">
-      <div className="flex items-center justify-between mb-3 border-b border-white/10 pb-2">
-        <div className="flex items-center gap-2">
-          <Terminal className="w-4 h-4 text-violet-400" />
-          <span className="text-gray-300">Query Editor</span>
-        </div>
+    <ServiceCard accentColor="purple" className="h-full flex flex-col font-mono" icon={<Terminal className="w-5 h-5 text-swarp-purple" />} title="Query Editor">
+      <div className="flex items-center justify-end mb-3 border-b border-white/10 pb-2">
         <button
           onClick={runQuery}
           disabled={isRunning}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-violet-500/20 text-violet-400 text-[10px] hover:bg-violet-500/30 disabled:opacity-50 transition-colors"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-swarp-purple/20 text-swarp-purple text-[10px] hover:bg-swarp-purple/30 disabled:opacity-50 transition-colors"
         >
           {isRunning ? <RefreshCw className="w-3 h-3 animate-spin" /> : <Play className="w-3 h-3" />}
           Run Query
@@ -303,7 +298,7 @@ LIMIT 100;`);
       <textarea
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        className="w-full h-32 bg-black/40 border border-white/10 rounded-lg p-3 text-gray-300 resize-none focus:outline-none focus:border-violet-500/50 text-[11px] leading-relaxed"
+        className="w-full h-32 bg-black/40 border border-white/10 rounded-lg p-3 text-gray-300 resize-none focus:outline-none focus:border-swarp-purple/50 text-[11px] leading-relaxed"
         spellCheck={false}
       />
 
@@ -340,7 +335,7 @@ LIMIT 100;`);
           </div>
         </motion.div>
       )}
-    </div>
+    </ServiceCard>
   );
 }
 
@@ -356,12 +351,8 @@ function WarehouseSchema() {
   ];
 
   return (
-    <div className="bg-[#0c0e12] rounded-xl border border-indigo-500/20 p-4">
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-2">
-          <Database className="w-5 h-5 text-indigo-400" />
-          <h4 className="text-sm font-bold text-white">Data Warehouse</h4>
-        </div>
+    <ServiceCard accentColor="purple" icon={<Database className="w-5 h-5 text-swarp-purple" />} title="Data Warehouse">
+      <div className="flex items-center justify-end mb-4">
         <div className="text-[10px] text-gray-500">Snowflake Schema</div>
       </div>
 
@@ -374,19 +365,19 @@ function WarehouseSchema() {
             className={cn(
               "p-3 rounded-lg border cursor-pointer transition-all",
               selectedTable === table.name 
-                ? "bg-indigo-500/10 border-indigo-500/30" 
+                ? "bg-swarp-purple/10 border-swarp-purple/30" 
                 : "bg-black/40 border-white/5 hover:border-white/20"
             )}
             whileHover={{ scale: 1.01 }}
           >
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2">
-                <Table2 className="w-4 h-4 text-indigo-400" />
+                <Table2 className="w-4 h-4 text-swarp-purple" />
                 <span className="text-xs font-medium text-white">{table.name}</span>
               </div>
               <span className={cn(
                 "text-[9px] px-2 py-0.5 rounded border",
-                table.type === "fact" ? "bg-amber-500/10 text-amber-400 border-amber-500/30" : "bg-blue-500/10 text-blue-400 border-blue-500/30"
+                table.type === "fact" ? "bg-amber-500/10 text-amber-400 border-amber-500/30" : "bg-swarp-blue/10 text-swarp-blue border-swarp-blue/30"
               )}>
                 {table.type}
               </span>
@@ -418,11 +409,11 @@ function WarehouseSchema() {
           <div className="text-[9px] text-gray-500">Total Storage</div>
         </div>
         <div className="text-center p-2 rounded-lg bg-black/40">
-          <div className="text-lg font-bold text-indigo-400">42ms</div>
+          <div className="text-lg font-bold text-swarp-purple">42ms</div>
           <div className="text-[9px] text-gray-500">Avg Query Time</div>
         </div>
       </div>
-    </div>
+    </ServiceCard>
   );
 }
 
@@ -437,53 +428,37 @@ export function DataAnalyticsContent() {
     { icon: LineChart, name: "dbt", category: "Transform" },
   ];
 
+  const tabs = [
+    { id: "pipeline", label: "Pipeline", icon: Layers },
+    { id: "warehouse", label: "Warehouse", icon: Database },
+    { id: "queries", label: "SQL", icon: Terminal },
+  ] as const;
+
   return (
-    <div className="h-full bg-[#0a0f1a] text-gray-200 overflow-hidden">
-      {/* Background Grid */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-[0.03]"
-        style={{
-          backgroundImage: "linear-gradient(rgba(139,92,246,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(139,92,246,0.5) 1px, transparent 1px)",
-          backgroundSize: "40px 40px",
-        }}
-      />
-
-      <div className="relative z-10 h-full flex flex-col">
+    <ServiceContentLayout accentColor="purple" className="h-full">
+      <div className="h-full flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between px-4 py-3 border-b border-white/10 bg-white/5">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-violet-500/20 border border-violet-500/30 flex items-center justify-center">
-              <BarChart3 className="w-5 h-5 text-violet-400" />
-            </div>
-            <div>
-              <h3 className="text-base font-bold text-white">Data & Analytics</h3>
-              <p className="text-[10px] text-violet-400">Pipelines & BI</p>
-            </div>
-          </div>
-
+        <ServiceHeader
+          icon={<BarChart3 className="w-5 h-5" />}
+          title="Data & Analytics"
+          subtitle="Pipelines & BI"
+          accentColor="purple"
+        >
           {/* Tabs */}
           <div className="flex bg-black/40 p-1 rounded-lg border border-white/10">
-            {[
-              { id: "pipeline", label: "Pipeline", icon: Layers },
-              { id: "warehouse", label: "Warehouse", icon: Database },
-              { id: "queries", label: "SQL", icon: Terminal },
-            ].map((tab) => (
-              <button
+            {tabs.map((tab) => (
+              <ServiceTab
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id as any)}
-                className={cn(
-                  "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[10px] font-medium transition-all",
-                  activeTab === tab.id
-                    ? "bg-violet-500/20 text-violet-400 border border-violet-500/30"
-                    : "text-gray-500 hover:text-white"
-                )}
+                isActive={activeTab === tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                accentColor="purple"
               >
                 <tab.icon className="w-3.5 h-3.5" />
                 {tab.label}
-              </button>
+              </ServiceTab>
             ))}
           </div>
-        </div>
+        </ServiceHeader>
 
         {/* Content */}
         <div className="flex-1 overflow-hidden p-4">
@@ -506,16 +481,15 @@ export function DataAnalyticsContent() {
               )}
 
               {/* Tools Grid */}
-              <div className="bg-[#0c0e12] rounded-xl border border-white/10 p-4 flex-1">
-                <h4 className="text-sm font-bold text-white mb-3">Data Stack</h4>
+              <ServiceCard accentColor="purple" title="Data Stack" className="flex-1">
                 <div className="grid grid-cols-2 gap-2">
                   {tools.map((tool) => (
                     <motion.div
                       key={tool.name}
                       whileHover={{ scale: 1.02 }}
-                      className="p-3 rounded-lg bg-black/40 border border-white/5 hover:border-violet-500/30 transition-colors cursor-pointer group"
+                      className="p-3 rounded-lg bg-black/40 border border-white/5 hover:border-swarp-purple/30 transition-colors cursor-pointer group"
                     >
-                      <tool.icon className="w-5 h-5 text-violet-400 mb-2 group-hover:scale-110 transition-transform" />
+                      <tool.icon className="w-5 h-5 text-swarp-purple mb-2 group-hover:scale-110 transition-transform" />
                       <div className="text-xs font-medium text-white">{tool.name}</div>
                       <div className="text-[9px] text-gray-500">{tool.category}</div>
                     </motion.div>
@@ -526,8 +500,8 @@ export function DataAnalyticsContent() {
                 <div className="mt-4 grid grid-cols-3 gap-2">
                   {[
                     { label: "Uptime", value: "99.9%", color: "emerald" },
-                    { label: "Pipelines", value: "24", color: "violet" },
-                    { label: "Latency", value: "42ms", color: "pink" },
+                    { label: "Pipelines", value: "24", color: "swarp-purple" },
+                    { label: "Latency", value: "42ms", color: "swarp-blue" },
                   ].map((stat) => (
                     <div key={stat.label} className="text-center p-2 rounded-lg bg-black/40">
                       <div className={cn("text-sm font-bold", `text-${stat.color}-400`)}>{stat.value}</div>
@@ -535,28 +509,19 @@ export function DataAnalyticsContent() {
                     </div>
                   ))}
                 </div>
-              </div>
+              </ServiceCard>
 
               {/* CTA */}
-              <div className="bg-gradient-to-r from-violet-500/20 to-pink-500/20 rounded-xl border border-violet-500/30 p-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-violet-500/20 flex items-center justify-center">
-                    <Zap className="w-5 h-5 text-violet-400" />
-                  </div>
-                  <div className="flex-1">
-                    <h4 className="text-sm font-bold text-white">Unlock Your Data</h4>
-                    <p className="text-[10px] text-gray-400">Modern data stack in 2 weeks</p>
-                  </div>
-                  <button className="p-2 rounded-lg bg-violet-500 hover:bg-violet-400 text-white transition-colors">
-                    <ChevronRight className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
+              <ServiceCTA
+                title="Unlock Your Data"
+                description="Modern data stack in 2 weeks"
+                accentColor="purple"
+              />
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </ServiceContentLayout>
   );
 }
 

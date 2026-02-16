@@ -10,6 +10,13 @@ import {
   MoreHorizontal, X, Maximize2
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import {
+  ServiceContentLayout,
+  ServiceHeader,
+  ServiceCard,
+  ServiceTab,
+  ServiceCTA,
+} from "../service-content-layout";
 
 // Types
 interface TeamMember {
@@ -73,18 +80,18 @@ function TeamBuilder() {
 
   const getLevelColor = (level: string) => {
     switch(level) {
-      case "lead": return "bg-purple-500/20 text-purple-400 border-purple-500/30";
-      case "senior": return "bg-blue-500/20 text-blue-400 border-blue-500/30";
+      case "lead": return "bg-swarp-purple/20 text-swarp-purple border-swarp-purple/30";
+      case "senior": return "bg-swarp-blue/20 text-swarp-blue border-swarp-blue/30";
       case "mid": return "bg-emerald-500/20 text-emerald-400 border-emerald-500/30";
       default: return "bg-gray-500/20 text-gray-400 border-gray-500/30";
     }
   };
 
   return (
-    <div className="bg-[#0c0e12] rounded-xl border border-purple-500/20 p-4 h-full flex flex-col">
+    <ServiceCard accentColor="purple" className="h-full flex flex-col">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <Users className="w-5 h-5 text-purple-400" />
+          <Users className="w-5 h-5 text-swarp-purple" />
           <h4 className="text-sm font-bold text-white">Your Dedicated Team</h4>
         </div>
         <div className="text-xs text-gray-400">
@@ -120,11 +127,11 @@ function TeamBuilder() {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
-              className="p-3 rounded-lg bg-black/40 border border-white/5 hover:border-purple-500/30 transition-all group"
+              className="p-3 rounded-lg bg-black/40 border border-white/5 hover:border-swarp-purple/30 transition-all group"
             >
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center text-xs font-bold text-white">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-swarp-purple to-swarp-blue flex items-center justify-center text-xs font-bold text-white">
                     {member.avatar}
                   </div>
                   <div>
@@ -172,7 +179,7 @@ function TeamBuilder() {
       {/* Team Stats */}
       <div className="mt-4 pt-3 border-t border-white/10 grid grid-cols-3 gap-2">
         <div className="text-center">
-          <div className="text-lg font-bold text-purple-400">{team.length}</div>
+          <div className="text-lg font-bold text-swarp-purple">{team.length}</div>
           <div className="text-[9px] text-gray-500 uppercase">Engineers</div>
         </div>
         <div className="text-center">
@@ -182,13 +189,13 @@ function TeamBuilder() {
           <div className="text-[9px] text-gray-500 uppercase">Avg Availability</div>
         </div>
         <div className="text-center">
-          <div className="text-lg font-bold text-blue-400">
+          <div className="text-lg font-bold text-swarp-blue">
             {team.filter(t => t.level === "senior" || t.level === "lead").length}
           </div>
           <div className="text-[9px] text-gray-500 uppercase">Senior+</div>
         </div>
       </div>
-    </div>
+    </ServiceCard>
   );
 }
 
@@ -204,10 +211,10 @@ function SkillMatrix() {
   ];
 
   return (
-    <div className="bg-[#0c0e12] rounded-xl border border-indigo-500/20 p-4">
+    <ServiceCard accentColor="purple">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <Target className="w-5 h-5 text-indigo-400" />
+          <Target className="w-5 h-5 text-swarp-purple" />
           <h4 className="text-sm font-bold text-white">Team Expertise</h4>
         </div>
         <div className="flex items-center gap-1 text-[10px] text-emerald-400">
@@ -240,13 +247,13 @@ function SkillMatrix() {
         <div className="text-[10px] text-gray-500 mb-2 uppercase tracking-wider">Certifications</div>
         <div className="flex flex-wrap gap-1.5">
           {["AWS Certified", "Kubernetes CKA", "Scrum Master", "Google Cloud", "Azure DevOps"].map((cert) => (
-            <span key={cert} className="text-[9px] px-2 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300">
+            <span key={cert} className="text-[9px] px-2 py-1 rounded-full bg-swarp-purple/10 border border-swarp-purple/20 text-swarp-purple">
               {cert}
             </span>
           ))}
         </div>
       </div>
-    </div>
+    </ServiceCard>
   );
 }
 
@@ -272,15 +279,15 @@ function ProjectTimeline() {
   };
 
   return (
-    <div className="bg-[#0c0e12] rounded-xl border border-white/10 p-4 h-full flex flex-col">
+    <ServiceCard accentColor="purple" className="h-full flex flex-col">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <FolderOpen className="w-5 h-5 text-amber-400" />
+          <FolderOpen className="w-5 h-5 text-swarp-purple" />
           <h4 className="text-sm font-bold text-white">Active Projects</h4>
         </div>
         <button
           onClick={addProject}
-          className="p-1.5 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-400 hover:bg-amber-500/20"
+          className="p-1.5 rounded-lg bg-swarp-purple/10 border border-swarp-purple/30 text-swarp-purple hover:bg-swarp-purple/20"
         >
           <Plus className="w-4 h-4" />
         </button>
@@ -291,11 +298,11 @@ function ProjectTimeline() {
           <motion.div
             key={project.id}
             layout
-            className="p-3 rounded-lg bg-black/40 border border-white/5 hover:border-amber-500/30 transition-all cursor-pointer group"
+            className="p-3 rounded-lg bg-black/40 border border-white/5 hover:border-swarp-purple/30 transition-all cursor-pointer group"
           >
             <div className="flex items-start justify-between mb-2">
               <div>
-                <div className="text-xs font-medium text-white group-hover:text-amber-400 transition-colors">
+                <div className="text-xs font-medium text-white group-hover:text-swarp-purple transition-colors">
                   {project.name}
                 </div>
                 <div className="text-[10px] text-gray-500">{project.client}</div>
@@ -303,8 +310,8 @@ function ProjectTimeline() {
               <span className={cn(
                 "text-[9px] px-2 py-0.5 rounded border",
                 project.status === "active" ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-400" :
-                project.status === "completed" ? "bg-blue-500/10 border-blue-500/30 text-blue-400" :
-                "bg-amber-500/10 border-amber-500/30 text-amber-400"
+                project.status === "completed" ? "bg-swarp-blue/10 border-swarp-blue/30 text-swarp-blue" :
+                "bg-swarp-purple/10 border-swarp-purple/30 text-swarp-purple"
               )}>
                 {project.status}
               </span>
@@ -320,7 +327,7 @@ function ProjectTimeline() {
                 <motion.div
                   className={cn(
                     "h-full rounded-full",
-                    project.status === "completed" ? "bg-blue-500" : "bg-amber-500"
+                    project.status === "completed" ? "bg-swarp-blue" : "bg-swarp-purple"
                   )}
                   initial={{ width: 0 }}
                   animate={{ width: `${project.progress}%` }}
@@ -356,7 +363,7 @@ function ProjectTimeline() {
           <div className="text-[9px] text-gray-500">Delivered</div>
         </div>
       </div>
-    </div>
+    </ServiceCard>
   );
 }
 
@@ -369,10 +376,10 @@ function TeamComms() {
   ]);
 
   return (
-    <div className="bg-[#09090b] rounded-xl border border-white/10 p-4 h-full flex flex-col">
+    <div className="bg-swarp-darker rounded-xl border border-white/10 p-4 h-full flex flex-col">
       <div className="flex items-center justify-between mb-3 border-b border-white/10 pb-2">
         <div className="flex items-center gap-2">
-          <MessageSquare className="w-4 h-4 text-emerald-400" />
+          <MessageSquare className="w-4 h-4 text-swarp-purple" />
           <span className="text-xs font-medium text-gray-300">Team Channel</span>
         </div>
         <div className="flex gap-1.5">
@@ -384,7 +391,7 @@ function TeamComms() {
       <div className="flex-1 overflow-y-auto space-y-2 custom-scrollbar">
         {messages.map((msg) => (
           <div key={msg.id} className="flex gap-2">
-            <div className="w-6 h-6 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-[8px] font-bold text-white shrink-0">
+            <div className="w-6 h-6 rounded-full bg-gradient-to-br from-swarp-purple to-swarp-blue flex items-center justify-center text-[8px] font-bold text-white shrink-0">
               {msg.user.charAt(0)}
             </div>
             <div className="flex-1">
@@ -403,9 +410,9 @@ function TeamComms() {
           <input
             type="text"
             placeholder="Type a message..."
-            className="flex-1 bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-[10px] text-white placeholder-gray-600 focus:outline-none focus:border-emerald-500/50"
+            className="flex-1 bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-[10px] text-white placeholder-gray-600 focus:outline-none focus:border-swarp-purple/50"
           />
-          <button className="p-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400">
+          <button className="p-2 rounded-lg bg-swarp-purple/20 border border-swarp-purple/30 text-swarp-purple">
             <ChevronRight className="w-4 h-4" />
           </button>
         </div>
@@ -426,52 +433,43 @@ export function EngineeringContent() {
   ];
 
   return (
-    <div className="h-full bg-[#0a0f1a] text-gray-200 overflow-hidden">
-      {/* Background Grid */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-[0.03]"
-        style={{
-          backgroundImage: "linear-gradient(rgba(139,92,246,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(139,92,246,0.5) 1px, transparent 1px)",
-          backgroundSize: "40px 40px",
-        }}
-      />
-
-      <div className="relative z-10 h-full flex flex-col">
+    <ServiceContentLayout accentColor="purple">
+      <div className="h-full flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between px-4 py-3 border-b border-white/10 bg-white/5">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-purple-500/20 border border-purple-500/30 flex items-center justify-center">
-              <Users className="w-5 h-5 text-purple-400" />
-            </div>
-            <div>
-              <h3 className="text-base font-bold text-white">Engineering Teams</h3>
-              <p className="text-[10px] text-purple-400">Dedicated Pods & Staff Augmentation</p>
-            </div>
-          </div>
-
+        <ServiceHeader
+          icon={<Users className="w-5 h-5" />}
+          title="Engineering"
+          subtitle="Dedicated Teams"
+          accentColor="purple"
+        >
           {/* Tabs */}
           <div className="flex bg-black/40 p-1 rounded-lg border border-white/10">
-            {[
-              { id: "team", label: "Team Builder", icon: Users },
-              { id: "projects", label: "Projects", icon: FolderOpen },
-              { id: "skills", label: "Skills", icon: Target },
-            ].map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id as any)}
-                className={cn(
-                  "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[10px] font-medium transition-all",
-                  activeTab === tab.id
-                    ? "bg-purple-500/20 text-purple-400 border border-purple-500/30"
-                    : "text-gray-500 hover:text-white"
-                )}
-              >
-                <tab.icon className="w-3.5 h-3.5" />
-                {tab.label}
-              </button>
-            ))}
+            <ServiceTab
+              isActive={activeTab === "team"}
+              onClick={() => setActiveTab("team")}
+              accentColor="purple"
+            >
+              <Users className="w-3.5 h-3.5" />
+              Team Builder
+            </ServiceTab>
+            <ServiceTab
+              isActive={activeTab === "projects"}
+              onClick={() => setActiveTab("projects")}
+              accentColor="purple"
+            >
+              <FolderOpen className="w-3.5 h-3.5" />
+              Projects
+            </ServiceTab>
+            <ServiceTab
+              isActive={activeTab === "skills"}
+              onClick={() => setActiveTab("skills")}
+              accentColor="purple"
+            >
+              <Target className="w-3.5 h-3.5" />
+              Skills
+            </ServiceTab>
           </div>
-        </div>
+        </ServiceHeader>
 
         {/* Content */}
         <div className="flex-1 overflow-hidden p-4">
@@ -494,16 +492,16 @@ export function EngineeringContent() {
               {activeTab === "skills" && <ProjectTimeline />}
 
               {/* Engagement Models */}
-              <div className="bg-[#0c0e12] rounded-xl border border-white/10 p-4 flex-1">
+              <ServiceCard accentColor="purple" className="flex-1">
                 <h4 className="text-sm font-bold text-white mb-3">Engagement Models</h4>
                 <div className="grid grid-cols-2 gap-2">
                   {engagementModels.map((model, i) => (
                     <motion.div
                       key={model.title}
                       whileHover={{ scale: 1.02 }}
-                      className="p-3 rounded-lg bg-black/40 border border-white/5 hover:border-purple-500/30 transition-colors cursor-pointer group"
+                      className="p-3 rounded-lg bg-black/40 border border-white/5 hover:border-swarp-purple/30 transition-colors cursor-pointer group"
                     >
-                      <model.icon className="w-5 h-5 text-purple-400 mb-2 group-hover:scale-110 transition-transform" />
+                      <model.icon className="w-5 h-5 text-swarp-purple mb-2 group-hover:scale-110 transition-transform" />
                       <div className="text-xs font-medium text-white">{model.title}</div>
                       <div className="text-[9px] text-gray-500">{model.desc}</div>
                     </motion.div>
@@ -513,38 +511,29 @@ export function EngineeringContent() {
                 {/* Stats */}
                 <div className="mt-4 grid grid-cols-3 gap-2">
                   {[
-                    { label: "Avg Tenure", value: "18mo", color: "purple" },
+                    { label: "Avg Tenure", value: "18mo", color: "swarp-purple" },
                     { label: "Satisfaction", value: "98%", color: "emerald" },
-                    { label: "Time Zone", value: "Global", color: "blue" },
+                    { label: "Time Zone", value: "Global", color: "swarp-blue" },
                   ].map((stat) => (
                     <div key={stat.label} className="text-center p-2 rounded-lg bg-black/40">
-                      <div className={cn("text-sm font-bold", `text-${stat.color}-400`)}>{stat.value}</div>
+                      <div className={cn("text-sm font-bold", `text-${stat.color}`)}>{stat.value}</div>
                       <div className="text-[8px] text-gray-500 uppercase">{stat.label}</div>
                     </div>
                   ))}
                 </div>
-              </div>
+              </ServiceCard>
 
               {/* CTA */}
-              <div className="bg-gradient-to-r from-purple-500/20 to-indigo-500/20 rounded-xl border border-purple-500/30 p-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center">
-                    <Award className="w-5 h-5 text-purple-400" />
-                  </div>
-                  <div className="flex-1">
-                    <h4 className="text-sm font-bold text-white">Start Building Your Team</h4>
-                    <p className="text-[10px] text-gray-400">48h to first engineer onboarded</p>
-                  </div>
-                  <button className="p-2 rounded-lg bg-purple-500 hover:bg-purple-400 text-white transition-colors">
-                    <ChevronRight className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
+              <ServiceCTA
+                title="Start Building Your Team"
+                description="48h to first engineer onboarded"
+                accentColor="purple"
+              />
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </ServiceContentLayout>
   );
 }
 

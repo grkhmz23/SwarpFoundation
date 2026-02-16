@@ -1,16 +1,22 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Palette, Type, Layout, Smartphone, Monitor, Tablet,
-  Eye, Layers, Component, Copy, Check, RefreshCw, Zap,
-  ChevronRight, Settings, Grid3X3, Move, Maximize2,
+  Component, Copy, Check, Zap,
+  ChevronRight, Grid3X3,
   Accessibility, Contrast, CheckCircle2, AlertCircle,
-  Figma, PenTool, Image as ImageIcon, MousePointer2,
-  Frame, Box, Hexagon, Circle, Square, Triangle
+  Figma, PenTool, Layers,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import {
+  ServiceContentLayout,
+  ServiceHeader,
+  ServiceCard,
+  ServiceTab,
+  ServiceCTA,
+} from "@/components/services/service-content-layout";
 
 // Types
 interface ColorToken {
@@ -59,10 +65,10 @@ function DesignSystem() {
   const current = components[selectedComponent as keyof typeof components];
 
   return (
-    <div className="bg-[#0c0e12] rounded-xl border border-fuchsia-500/20 p-4 h-full flex flex-col">
+    <div className="bg-swarp-dark/80 rounded-xl border border-swarp-purple/20 p-4 h-full flex flex-col">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <Component className="w-5 h-5 text-fuchsia-400" />
+          <Component className="w-5 h-5 text-swarp-purple" />
           <h4 className="text-sm font-bold text-white">Design System</h4>
         </div>
         <div className="flex gap-1">
@@ -73,7 +79,7 @@ function DesignSystem() {
               className={cn(
                 "px-3 py-1.5 rounded-lg text-[10px] font-medium transition-all",
                 selectedComponent === key
-                  ? "bg-fuchsia-500/20 text-fuchsia-400 border border-fuchsia-500/30"
+                  ? "bg-swarp-purple/20 text-swarp-purple border border-swarp-purple/30"
                   : "text-gray-500 hover:text-white hover:bg-white/5"
               )}
             >
@@ -85,12 +91,12 @@ function DesignSystem() {
 
       {/* Component Preview */}
       <div className="flex-1 bg-black/40 rounded-lg border border-white/5 p-6 mb-4 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(217,70,239,0.1),transparent_50%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(157,78,221,0.1),transparent_50%)]" />
 
         <div className="relative z-10 flex flex-col items-center justify-center h-full gap-4">
           {selectedComponent === "button" && (
             <div className="flex flex-wrap gap-3 justify-center">
-              <button className="px-4 py-2 rounded-lg bg-fuchsia-500 text-white text-sm font-medium hover:bg-fuchsia-400 transition-colors">
+              <button className="px-4 py-2 rounded-lg bg-swarp-purple text-white text-sm font-medium hover:bg-swarp-purple/80 transition-colors">
                 Primary
               </button>
               <button className="px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white text-sm font-medium hover:bg-white/20 transition-colors">
@@ -110,7 +116,7 @@ function DesignSystem() {
               <input 
                 type="text" 
                 placeholder="Default input..."
-                className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:border-fuchsia-500/50"
+                className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:border-swarp-purple/50"
               />
               <input 
                 type="text" 
@@ -129,12 +135,12 @@ function DesignSystem() {
           {selectedComponent === "card" && (
             <div className="flex flex-wrap gap-4 justify-center">
               <div className="p-4 rounded-xl bg-white/5 border border-white/10 w-48">
-                <div className="h-2 w-12 bg-fuchsia-500/50 rounded mb-2" />
+                <div className="h-2 w-12 bg-swarp-purple/50 rounded mb-2" />
                 <div className="h-2 w-full bg-white/10 rounded mb-1" />
                 <div className="h-2 w-2/3 bg-white/10 rounded" />
               </div>
-              <div className="p-4 rounded-xl bg-white/5 border border-fuchsia-500/30 shadow-lg shadow-fuchsia-500/10 w-48">
-                <div className="h-2 w-12 bg-fuchsia-500 rounded mb-2" />
+              <div className="p-4 rounded-xl bg-white/5 border border-swarp-purple/30 shadow-lg shadow-swarp-purple/10 w-48">
+                <div className="h-2 w-12 bg-swarp-purple rounded mb-2" />
                 <div className="h-2 w-full bg-white/10 rounded mb-1" />
                 <div className="h-2 w-2/3 bg-white/10 rounded" />
               </div>
@@ -185,9 +191,9 @@ function ColorSystem() {
 
   const colors = {
     brand: [
-      { name: "fuchsia-500", hex: "#d946ef", usage: "Primary buttons, links" },
-      { name: "fuchsia-400", hex: "#e879f9", usage: "Hover states" },
-      { name: "fuchsia-600", hex: "#c026d3", usage: "Active states" },
+      { name: "swarp-purple", hex: "#9D4EDD", usage: "Primary buttons, links" },
+      { name: "swarp-purple-light", hex: "#B15DFF", usage: "Hover states" },
+      { name: "swarp-purple-dark", hex: "#7B2CBF", usage: "Active states" },
     ],
     semantic: [
       { name: "emerald-500", hex: "#10b981", usage: "Success, confirmation" },
@@ -210,10 +216,10 @@ function ColorSystem() {
   };
 
   return (
-    <div className="bg-[#0c0e12] rounded-xl border border-pink-500/20 p-4">
+    <div className="bg-swarp-dark/80 rounded-xl border border-swarp-purple/20 p-4">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <Palette className="w-5 h-5 text-pink-400" />
+          <Palette className="w-5 h-5 text-swarp-purple" />
           <h4 className="text-sm font-bold text-white">Color Tokens</h4>
         </div>
         <div className="text-[10px] text-gray-500">Token-based</div>
@@ -293,10 +299,10 @@ function TypographyScale() {
   ];
 
   return (
-    <div className="bg-[#0c0e12] rounded-xl border border-rose-500/20 p-4">
+    <div className="bg-swarp-dark/80 rounded-xl border border-swarp-purple/20 p-4">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <Type className="w-5 h-5 text-rose-400" />
+          <Type className="w-5 h-5 text-swarp-purple" />
           <h4 className="text-sm font-bold text-white">Typography</h4>
         </div>
         <div className="text-[10px] text-gray-500">Inter / System</div>
@@ -310,7 +316,7 @@ function TypographyScale() {
               <span className="font-mono">{scale.size} / {scale.weight}</span>
             </div>
             <div 
-              className="text-white group-hover:text-rose-400 transition-colors"
+              className="text-white group-hover:text-swarp-purple transition-colors"
               style={{ 
                 fontSize: scale.size, 
                 fontWeight: scale.weight, 
@@ -350,10 +356,10 @@ function ResponsiveTester() {
   ];
 
   return (
-    <div className="bg-[#0c0e12] rounded-xl border border-purple-500/20 p-4">
+    <div className="bg-swarp-dark/80 rounded-xl border border-swarp-purple/20 p-4">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <Layout className="w-5 h-5 text-purple-400" />
+          <Layout className="w-5 h-5 text-swarp-purple" />
           <h4 className="text-sm font-bold text-white">Responsive</h4>
         </div>
         <div className="flex gap-1">
@@ -364,7 +370,7 @@ function ResponsiveTester() {
               className={cn(
                 "p-1.5 rounded-lg transition-colors",
                 currentBreakpoint === bp.key
-                  ? "bg-purple-500/20 text-purple-400"
+                  ? "bg-swarp-purple/20 text-swarp-purple"
                   : "text-gray-500 hover:text-white hover:bg-white/5"
               )}
             >
@@ -386,7 +392,7 @@ function ResponsiveTester() {
         >
           {/* Mock Layout */}
           <div className="p-3">
-            <div className="h-2 w-1/3 bg-purple-500/50 rounded mb-3" />
+            <div className="h-2 w-1/3 bg-swarp-purple/50 rounded mb-3" />
             <div className={cn(
               "grid gap-2",
               currentBreakpoint === "mobile" ? "grid-cols-1" : 
@@ -404,7 +410,7 @@ function ResponsiveTester() {
 
       {/* Breakpoint Info */}
       <div className="mt-3 flex items-center justify-between text-[10px] text-gray-400">
-        <span>Breakpoint: <span className="text-purple-400">{currentBreakpoint}</span></span>
+        <span>Breakpoint: <span className="text-swarp-purple">{currentBreakpoint}</span></span>
         <span>Width: {breakpoints.find(b => b.key === currentBreakpoint)?.width}px</span>
       </div>
 
@@ -413,7 +419,7 @@ function ResponsiveTester() {
         <div className="text-[10px] text-gray-500 mb-2">12-Column Grid</div>
         <div className="grid grid-cols-12 gap-1">
           {Array.from({ length: 12 }).map((_, i) => (
-            <div key={i} className="h-8 bg-purple-500/10 rounded border border-purple-500/20" />
+            <div key={i} className="h-8 bg-swarp-purple/10 rounded border border-swarp-purple/20" />
           ))}
         </div>
       </div>
@@ -433,10 +439,10 @@ function AccessibilityCheck() {
   ];
 
   return (
-    <div className="bg-[#0c0e12] rounded-xl border border-cyan-500/20 p-4">
+    <div className="bg-swarp-dark/80 rounded-xl border border-swarp-purple/20 p-4">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <Accessibility className="w-5 h-5 text-cyan-400" />
+          <Accessibility className="w-5 h-5 text-swarp-purple" />
           <h4 className="text-sm font-bold text-white">Accessibility</h4>
         </div>
         <div className="flex items-center gap-1 text-[10px] text-emerald-400">
@@ -494,26 +500,15 @@ export function UIUXDesignContent() {
   ];
 
   return (
-    <div className="h-full bg-[#0a0f1a] text-gray-200 overflow-hidden">
-      {/* Background Gradient */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-fuchsia-500/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-pink-500/10 rounded-full blur-3xl" />
-      </div>
-
-      <div className="relative z-10 h-full flex flex-col">
+    <ServiceContentLayout accentColor="purple">
+      <div className="h-full flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between px-4 py-3 border-b border-white/10 bg-white/5">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-fuchsia-500/20 to-pink-500/20 border border-fuchsia-500/30 flex items-center justify-center">
-              <Palette className="w-5 h-5 text-fuchsia-400" />
-            </div>
-            <div>
-              <h3 className="text-base font-bold text-white">UI/UX Design</h3>
-              <p className="text-[10px] text-fuchsia-400">Systems & Prototyping</p>
-            </div>
-          </div>
-
+        <ServiceHeader
+          icon={<Palette className="w-5 h-5" />}
+          title="UI/UX Design"
+          subtitle="Systems & Prototyping"
+          accentColor="purple"
+        >
           {/* Tabs */}
           <div className="flex bg-black/40 p-1 rounded-lg border border-white/10">
             {[
@@ -521,22 +516,18 @@ export function UIUXDesignContent() {
               { id: "tokens", label: "Tokens", icon: Grid3X3 },
               { id: "responsive", label: "Layout", icon: Layout },
             ].map((tab) => (
-              <button
+              <ServiceTab
                 key={tab.id}
+                isActive={activeTab === tab.id}
                 onClick={() => setActiveTab(tab.id as any)}
-                className={cn(
-                  "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[10px] font-medium transition-all",
-                  activeTab === tab.id
-                    ? "bg-fuchsia-500/20 text-fuchsia-400 border border-fuchsia-500/30"
-                    : "text-gray-500 hover:text-white"
-                )}
+                accentColor="purple"
               >
                 <tab.icon className="w-3.5 h-3.5" />
                 {tab.label}
-              </button>
+              </ServiceTab>
             ))}
           </div>
-        </div>
+        </ServiceHeader>
 
         {/* Content */}
         <div className="flex-1 overflow-hidden p-4">
@@ -568,17 +559,16 @@ export function UIUXDesignContent() {
                 </>
               )}
 
-              {/* Tools Grid */}
-              <div className="bg-[#0c0e12] rounded-xl border border-white/10 p-4">
-                <h4 className="text-sm font-bold text-white mb-3">Design Stack</h4>
+              {/* Tools Grid - Using ServiceCard */}
+              <ServiceCard title="Design Stack" accentColor="purple">
                 <div className="grid grid-cols-2 gap-2">
                   {tools.map((tool) => (
                     <motion.div
                       key={tool.name}
                       whileHover={{ scale: 1.02 }}
-                      className="p-3 rounded-lg bg-black/40 border border-white/5 hover:border-fuchsia-500/30 transition-colors cursor-pointer group"
+                      className="p-3 rounded-lg bg-black/40 border border-white/5 hover:border-swarp-purple/30 transition-colors cursor-pointer group"
                     >
-                      <tool.icon className="w-5 h-5 text-fuchsia-400 mb-2 group-hover:scale-110 transition-transform" />
+                      <tool.icon className="w-5 h-5 text-swarp-purple mb-2 group-hover:scale-110 transition-transform" />
                       <div className="text-xs font-medium text-white">{tool.name}</div>
                       <div className="text-[9px] text-gray-500">{tool.category}</div>
                     </motion.div>
@@ -588,38 +578,29 @@ export function UIUXDesignContent() {
                 {/* Stats */}
                 <div className="mt-4 grid grid-cols-3 gap-2">
                   {[
-                    { label: "Components", value: "120+", color: "fuchsia" },
-                    { label: "Tokens", value: "340", color: "pink" },
-                    { label: "WCAG", value: "AA", color: "cyan" },
+                    { label: "Components", value: "120+" },
+                    { label: "Tokens", value: "340" },
+                    { label: "WCAG", value: "AA" },
                   ].map((stat) => (
                     <div key={stat.label} className="text-center p-2 rounded-lg bg-black/40">
-                      <div className={cn("text-sm font-bold", `text-${stat.color}-400`)}>{stat.value}</div>
+                      <div className="text-sm font-bold text-swarp-purple">{stat.value}</div>
                       <div className="text-[8px] text-gray-500 uppercase">{stat.label}</div>
                     </div>
                   ))}
                 </div>
-              </div>
+              </ServiceCard>
 
               {/* CTA */}
-              <div className="bg-gradient-to-r from-fuchsia-500/20 to-pink-500/20 rounded-xl border border-fuchsia-500/30 p-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-fuchsia-500/20 flex items-center justify-center">
-                    <Zap className="w-5 h-5 text-fuchsia-400" />
-                  </div>
-                  <div className="flex-1">
-                    <h4 className="text-sm font-bold text-white">Design System Audit</h4>
-                    <p className="text-[10px] text-gray-400">Complete in 2-4 weeks</p>
-                  </div>
-                  <button className="p-2 rounded-lg bg-fuchsia-500 hover:bg-fuchsia-400 text-white transition-colors">
-                    <ChevronRight className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
+              <ServiceCTA
+                title="Design System Audit"
+                description="Complete in 2-4 weeks"
+                accentColor="purple"
+              />
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </ServiceContentLayout>
   );
 }
 

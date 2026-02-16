@@ -3,14 +3,19 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Plug, Zap, Globe, Server, Database, Shield, Code2, Terminal,
-  ChevronRight, Plus, Minus, RefreshCw, CheckCircle2, XCircle, AlertCircle,
-  Clock, Activity, BarChart3, Send, Copy, Check, Play, Pause,
-  Webhook, Layers, ArrowRight, ArrowLeft, Maximize2, Minimize2,
-  FileJson, Settings, Wifi, WifiOff, Key, Lock, Unlock,
-  MessageSquare, CreditCard, Cloud, Mail, Phone
+  Plug, Zap, Server, CreditCard, Phone, Cloud, Mail, MessageSquare,
+  ChevronRight, RefreshCw, CheckCircle2, AlertCircle,
+  Clock, Activity, BarChart3, Send, Copy, ArrowRight,
+  Code2, Webhook, Layers, Key, Wifi, WifiOff
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import {
+  ServiceContentLayout,
+  ServiceHeader,
+  ServiceCard,
+  ServiceTab,
+  ServiceCTA,
+} from "../service-content-layout";
 
 // Types
 interface Integration {
@@ -59,10 +64,10 @@ function IntegrationMesh() {
   };
 
   return (
-    <div className="bg-[#0c0e12] rounded-xl border border-teal-500/20 p-4 h-full flex flex-col">
+    <ServiceCard accentColor="cyan" className="h-full flex flex-col">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <Layers className="w-5 h-5 text-teal-400" />
+          <Layers className="w-5 h-5 text-swarp-blue" />
           <h4 className="text-sm font-bold text-white">Integration Mesh</h4>
         </div>
         <div className="flex items-center gap-2 text-[10px]">
@@ -78,15 +83,15 @@ function IntegrationMesh() {
         {/* Central Hub */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
           <motion.div
-            className="w-20 h-20 rounded-full bg-teal-500/20 border-2 border-teal-500/50 flex items-center justify-center"
+            className="w-20 h-20 rounded-full bg-swarp-blue/20 border-2 border-swarp-blue/50 flex items-center justify-center"
             animate={{ scale: [1, 1.05, 1] }}
             transition={{ duration: 3, repeat: Infinity }}
           >
-            <div className="w-12 h-12 rounded-full bg-teal-500/30 flex items-center justify-center">
-              <Server className="w-6 h-6 text-teal-400" />
+            <div className="w-12 h-12 rounded-full bg-swarp-blue/30 flex items-center justify-center">
+              <Server className="w-6 h-6 text-swarp-blue" />
             </div>
           </motion.div>
-          <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[10px] text-teal-400 font-medium whitespace-nowrap">
+          <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[10px] text-swarp-blue font-medium whitespace-nowrap">
             Your API
           </div>
         </div>
@@ -104,7 +109,7 @@ function IntegrationMesh() {
                 y1="50%"
                 x2={`${x}%`}
                 y2={`${y}%`}
-                stroke={int.status === "connected" ? "#14b8a6" : int.status === "error" ? "#ef4444" : "#374151"}
+                stroke={int.status === "connected" ? "#00D4FF" : int.status === "error" ? "#ef4444" : "#374151"}
                 strokeWidth="2"
                 strokeDasharray={int.status === "connected" ? "0" : "4 4"}
                 initial={{ pathLength: 0 }}
@@ -163,7 +168,7 @@ function IntegrationMesh() {
               exit={{ opacity: 0 }}
               className="absolute inset-0 bg-black/60 flex items-center justify-center z-20"
             >
-              <RefreshCw className="w-8 h-8 text-teal-400 animate-spin" />
+              <RefreshCw className="w-8 h-8 text-swarp-blue animate-spin" />
             </motion.div>
           )}
         </AnimatePresence>
@@ -212,7 +217,7 @@ function IntegrationMesh() {
           )}
         </motion.div>
       )}
-    </div>
+    </ServiceCard>
   );
 }
 
@@ -264,10 +269,10 @@ function ApiPlayground() {
   };
 
   return (
-    <div className="bg-[#0c0e12] rounded-xl border border-amber-500/20 p-4 h-full flex flex-col">
+    <ServiceCard accentColor="cyan" className="h-full flex flex-col">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <Code2 className="w-5 h-5 text-amber-400" />
+          <Code2 className="w-5 h-5 text-swarp-blue" />
           <h4 className="text-sm font-bold text-white">API Playground</h4>
         </div>
         <div className="flex items-center gap-1 text-[10px] text-gray-500">
@@ -302,14 +307,14 @@ function ApiPlayground() {
             type="text"
             value={endpoint}
             onChange={(e) => setEndpoint(e.target.value)}
-            className="w-full bg-black/40 border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-gray-600 focus:outline-none focus:border-amber-500/50"
+            className="w-full bg-black/40 border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-gray-600 focus:outline-none focus:border-swarp-blue/50"
             placeholder="/api/v1/..."
           />
         </div>
         <button
           onClick={sendRequest}
           disabled={isLoading}
-          className="px-4 py-2 rounded-lg bg-amber-500 hover:bg-amber-400 text-black font-bold text-xs transition-colors disabled:opacity-50 flex items-center gap-1.5"
+          className="px-4 py-2 rounded-lg bg-swarp-blue hover:bg-swarp-cyan text-black font-bold text-xs transition-colors disabled:opacity-50 flex items-center gap-1.5"
         >
           {isLoading ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Send className="w-3.5 h-3.5" />}
           Send
@@ -349,7 +354,7 @@ function ApiPlayground() {
         <div className="mt-3 pt-3 border-t border-white/10">
           <div className="text-[10px] text-gray-500 mb-2">Recent Requests</div>
           <div className="space-y-1.5">
-            {history.map((req, i) => (
+            {history.map((req) => (
               <div key={req.id} className="flex items-center justify-between p-2 rounded bg-black/40 text-[10px]">
                 <div className="flex items-center gap-2">
                   <span className={cn(
@@ -372,7 +377,7 @@ function ApiPlayground() {
           </div>
         </div>
       )}
-    </div>
+    </ServiceCard>
   );
 }
 
@@ -404,10 +409,10 @@ function WebhookTester() {
   }, [isListening]);
 
   return (
-    <div className="bg-[#0c0e12] rounded-xl border border-orange-500/20 p-4">
+    <ServiceCard accentColor="cyan">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <Webhook className="w-5 h-5 text-orange-400" />
+          <Webhook className="w-5 h-5 text-swarp-blue" />
           <h4 className="text-sm font-bold text-white">Webhook Tester</h4>
         </div>
         <button
@@ -443,10 +448,10 @@ function WebhookTester() {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 20 }}
-              className="p-3 rounded-lg bg-black/40 border border-white/5 hover:border-orange-500/30 transition-all"
+              className="p-3 rounded-lg bg-black/40 border border-white/5 hover:border-swarp-blue/30 transition-all"
             >
               <div className="flex items-center justify-between mb-1">
-                <span className="text-xs font-medium text-orange-400">{evt.event}</span>
+                <span className="text-xs font-medium text-swarp-blue">{evt.event}</span>
                 <span className="text-[9px] text-gray-500">{evt.timestamp}</span>
               </div>
               <pre className="text-[9px] text-gray-500 font-mono overflow-hidden">
@@ -456,7 +461,7 @@ function WebhookTester() {
           ))}
         </AnimatePresence>
       </div>
-    </div>
+    </ServiceCard>
   );
 }
 
@@ -482,10 +487,10 @@ function ApiMetrics() {
   }, []);
 
   return (
-    <div className="bg-[#0c0e12] rounded-xl border border-white/10 p-4">
+    <ServiceCard accentColor="cyan">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <BarChart3 className="w-5 h-5 text-cyan-400" />
+          <BarChart3 className="w-5 h-5 text-swarp-blue" />
           <h4 className="text-sm font-bold text-white">API Metrics</h4>
         </div>
         <div className="text-[10px] text-gray-500">Last 24h</div>
@@ -506,7 +511,7 @@ function ApiMetrics() {
         </div>
         <div className="p-3 rounded-lg bg-black/40">
           <div className="text-[10px] text-gray-500 mb-1">Avg Latency</div>
-          <div className="text-xl font-bold text-cyan-400">{metrics.latency}ms</div>
+          <div className="text-xl font-bold text-swarp-blue">{metrics.latency}ms</div>
           <div className="text-[9px] text-gray-500 mt-1">P95: 245ms</div>
         </div>
         <div className="p-3 rounded-lg bg-black/40">
@@ -515,7 +520,7 @@ function ApiMetrics() {
           <div className="text-[9px] text-emerald-400 mt-1">Healthy</div>
         </div>
       </div>
-    </div>
+    </ServiceCard>
   );
 }
 
@@ -534,130 +539,101 @@ export function IntegrationsContent() {
     { name: "Shopify", category: "E-commerce", color: "emerald" },
   ];
 
+  const tabs = [
+    { id: "mesh" as const, label: "Mesh", icon: Layers },
+    { id: "playground" as const, label: "Playground", icon: Code2 },
+    { id: "webhooks" as const, label: "Webhooks", icon: Webhook },
+  ];
+
   return (
-    <div className="h-full bg-[#0a0f1a] text-gray-200 overflow-hidden">
-      {/* Background Grid */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-[0.03]"
-        style={{
-          backgroundImage: "linear-gradient(rgba(20,184,166,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(20,184,166,0.5) 1px, transparent 1px)",
-          backgroundSize: "40px 40px",
-        }}
-      />
-
-      <div className="relative z-10 h-full flex flex-col">
-        {/* Header */}
-        <div className="flex items-center justify-between px-4 py-3 border-b border-white/10 bg-white/5">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-teal-500/20 border border-teal-500/30 flex items-center justify-center">
-              <Plug className="w-5 h-5 text-teal-400" />
-            </div>
-            <div>
-              <h3 className="text-base font-bold text-white">Integrations</h3>
-              <p className="text-[10px] text-teal-400">APIs & Middleware</p>
-            </div>
-          </div>
-
-          {/* Tabs */}
-          <div className="flex bg-black/40 p-1 rounded-lg border border-white/10">
-            {[
-              { id: "mesh", label: "Mesh", icon: Layers },
-              { id: "playground", label: "Playground", icon: Code2 },
-              { id: "webhooks", label: "Webhooks", icon: Webhook },
-            ].map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id as any)}
-                className={cn(
-                  "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[10px] font-medium transition-all",
-                  activeTab === tab.id
-                    ? "bg-teal-500/20 text-teal-400 border border-teal-500/30"
-                    : "text-gray-500 hover:text-white"
-                )}
-              >
-                <tab.icon className="w-3.5 h-3.5" />
-                {tab.label}
-              </button>
-            ))}
-          </div>
+    <ServiceContentLayout accentColor="cyan">
+      <ServiceHeader
+        icon={<Plug className="w-5 h-5" />}
+        title="Integrations"
+        subtitle="APIs & Middleware"
+        accentColor="cyan"
+      >
+        {/* Tabs */}
+        <div className="flex bg-black/40 p-1 rounded-lg border border-white/10">
+          {tabs.map((tab) => (
+            <ServiceTab
+              key={tab.id}
+              isActive={activeTab === tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              accentColor="cyan"
+            >
+              <tab.icon className="w-3.5 h-3.5" />
+              {tab.label}
+            </ServiceTab>
+          ))}
         </div>
+      </ServiceHeader>
 
-        {/* Content */}
-        <div className="flex-1 overflow-hidden p-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 h-full">
-            {/* Left Column */}
-            <div className="h-full">
-              {activeTab === "mesh" && <IntegrationMesh />}
-              {activeTab === "playground" && <ApiPlayground />}
-              {activeTab === "webhooks" && (
-                <div className="space-y-4 h-full overflow-y-auto custom-scrollbar">
-                  <WebhookTester />
-                  <ApiMetrics />
-                </div>
-              )}
-            </div>
+      {/* Content */}
+      <div className="flex-1 overflow-hidden p-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 h-full">
+          {/* Left Column */}
+          <div className="h-full">
+            {activeTab === "mesh" && <IntegrationMesh />}
+            {activeTab === "playground" && <ApiPlayground />}
+            {activeTab === "webhooks" && (
+              <div className="space-y-4 h-full overflow-y-auto custom-scrollbar">
+                <WebhookTester />
+                <ApiMetrics />
+              </div>
+            )}
+          </div>
 
-            {/* Right Column */}
-            <div className="space-y-4 flex flex-col h-full">
-              {activeTab !== "webhooks" && <ApiMetrics />}
-              {activeTab === "webhooks" && <IntegrationMesh />}
+          {/* Right Column */}
+          <div className="space-y-4 flex flex-col h-full">
+            {activeTab !== "webhooks" && <ApiMetrics />}
+            {activeTab === "webhooks" && <IntegrationMesh />}
 
-              {/* Supported Integrations */}
-              <div className="bg-[#0c0e12] rounded-xl border border-white/10 p-4 flex-1">
-                <h4 className="text-sm font-bold text-white mb-3">Supported Integrations</h4>
-                <div className="grid grid-cols-2 gap-2">
-                  {supportedIntegrations.map((int) => (
-                    <motion.div
-                      key={int.name}
-                      whileHover={{ scale: 1.02 }}
-                      className={cn(
-                        "p-3 rounded-lg bg-black/40 border border-white/5 hover:border-teal-500/30 transition-all cursor-pointer group"
-                      )}
-                    >
-                      <div className={cn("w-8 h-8 rounded-lg flex items-center justify-center mb-2", `bg-${int.color}-500/10`)}>
-                        <Zap className={cn("w-4 h-4", `text-${int.color}-400`)} />
-                      </div>
-                      <div className="text-xs font-medium text-white">{int.name}</div>
-                      <div className="text-[9px] text-gray-500">{int.category}</div>
-                    </motion.div>
-                  ))}
-                </div>
-
-                {/* Features */}
-                <div className="mt-4 pt-3 border-t border-white/10 grid grid-cols-3 gap-2">
-                  {[
-                    { label: "REST", value: "100+", color: "teal" },
-                    { label: "GraphQL", value: "20+", color: "purple" },
-                    { label: "SOAP", value: "50+", color: "blue" },
-                  ].map((stat) => (
-                    <div key={stat.label} className="text-center p-2 rounded-lg bg-black/40">
-                      <div className={cn("text-sm font-bold", `text-${stat.color}-400`)}>{stat.value}</div>
-                      <div className="text-[8px] text-gray-500 uppercase">{stat.label}</div>
+            {/* Supported Integrations */}
+            <ServiceCard accentColor="cyan" className="flex-1">
+              <h4 className="text-sm font-bold text-white mb-3">Supported Integrations</h4>
+              <div className="grid grid-cols-2 gap-2">
+                {supportedIntegrations.map((int) => (
+                  <motion.div
+                    key={int.name}
+                    whileHover={{ scale: 1.02 }}
+                    className="p-3 rounded-lg bg-black/40 border border-white/5 hover:border-swarp-blue/30 transition-all cursor-pointer group"
+                  >
+                    <div className={cn("w-8 h-8 rounded-lg flex items-center justify-center mb-2", `bg-${int.color}-500/10`)}>
+                      <Zap className={cn("w-4 h-4", `text-${int.color}-400`)} />
                     </div>
-                  ))}
-                </div>
+                    <div className="text-xs font-medium text-white">{int.name}</div>
+                    <div className="text-[9px] text-gray-500">{int.category}</div>
+                  </motion.div>
+                ))}
               </div>
 
-              {/* CTA */}
-              <div className="bg-gradient-to-r from-teal-500/20 to-cyan-500/20 rounded-xl border border-teal-500/30 p-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-teal-500/20 flex items-center justify-center">
-                    <Key className="w-5 h-5 text-teal-400" />
+              {/* Features */}
+              <div className="mt-4 pt-3 border-t border-white/10 grid grid-cols-3 gap-2">
+                {[
+                  { label: "REST", value: "100+", color: "swarp-blue" },
+                  { label: "GraphQL", value: "20+", color: "purple" },
+                  { label: "SOAP", value: "50+", color: "blue" },
+                ].map((stat) => (
+                  <div key={stat.label} className="text-center p-2 rounded-lg bg-black/40">
+                    <div className={cn("text-sm font-bold", stat.color === "swarp-blue" ? "text-swarp-blue" : `text-${stat.color}-400`)}>{stat.value}</div>
+                    <div className="text-[8px] text-gray-500 uppercase">{stat.label}</div>
                   </div>
-                  <div className="flex-1">
-                    <h4 className="text-sm font-bold text-white">Request API Access</h4>
-                    <p className="text-[10px] text-gray-400">Get API keys in minutes</p>
-                  </div>
-                  <button className="p-2 rounded-lg bg-teal-500 hover:bg-teal-400 text-white transition-colors">
-                    <ChevronRight className="w-4 h-4" />
-                  </button>
-                </div>
+                ))}
               </div>
-            </div>
+            </ServiceCard>
+
+            {/* CTA */}
+            <ServiceCTA
+              title="Request API Access"
+              description="Get API keys in minutes"
+              accentColor="cyan"
+              onClick={() => console.log("Request API Access clicked")}
+            />
           </div>
         </div>
       </div>
-    </div>
+    </ServiceContentLayout>
   );
 }
 

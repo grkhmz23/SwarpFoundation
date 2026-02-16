@@ -10,6 +10,13 @@ import {
   FileCode, GitBranch, Cpu, Server, Wifi, Radio, Circle
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import {
+  ServiceContentLayout,
+  ServiceHeader,
+  ServiceCard,
+  ServiceTab,
+  ServiceCTA,
+} from "../service-content-layout";
 
 // Types
 interface TestSuite {
@@ -83,16 +90,16 @@ function TestRunner() {
   const coverage = 87;
 
   return (
-    <div className="bg-[#0c0e12] rounded-xl border border-pink-500/20 p-4 h-full flex flex-col">
+    <div className="bg-swarp-dark/80 rounded-xl border border-swarp-blue/20 p-4 h-full flex flex-col">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <FileCode className="w-5 h-5 text-pink-400" />
+          <FileCode className="w-5 h-5 text-swarp-blue" />
           <h4 className="text-sm font-bold text-white">Test Automation</h4>
         </div>
         <button
           onClick={runTests}
           disabled={isRunning}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-pink-500/10 border border-pink-500/30 text-pink-400 text-xs font-medium hover:bg-pink-500/20 disabled:opacity-50 transition-colors"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-swarp-blue/10 border border-swarp-blue/30 text-swarp-blue text-xs font-medium hover:bg-swarp-blue/20 disabled:opacity-50 transition-colors"
         >
           {isRunning ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Play className="w-3.5 h-3.5" />}
           {isRunning ? "Running..." : "Run All"}
@@ -110,7 +117,7 @@ function TestRunner() {
           <div className="text-[9px] text-gray-500">Passed</div>
         </div>
         <div className="p-2 rounded-lg bg-black/40 text-center">
-          <div className="text-lg font-bold text-pink-400">{coverage}%</div>
+          <div className="text-lg font-bold text-swarp-blue">{coverage}%</div>
           <div className="text-[9px] text-gray-500">Coverage</div>
         </div>
       </div>
@@ -121,7 +128,7 @@ function TestRunner() {
           <motion.div
             key={suite.id}
             layout
-            className="p-3 rounded-lg bg-black/40 border border-white/5 hover:border-pink-500/30 transition-all cursor-pointer"
+            className="p-3 rounded-lg bg-black/40 border border-white/5 hover:border-swarp-blue/30 transition-all cursor-pointer"
           >
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2">
@@ -222,10 +229,10 @@ function BugTracker() {
   };
 
   return (
-    <div className="bg-[#0c0e12] rounded-xl border border-rose-500/20 p-4 h-full flex flex-col">
+    <div className="bg-swarp-dark/80 rounded-xl border border-swarp-blue/20 p-4 h-full flex flex-col">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <Bug className="w-5 h-5 text-rose-400" />
+          <Bug className="w-5 h-5 text-swarp-blue" />
           <h4 className="text-sm font-bold text-white">Bug Tracker</h4>
         </div>
         <div className="flex items-center gap-2 text-[10px]">
@@ -243,7 +250,7 @@ function BugTracker() {
             key={bug.id}
             layout
             onClick={() => cycleStatus(bug.id)}
-            className="p-3 rounded-lg bg-black/40 border border-white/5 hover:border-rose-500/30 transition-all cursor-pointer group"
+            className="p-3 rounded-lg bg-black/40 border border-white/5 hover:border-swarp-blue/30 transition-all cursor-pointer group"
           >
             <div className="flex items-start justify-between mb-2">
               <div className="flex items-center gap-2">
@@ -262,13 +269,13 @@ function BugTracker() {
               </span>
             </div>
 
-            <div className="text-xs text-white mb-2 group-hover:text-rose-400 transition-colors">
+            <div className="text-xs text-white mb-2 group-hover:text-swarp-blue transition-colors">
               {bug.title}
             </div>
 
             <div className="flex items-center justify-between text-[10px] text-gray-500">
               <div className="flex items-center gap-2">
-                <div className="w-5 h-5 rounded-full bg-gradient-to-br from-rose-500 to-orange-500 flex items-center justify-center text-[8px] font-bold text-white">
+                <div className="w-5 h-5 rounded-full bg-gradient-to-br from-swarp-blue to-swarp-cyan flex items-center justify-center text-[8px] font-bold text-white">
                   {bug.assignee.charAt(0)}
                 </div>
                 <span>{bug.assignee}</span>
@@ -329,10 +336,10 @@ function LoadTesting() {
   }, [isRunning]);
 
   return (
-    <div className="bg-[#0c0e12] rounded-xl border border-orange-500/20 p-4">
+    <div className="bg-swarp-dark/80 rounded-xl border border-swarp-blue/20 p-4">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <Gauge className="w-5 h-5 text-orange-400" />
+          <Gauge className="w-5 h-5 text-swarp-blue" />
           <h4 className="text-sm font-bold text-white">Load Testing</h4>
         </div>
         <button
@@ -341,7 +348,7 @@ function LoadTesting() {
             "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors",
             isRunning
               ? "bg-red-500/10 text-red-400 border border-red-500/30"
-              : "bg-orange-500/10 text-orange-400 border border-orange-500/30"
+              : "bg-swarp-blue/10 text-swarp-blue border border-swarp-blue/30"
           )}
         >
           {isRunning ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
@@ -353,11 +360,11 @@ function LoadTesting() {
       <div className="grid grid-cols-2 gap-3 mb-4">
         <div className="p-3 rounded-lg bg-black/40">
           <div className="text-[10px] text-gray-500 mb-1">Requests/sec</div>
-          <div className="text-xl font-bold text-orange-400">{metrics.rps.toLocaleString()}</div>
+          <div className="text-xl font-bold text-swarp-blue">{metrics.rps.toLocaleString()}</div>
         </div>
         <div className="p-3 rounded-lg bg-black/40">
           <div className="text-[10px] text-gray-500 mb-1">Avg Latency</div>
-          <div className="text-xl font-bold text-blue-400">{metrics.latency}ms</div>
+          <div className="text-xl font-bold text-swarp-cyan">{metrics.latency}ms</div>
         </div>
         <div className="p-3 rounded-lg bg-black/40">
           <div className="text-[10px] text-gray-500 mb-1">Error Rate</div>
@@ -374,7 +381,7 @@ function LoadTesting() {
         {chartData.map((value, i) => (
           <motion.div
             key={i}
-            className="flex-1 bg-gradient-to-t from-orange-500/50 to-amber-500/50 rounded-t"
+            className="flex-1 bg-gradient-to-t from-swarp-blue/50 to-swarp-cyan/50 rounded-t"
             animate={{ height: `${value}%` }}
             transition={{ duration: 0.3 }}
           />
@@ -398,23 +405,23 @@ function SREDashboard() {
   const errorBudget = 0.04; // 4% remaining
 
   return (
-    <div className="bg-[#0c0e12] rounded-xl border border-cyan-500/20 p-4">
+    <div className="bg-swarp-dark/80 rounded-xl border border-swarp-blue/20 p-4">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <Shield className="w-5 h-5 text-cyan-400" />
+          <Shield className="w-5 h-5 text-swarp-blue" />
           <h4 className="text-sm font-bold text-white">SRE / Reliability</h4>
         </div>
       </div>
 
       {/* Error Budget */}
-      <div className="mb-4 p-3 rounded-lg bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/20">
+      <div className="mb-4 p-3 rounded-lg bg-gradient-to-r from-swarp-blue/10 to-swarp-cyan/10 border border-swarp-blue/20">
         <div className="flex items-center justify-between mb-2">
           <span className="text-xs text-gray-300">Error Budget Remaining</span>
-          <span className="text-lg font-bold text-cyan-400">{errorBudget}%</span>
+          <span className="text-lg font-bold text-swarp-blue">{errorBudget}%</span>
         </div>
         <div className="h-2 bg-gray-800 rounded-full overflow-hidden">
           <div 
-            className="h-full bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full"
+            className="h-full bg-gradient-to-r from-swarp-blue to-swarp-cyan rounded-full"
             style={{ width: `${(errorBudget / 0.1) * 100}%` }}
           />
         </div>
@@ -476,52 +483,43 @@ export function QATestingContent() {
   ];
 
   return (
-    <div className="h-full bg-[#0a0f1a] text-gray-200 overflow-hidden">
-      {/* Background Grid */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-[0.03]"
-        style={{
-          backgroundImage: "linear-gradient(rgba(236,72,153,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(236,72,153,0.5) 1px, transparent 1px)",
-          backgroundSize: "40px 40px",
-        }}
-      />
-
-      <div className="relative z-10 h-full flex flex-col">
+    <ServiceContentLayout accentColor="cyan">
+      <div className="h-full flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between px-4 py-3 border-b border-white/10 bg-white/5">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-pink-500/20 border border-pink-500/30 flex items-center justify-center">
-              <Bug className="w-5 h-5 text-pink-400" />
-            </div>
-            <div>
-              <h3 className="text-base font-bold text-white">QA & Testing</h3>
-              <p className="text-[10px] text-pink-400">Automation & SRE</p>
-            </div>
-          </div>
-
+        <ServiceHeader
+          icon={<Bug className="w-5 h-5" />}
+          title="QA & Testing"
+          subtitle="Automation & SRE"
+          accentColor="cyan"
+        >
           {/* Tabs */}
           <div className="flex bg-black/40 p-1 rounded-lg border border-white/10">
-            {[
-              { id: "tests", label: "Tests", icon: FileCode },
-              { id: "bugs", label: "Bugs", icon: Bug },
-              { id: "load", label: "Load", icon: Gauge },
-            ].map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id as any)}
-                className={cn(
-                  "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[10px] font-medium transition-all",
-                  activeTab === tab.id
-                    ? "bg-pink-500/20 text-pink-400 border border-pink-500/30"
-                    : "text-gray-500 hover:text-white"
-                )}
-              >
-                <tab.icon className="w-3.5 h-3.5" />
-                {tab.label}
-              </button>
-            ))}
+            <ServiceTab
+              isActive={activeTab === "tests"}
+              onClick={() => setActiveTab("tests")}
+              accentColor="cyan"
+            >
+              <FileCode className="w-3.5 h-3.5" />
+              Tests
+            </ServiceTab>
+            <ServiceTab
+              isActive={activeTab === "bugs"}
+              onClick={() => setActiveTab("bugs")}
+              accentColor="cyan"
+            >
+              <Bug className="w-3.5 h-3.5" />
+              Bugs
+            </ServiceTab>
+            <ServiceTab
+              isActive={activeTab === "load"}
+              onClick={() => setActiveTab("load")}
+              accentColor="cyan"
+            >
+              <Gauge className="w-3.5 h-3.5" />
+              Load
+            </ServiceTab>
           </div>
-        </div>
+        </ServiceHeader>
 
         {/* Content */}
         <div className="flex-1 overflow-hidden p-4">
@@ -539,17 +537,20 @@ export function QATestingContent() {
               {activeTab === "load" && <TestRunner />}
               <SREDashboard />
 
-              {/* Tools Grid */}
-              <div className="bg-[#0c0e12] rounded-xl border border-white/10 p-4 flex-1">
-                <h4 className="text-sm font-bold text-white mb-3">Testing Stack</h4>
+              {/* Tools Grid - Using ServiceCard */}
+              <ServiceCard 
+                title="Testing Stack" 
+                accentColor="cyan"
+                className="flex-1"
+              >
                 <div className="grid grid-cols-2 gap-2">
                   {tools.map((tool) => (
                     <motion.div
                       key={tool.name}
                       whileHover={{ scale: 1.02 }}
-                      className="p-3 rounded-lg bg-black/40 border border-white/5 hover:border-pink-500/30 transition-colors cursor-pointer group"
+                      className="p-3 rounded-lg bg-black/40 border border-white/5 hover:border-swarp-blue/30 transition-colors cursor-pointer group"
                     >
-                      <tool.icon className="w-5 h-5 text-pink-400 mb-2 group-hover:scale-110 transition-transform" />
+                      <tool.icon className="w-5 h-5 text-swarp-blue mb-2 group-hover:scale-110 transition-transform" />
                       <div className="text-xs font-medium text-white">{tool.name}</div>
                       <div className="text-[9px] text-gray-500">{tool.category}</div>
                     </motion.div>
@@ -560,37 +561,30 @@ export function QATestingContent() {
                 <div className="mt-4 grid grid-cols-3 gap-2">
                   {[
                     { label: "Coverage", value: "87%", color: "emerald" },
-                    { label: "Tests", value: "291", color: "pink" },
-                    { label: "Uptime", value: "99.9%", color: "cyan" },
+                    { label: "Tests", value: "291", color: "swarp-blue" },
+                    { label: "Uptime", value: "99.9%", color: "swarp-cyan" },
                   ].map((stat) => (
                     <div key={stat.label} className="text-center p-2 rounded-lg bg-black/40">
-                      <div className={cn("text-sm font-bold", `text-${stat.color}-400`)}>{stat.value}</div>
+                      <div className={cn("text-sm font-bold", stat.color === "swarp-blue" ? "text-swarp-blue" : stat.color === "swarp-cyan" ? "text-swarp-cyan" : `text-${stat.color}-400`)}>
+                        {stat.value}
+                      </div>
                       <div className="text-[8px] text-gray-500 uppercase">{stat.label}</div>
                     </div>
                   ))}
                 </div>
-              </div>
+              </ServiceCard>
 
-              {/* CTA */}
-              <div className="bg-gradient-to-r from-pink-500/20 to-rose-500/20 rounded-xl border border-pink-500/30 p-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-pink-500/20 flex items-center justify-center">
-                    <Zap className="w-5 h-5 text-pink-400" />
-                  </div>
-                  <div className="flex-1">
-                    <h4 className="text-sm font-bold text-white">Zero Bug Policy</h4>
-                    <p className="text-[10px] text-gray-400">Ship with confidence</p>
-                  </div>
-                  <button className="p-2 rounded-lg bg-pink-500 hover:bg-pink-400 text-white transition-colors">
-                    <ChevronRight className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
+              {/* CTA - Using ServiceCTA */}
+              <ServiceCTA
+                title="Zero Bug Policy"
+                description="Ship with confidence"
+                accentColor="cyan"
+              />
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </ServiceContentLayout>
   );
 }
 

@@ -12,6 +12,13 @@ import {
   Copy, Check, ExternalLink, Rocket, Lock, Eye, EyeOff
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import {
+  ServiceContentLayout,
+  ServiceHeader,
+  ServiceCard,
+  ServiceTab,
+  ServiceCTA,
+} from "@/components/services/service-content-layout";
 
 // ==================== TYPES ====================
 interface Node {
@@ -58,7 +65,7 @@ const StatusBadge = ({ status, text, pulse = false }: { status: "healthy" | "war
   );
 };
 
-const ProgressBar = ({ value, max = 100, color = "blue", size = "sm" }: { value: number; max?: number; color?: "blue" | "emerald" | "amber" | "rose" | "purple" | "cyan"; size?: "sm" | "md" }) => {
+const ProgressBar = ({ value, max = 100, color = "cyan", size = "sm" }: { value: number; max?: number; color?: "blue" | "emerald" | "amber" | "rose" | "purple" | "cyan"; size?: "sm" | "md" }) => {
   const colors = {
     blue: "bg-blue-500",
     emerald: "bg-emerald-500",
@@ -147,9 +154,9 @@ function K8sCluster() {
   };
 
   const getNodeColor = (node: Node) => {
-    if (node.type === "master") return { bg: "bg-blue-500/20", border: "border-blue-500/50", icon: "text-blue-400", text: "text-blue-300" };
+    if (node.type === "master") return { bg: "bg-swarp-blue/20", border: "border-swarp-blue/50", icon: "text-swarp-blue", text: "text-swarp-blue" };
     if (node.type === "db") return { bg: "bg-purple-500/15", border: "border-purple-500/40", icon: "text-purple-400", text: "text-purple-300" };
-    if (node.type === "lb") return { bg: "bg-cyan-500/15", border: "border-cyan-500/40", icon: "text-cyan-400", text: "text-cyan-300" };
+    if (node.type === "lb") return { bg: "bg-swarp-cyan/15", border: "border-swarp-cyan/40", icon: "text-swarp-cyan", text: "text-swarp-cyan" };
     if (node.status === "warning") return { bg: "bg-amber-500/15", border: "border-amber-500/40", icon: "text-amber-400", text: "text-amber-300" };
     return { bg: "bg-emerald-500/15", border: "border-emerald-500/40", icon: "text-emerald-400", text: "text-emerald-300" };
   };
@@ -157,12 +164,12 @@ function K8sCluster() {
   const workers = nodes.filter(n => n.type === "worker");
 
   return (
-    <div className="bg-[#0c0e12] rounded-xl border border-blue-500/20 p-4 h-full flex flex-col">
+    <ServiceCard accentColor="cyan" className="h-full flex flex-col">
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-lg bg-blue-500/15 border border-blue-500/30 flex items-center justify-center">
-            <Layers className="w-4 h-4 text-blue-400" />
+          <div className="w-9 h-9 rounded-lg bg-swarp-blue/15 border border-swarp-blue/30 flex items-center justify-center">
+            <Layers className="w-4 h-4 text-swarp-blue" />
           </div>
           <div>
             <h4 className="text-sm font-bold text-white">Kubernetes Cluster</h4>
@@ -202,9 +209,9 @@ function K8sCluster() {
         <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-40">
           <defs>
             <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.3" />
-              <stop offset="50%" stopColor="#3b82f6" stopOpacity="0.8" />
-              <stop offset="100%" stopColor="#3b82f6" stopOpacity="0.3" />
+              <stop offset="0%" stopColor="#00D4FF" stopOpacity="0.3" />
+              <stop offset="50%" stopColor="#00D4FF" stopOpacity="0.8" />
+              <stop offset="100%" stopColor="#00D4FF" stopOpacity="0.3" />
             </linearGradient>
           </defs>
           {nodes.filter(n => n.type !== "master").map((node, i) => (
@@ -232,9 +239,9 @@ function K8sCluster() {
             onMouseEnter={() => setShowTooltip("master")}
             onMouseLeave={() => setShowTooltip(null)}
           >
-            <div className="w-16 h-16 rounded-xl bg-blue-500/20 border-2 border-blue-500/50 flex flex-col items-center justify-center shadow-lg shadow-blue-500/10">
-              <Cloud className="w-6 h-6 text-blue-400" />
-              <span className="text-[9px] text-blue-300 mt-1 font-medium">Master</span>
+            <div className="w-16 h-16 rounded-xl bg-swarp-blue/20 border-2 border-swarp-blue/50 flex flex-col items-center justify-center shadow-lg shadow-swarp-blue/10">
+              <Cloud className="w-6 h-6 text-swarp-blue" />
+              <span className="text-[9px] text-swarp-blue mt-1 font-medium">Master</span>
             </div>
             <AnimatePresence>
               {showTooltip === "master" && (
@@ -270,7 +277,7 @@ function K8sCluster() {
                   className={cn(
                     "w-14 h-16 rounded-lg border flex flex-col items-center justify-center cursor-pointer transition-all",
                     colors.bg, colors.border,
-                    selectedNode?.id === node.id && "ring-2 ring-blue-500/50 scale-110"
+                    selectedNode?.id === node.id && "ring-2 ring-swarp-blue/50 scale-110"
                   )}
                 >
                   <Icon className={cn("w-4 h-4", colors.icon)} />
@@ -295,10 +302,10 @@ function K8sCluster() {
             >
               <div className="flex flex-col items-center gap-3">
                 <div className="relative">
-                  <RefreshCw className="w-10 h-10 text-blue-400 animate-spin" />
-                  <div className="absolute inset-0 bg-blue-400/20 blur-xl rounded-full" />
+                  <RefreshCw className="w-10 h-10 text-swarp-blue animate-spin" />
+                  <div className="absolute inset-0 bg-swarp-blue/20 blur-xl rounded-full" />
                 </div>
-                <span className="text-xs text-blue-400 font-medium">Scaling Cluster...</span>
+                <span className="text-xs text-swarp-blue font-medium">Scaling Cluster...</span>
               </div>
             </motion.div>
           )}
@@ -317,7 +324,7 @@ function K8sCluster() {
             <div className="p-3 rounded-xl bg-black/50 border border-white/10">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
-                  {React.createElement(getNodeIcon(selectedNode.type), { className: "w-4 h-4 text-blue-400" })}
+                  {React.createElement(getNodeIcon(selectedNode.type), { className: "w-4 h-4 text-swarp-blue" })}
                   <span className="text-xs font-bold text-white">{selectedNode.name}</span>
                   <StatusBadge 
                     status={selectedNode.status} 
@@ -345,7 +352,7 @@ function K8sCluster() {
                 <div className="space-y-1">
                   <div className="flex items-center justify-between text-[10px]">
                     <span className="text-gray-500">Memory</span>
-                    <span className={cn(selectedNode.memory > 80 ? "text-amber-400" : "text-blue-400", "font-medium")}>
+                    <span className={cn(selectedNode.memory > 80 ? "text-amber-400" : "text-swarp-blue", "font-medium")}>
                       {Math.round(selectedNode.memory)}%
                     </span>
                   </div>
@@ -378,7 +385,7 @@ function K8sCluster() {
           Click on any node to view detailed metrics
         </p>
       )}
-    </div>
+    </ServiceCard>
   );
 }
 
@@ -454,7 +461,7 @@ function CICDPipeline() {
     switch(status) {
       case "success": return <CheckCircle2 className="w-5 h-5 text-emerald-400" />;
       case "failed": return <XCircle className="w-5 h-5 text-rose-400" />;
-      case "running": return <RefreshCw className="w-5 h-5 text-blue-400 animate-spin" />;
+      case "running": return <RefreshCw className="w-5 h-5 text-swarp-blue animate-spin" />;
       default: return <Clock className="w-5 h-5 text-gray-600" />;
     }
   };
@@ -463,7 +470,7 @@ function CICDPipeline() {
   const progress = (completedStages / stages.length) * 100;
 
   return (
-    <div className="bg-[#0c0e12] rounded-xl border border-emerald-500/20 p-4 h-full flex flex-col">
+    <ServiceCard accentColor="cyan" className="h-full flex flex-col">
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">
@@ -479,7 +486,7 @@ function CICDPipeline() {
         <div className="flex items-center gap-2">
           <button
             onClick={() => setIsRunning(!isRunning)}
-            className="p-2 rounded-lg bg-blue-500/10 border border-blue-500/30 text-blue-400 hover:bg-blue-500/20 transition-all"
+            className="p-2 rounded-lg bg-swarp-blue/10 border border-swarp-blue/30 text-swarp-blue hover:bg-swarp-blue/20 transition-all"
             title={isRunning ? "Pause pipeline" : "Resume pipeline"}
           >
             {isRunning ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
@@ -519,7 +526,7 @@ function CICDPipeline() {
                 "w-11 h-11 rounded-full border-2 flex items-center justify-center transition-all",
                 stage.status === "success" ? "bg-emerald-500/15 border-emerald-500 shadow-lg shadow-emerald-500/20" :
                 stage.status === "failed" ? "bg-rose-500/15 border-rose-500" :
-                stage.status === "running" ? "bg-blue-500/15 border-blue-500 animate-pulse shadow-lg shadow-blue-500/20" :
+                stage.status === "running" ? "bg-swarp-blue/15 border-swarp-blue animate-pulse shadow-lg shadow-swarp-blue/20" :
                 "bg-gray-800 border-gray-700"
               )}>
                 {getStageIcon(stage.status)}
@@ -527,7 +534,7 @@ function CICDPipeline() {
               <span className={cn(
                 "text-[10px] font-medium",
                 stage.status === "success" ? "text-emerald-400" :
-                stage.status === "running" ? "text-blue-400" :
+                stage.status === "running" ? "text-swarp-blue" :
                 "text-gray-500"
               )}>
                 {stage.name}
@@ -575,7 +582,7 @@ function CICDPipeline() {
               onClick={() => setAutoScroll(!autoScroll)}
               className={cn(
                 "text-[10px] px-2 py-0.5 rounded transition-colors",
-                autoScroll ? "bg-blue-500/20 text-blue-400" : "text-gray-500 hover:text-gray-300"
+                autoScroll ? "bg-swarp-blue/20 text-swarp-blue" : "text-gray-500 hover:text-gray-300"
               )}
             >
               Auto-scroll
@@ -595,7 +602,7 @@ function CICDPipeline() {
                   className={cn(
                     "text-[11px] font-mono",
                     log.startsWith("✓") && "text-emerald-400",
-                    log.startsWith("→") && "text-blue-400",
+                    log.startsWith("→") && "text-swarp-blue",
                     log.startsWith("!") && "text-amber-400",
                     !log.startsWith("✓") && !log.startsWith("→") && !log.startsWith("!") && "text-gray-400"
                   )}
@@ -608,7 +615,7 @@ function CICDPipeline() {
                 <motion.div
                   animate={{ opacity: [0.3, 1, 0.3] }}
                   transition={{ duration: 1, repeat: Infinity }}
-                  className="text-blue-400 text-[11px] font-mono"
+                  className="text-swarp-blue text-[11px] font-mono"
                 >
                   <span className="text-gray-600 mr-2">{new Date().toLocaleTimeString("en-US", { hour12: false })}</span>
                   _
@@ -635,7 +642,7 @@ function CICDPipeline() {
           )}
         </div>
       </div>
-    </div>
+    </ServiceCard>
   );
 }
 
@@ -675,9 +682,9 @@ function InfraMetrics() {
   }) => {
     const colors = {
       emerald: { bg: "bg-emerald-500/10", text: "text-emerald-400", bar: "bg-emerald-500" },
-      blue: { bg: "bg-blue-500/10", text: "text-blue-400", bar: "bg-blue-500" },
+      blue: { bg: "bg-swarp-blue/10", text: "text-swarp-blue", bar: "bg-swarp-blue" },
       purple: { bg: "bg-purple-500/10", text: "text-purple-400", bar: "bg-purple-500" },
-      cyan: { bg: "bg-cyan-500/10", text: "text-cyan-400", bar: "bg-cyan-500" },
+      cyan: { bg: "bg-swarp-cyan/10", text: "text-swarp-cyan", bar: "bg-swarp-cyan" },
     };
 
     const c = colors[color];
@@ -710,12 +717,12 @@ function InfraMetrics() {
   };
 
   return (
-    <div className="bg-[#0c0e12] rounded-xl border border-cyan-500/20 p-4 h-full flex flex-col">
+    <ServiceCard accentColor="cyan" className="h-full flex flex-col">
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-lg bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center">
-            <Activity className="w-4 h-4 text-cyan-400" />
+          <div className="w-9 h-9 rounded-lg bg-swarp-cyan/15 border border-swarp-cyan/30 flex items-center justify-center">
+            <Activity className="w-4 h-4 text-swarp-cyan" />
           </div>
           <div>
             <h4 className="text-sm font-bold text-white">Live Metrics</h4>
@@ -730,7 +737,7 @@ function InfraMetrics() {
               onClick={() => setTimeRange(range)}
               className={cn(
                 "px-2 py-1 rounded text-[10px] font-medium transition-all",
-                timeRange === range ? "bg-cyan-500/20 text-cyan-400" : "text-gray-500 hover:text-gray-300"
+                timeRange === range ? "bg-swarp-cyan/20 text-swarp-cyan" : "text-gray-500 hover:text-gray-300"
               )}
             >
               {range}
@@ -748,11 +755,11 @@ function InfraMetrics() {
       </div>
 
       {/* Cost Optimization Card */}
-      <div className="mt-auto p-4 rounded-xl bg-gradient-to-r from-blue-500/10 via-cyan-500/10 to-blue-500/10 border border-blue-500/20">
+      <div className="mt-auto p-4 rounded-xl bg-gradient-to-r from-swarp-blue/10 via-swarp-cyan/10 to-swarp-blue/10 border border-swarp-blue/20">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center">
-              <BarChart3 className="w-5 h-5 text-blue-400" />
+            <div className="w-10 h-10 rounded-lg bg-swarp-blue/20 flex items-center justify-center">
+              <BarChart3 className="w-5 h-5 text-swarp-blue" />
             </div>
             <div>
               <p className="text-xs text-gray-300">Monthly Infrastructure Cost</p>
@@ -768,7 +775,7 @@ function InfraMetrics() {
           </div>
         </div>
       </div>
-    </div>
+    </ServiceCard>
   );
 }
 
@@ -863,7 +870,7 @@ spec:
   ];
 
   return (
-    <div className="bg-[#09090b] rounded-xl border border-white/10 p-4 font-mono text-xs h-full flex flex-col">
+    <ServiceCard accentColor="cyan" className="font-mono text-xs h-full flex flex-col">
       {/* Header */}
       <div className="flex items-center justify-between mb-3 pb-3 border-b border-white/5">
         <div className="flex items-center gap-2">
@@ -916,7 +923,7 @@ spec:
                     .replace(/(".*?")/g, '<span class="text-emerald-400">$1</span>')
                     .replace(/\b(resource|from|RUN|COPY|EXPOSE|CMD|apiVersion|kind|metadata|spec|name|labels)\b/g, '<span class="text-purple-400">$1</span>')
                     .replace(/\b(true|false|null)\b/g, '<span class="text-amber-400">$1</span>')
-                    .replace(/\b(\d+)\b/g, '<span class="text-cyan-400">$1</span>')
+                    .replace(/\b(\d+)\b/g, '<span class="text-swarp-cyan">$1</span>')
                 }} />
               </div>
             ))}
@@ -932,13 +939,13 @@ spec:
             Syntax valid
           </span>
           <span className="flex items-center gap-1">
-            <Rocket className="w-3 h-3 text-blue-400" />
+            <Rocket className="w-3 h-3 text-swarp-blue" />
             3 changes pending
           </span>
         </div>
         <span>Last updated: 2 min ago</span>
       </div>
-    </div>
+    </ServiceCard>
   );
 }
 
@@ -967,129 +974,99 @@ export function CloudDevOpsContent() {
   ];
 
   return (
-    <div className="h-full bg-[#0a0f1a] text-gray-200 overflow-hidden relative">
-      {/* Background Grid */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-[0.02]"
-        style={{
-          backgroundImage: "linear-gradient(rgba(59,130,246,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(59,130,246,0.5) 1px, transparent 1px)",
-          backgroundSize: "50px 50px",
-        }}
-      />
-
-      <div className="relative z-10 h-full flex flex-col">
-        {/* Header */}
-        <div className="flex items-center justify-between px-5 py-4 border-b border-white/10 bg-white/[0.02] backdrop-blur-sm">
-          <div className="flex items-center gap-4">
-            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-blue-500/20 to-cyan-500/20 border border-blue-500/30 flex items-center justify-center shadow-lg shadow-blue-500/10">
-              <Cloud className="w-5 h-5 text-blue-400" />
-            </div>
-            <div>
-              <h3 className="text-base font-bold text-white">Cloud & DevOps</h3>
-              <p className="text-[11px] text-blue-400">Infrastructure automation & deployment</p>
-            </div>
-          </div>
-
-          {/* View Tabs */}
-          <div className="flex bg-black/40 p-1 rounded-xl border border-white/10">
-            {views.map((view) => (
-              <button
-                key={view.id}
-                onClick={() => setActiveView(view.id)}
-                className={cn(
-                  "flex items-center gap-2 px-4 py-2 rounded-lg text-[11px] font-medium transition-all",
-                  activeView === view.id
-                    ? "bg-blue-500/15 text-blue-400 border border-blue-500/30 shadow-lg shadow-blue-500/10"
-                    : "text-gray-500 hover:text-gray-300 hover:bg-white/5"
-                )}
-              >
-                <view.icon className="w-4 h-4" />
-                {view.label}
-              </button>
-            ))}
-          </div>
+    <ServiceContentLayout accentColor="cyan">
+      {/* Header with View Tabs */}
+      <ServiceHeader
+        icon={<Cloud className="w-5 h-5" />}
+        title="Cloud & DevOps"
+        subtitle="AWS/GCP & K8s"
+        accentColor="cyan"
+      >
+        <div className="flex bg-black/40 p-1 rounded-xl border border-white/10">
+          {views.map((view) => (
+            <ServiceTab
+              key={view.id}
+              isActive={activeView === view.id}
+              onClick={() => setActiveView(view.id)}
+              accentColor="cyan"
+            >
+              <view.icon className="w-4 h-4" />
+              {view.label}
+            </ServiceTab>
+          ))}
         </div>
+      </ServiceHeader>
 
-        {/* Content */}
-        <div className="flex-1 overflow-hidden p-5">
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-5 h-full">
-            {/* Left Column - Main View */}
-            <div className="lg:col-span-3 h-full">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeView}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.2 }}
-                  className="h-full"
-                >
-                  {activeView === "cluster" && <K8sCluster />}
-                  {activeView === "pipeline" && <CICDPipeline />}
-                  {activeView === "metrics" && <InfraMetrics />}
-                </motion.div>
-              </AnimatePresence>
-            </div>
+      {/* Content */}
+      <div className="flex-1 overflow-hidden p-5">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-5 h-full">
+          {/* Left Column - Main View */}
+          <div className="lg:col-span-3 h-full">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeView}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.2 }}
+                className="h-full"
+              >
+                {activeView === "cluster" && <K8sCluster />}
+                {activeView === "pipeline" && <CICDPipeline />}
+                {activeView === "metrics" && <InfraMetrics />}
+              </motion.div>
+            </AnimatePresence>
+          </div>
 
-            {/* Right Column - Code & Services */}
-            <div className="lg:col-span-2 space-y-4 flex flex-col h-full">
-              <InfraCode />
+          {/* Right Column - Code & Services */}
+          <div className="lg:col-span-2 space-y-4 flex flex-col h-full">
+            <InfraCode />
 
-              {/* Services Grid */}
-              <div className="bg-[#0c0e12] rounded-xl border border-white/10 p-4 flex-1">
-                <div className="flex items-center justify-between mb-3">
-                  <h4 className="text-sm font-bold text-white">Our Expertise</h4>
-                  <StatusBadge status="healthy" text="Available" />
-                </div>
-
-                <div className="grid grid-cols-2 gap-2 mb-4">
-                  {services.map((service) => (
-                    <motion.div
-                      key={service.title}
-                      whileHover={{ scale: 1.02, y: -2 }}
-                      className="p-3 rounded-xl bg-black/40 border border-white/5 hover:border-blue-500/30 transition-all cursor-pointer group"
-                    >
-                      <service.icon className="w-5 h-5 text-blue-400 mb-2 group-hover:scale-110 transition-transform" />
-                      <div className="text-xs font-medium text-white">{service.title}</div>
-                      <div className="text-[9px] text-gray-500">{service.desc}</div>
-                    </motion.div>
-                  ))}
-                </div>
-
-                {/* Stats */}
-                <div className="grid grid-cols-3 gap-2">
-                  {stats.map((stat) => (
-                    <div key={stat.label} className="text-center p-3 rounded-xl bg-black/40 border border-white/5">
-                      <div className={cn("text-sm font-bold", `text-${stat.color}-400`)}>{stat.value}</div>
-                      <div className="text-[9px] text-gray-500 uppercase tracking-wider">{stat.label}</div>
-                    </div>
-                  ))}
-                </div>
+            {/* Services Grid */}
+            <ServiceCard accentColor="cyan" className="flex-1">
+              <div className="flex items-center justify-between mb-3">
+                <h4 className="text-sm font-bold text-white">Our Expertise</h4>
+                <StatusBadge status="healthy" text="Available" />
               </div>
 
-              {/* CTA */}
-              <motion.div 
-                whileHover={{ scale: 1.01 }}
-                className="bg-gradient-to-r from-blue-500/15 via-cyan-500/15 to-blue-500/15 rounded-xl border border-blue-500/30 p-4 cursor-pointer group"
-              >
-                <div className="flex items-center gap-4">
-                  <div className="w-11 h-11 rounded-xl bg-blue-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <Rocket className="w-5 h-5 text-blue-400" />
+              <div className="grid grid-cols-2 gap-2 mb-4">
+                {services.map((service) => (
+                  <motion.div
+                    key={service.title}
+                    whileHover={{ scale: 1.02, y: -2 }}
+                    className="p-3 rounded-xl bg-black/40 border border-white/5 hover:border-swarp-blue/30 transition-all cursor-pointer group"
+                  >
+                    <service.icon className="w-5 h-5 text-swarp-blue mb-2 group-hover:scale-110 transition-transform" />
+                    <div className="text-xs font-medium text-white">{service.title}</div>
+                    <div className="text-[9px] text-gray-500">{service.desc}</div>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Stats */}
+              <div className="grid grid-cols-3 gap-2">
+                {stats.map((stat) => (
+                  <div key={stat.label} className="text-center p-3 rounded-xl bg-black/40 border border-white/5">
+                    <div className={cn("text-sm font-bold", stat.color === "emerald" && "text-emerald-400", stat.color === "blue" && "text-swarp-blue", stat.color === "cyan" && "text-swarp-cyan")}>
+                      {stat.value}
+                    </div>
+                    <div className="text-[9px] text-gray-500 uppercase tracking-wider">{stat.label}</div>
                   </div>
-                  <div className="flex-1">
-                    <h4 className="text-sm font-bold text-white">Ready to Scale?</h4>
-                    <p className="text-[10px] text-gray-400">Zero-downtime deployments with auto-scaling</p>
-                  </div>
-                  <button className="p-2.5 rounded-xl bg-blue-500 hover:bg-blue-400 text-white transition-all shadow-lg shadow-blue-500/20">
-                    <ChevronRight className="w-4 h-4" />
-                  </button>
-                </div>
-              </motion.div>
-            </div>
+                ))}
+              </div>
+            </ServiceCard>
+
+            {/* CTA */}
+            <ServiceCTA
+              title="Ready to Scale?"
+              description="Zero-downtime deployments with auto-scaling"
+              accentColor="cyan"
+              onClick={() => console.log("Scale clicked")}
+            />
           </div>
         </div>
       </div>
-    </div>
+    </ServiceContentLayout>
   );
 }
 

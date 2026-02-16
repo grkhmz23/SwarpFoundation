@@ -40,7 +40,7 @@ interface Service {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// ALL 12 SERVICES - ALL SET TO hasContent: true
+// ALL 12 SERVICES - BRAND COLOR MAPPING
 // ═══════════════════════════════════════════════════════════════════════════
 const SERVICES: Service[] = [
   {
@@ -74,7 +74,7 @@ const SERVICES: Service[] = [
     timeline: "4-8 Weeks",
     hasContent: true,
     icon: <Bot className="w-5 h-5" />,
-    color: "emerald"
+    color: "cyan"
   },
   {
     id: "blockchain",
@@ -85,7 +85,7 @@ const SERVICES: Service[] = [
     timeline: "10-14 Weeks",
     hasContent: true,
     icon: <Blocks className="w-5 h-5" />,
-    color: "amber"
+    color: "purple"
   },
   {
     id: "security",
@@ -96,7 +96,7 @@ const SERVICES: Service[] = [
     timeline: "2-4 Weeks",
     hasContent: true,
     icon: <Shield className="w-5 h-5" />,
-    color: "rose"
+    color: "cyan"
   },
   {
     id: "hardware",
@@ -107,7 +107,7 @@ const SERVICES: Service[] = [
     timeline: "12-24 Weeks",
     hasContent: true,
     icon: <Cpu className="w-5 h-5" />,
-    color: "orange"
+    color: "purple"
   },
   {
     id: "cloud",
@@ -118,7 +118,7 @@ const SERVICES: Service[] = [
     timeline: "4-8 Weeks",
     hasContent: true,
     icon: <Cloud className="w-5 h-5" />,
-    color: "sky"
+    color: "cyan"
   },
   {
     id: "retainer",
@@ -129,7 +129,7 @@ const SERVICES: Service[] = [
     timeline: "Monthly Retainer",
     hasContent: true,
     icon: <Users className="w-5 h-5" />,
-    color: "indigo"
+    color: "purple"
   },
   {
     id: "integrations",
@@ -140,7 +140,7 @@ const SERVICES: Service[] = [
     timeline: "3-6 Weeks",
     hasContent: true,
     icon: <Plug className="w-5 h-5" />,
-    color: "teal"
+    color: "cyan"
   },
   {
     id: "data",
@@ -151,7 +151,7 @@ const SERVICES: Service[] = [
     timeline: "6-10 Weeks",
     hasContent: true,
     icon: <Database className="w-5 h-5" />,
-    color: "violet"
+    color: "purple"
   },
   {
     id: "qa",
@@ -162,7 +162,7 @@ const SERVICES: Service[] = [
     timeline: "3-5 Weeks",
     hasContent: true,
     icon: <TestTube className="w-5 h-5" />,
-    color: "pink"
+    color: "cyan"
   },
   {
     id: "design",
@@ -173,23 +173,26 @@ const SERVICES: Service[] = [
     timeline: "4-8 Weeks",
     hasContent: true,
     icon: <Palette className="w-5 h-5" />,
-    color: "fuchsia"
+    color: "purple"
   },
 ];
 
-const colorMap: Record<string, { bg: string; border: string; glow: string; text: string }> = {
-  cyan: { bg: "bg-cyan-500/10", border: "border-cyan-500/30", glow: "shadow-cyan-500/20", text: "text-cyan-400" },
-  purple: { bg: "bg-purple-500/10", border: "border-purple-500/30", glow: "shadow-purple-500/20", text: "text-purple-400" },
-  emerald: { bg: "bg-emerald-500/10", border: "border-emerald-500/30", glow: "shadow-emerald-500/20", text: "text-emerald-400" },
-  amber: { bg: "bg-amber-500/10", border: "border-amber-500/30", glow: "shadow-amber-500/20", text: "text-amber-400" },
-  rose: { bg: "bg-rose-500/10", border: "border-rose-500/30", glow: "shadow-rose-500/20", text: "text-rose-400" },
-  orange: { bg: "bg-orange-500/10", border: "border-orange-500/30", glow: "shadow-orange-500/20", text: "text-orange-400" },
-  sky: { bg: "bg-sky-500/10", border: "border-sky-500/30", glow: "shadow-sky-500/20", text: "text-sky-400" },
-  indigo: { bg: "bg-indigo-500/10", border: "border-indigo-500/30", glow: "shadow-indigo-500/20", text: "text-indigo-400" },
-  teal: { bg: "bg-teal-500/10", border: "border-teal-500/30", glow: "shadow-teal-500/20", text: "text-teal-400" },
-  violet: { bg: "bg-violet-500/10", border: "border-violet-500/30", glow: "shadow-violet-500/20", text: "text-violet-400" },
-  pink: { bg: "bg-pink-500/10", border: "border-pink-500/30", glow: "shadow-pink-500/20", text: "text-pink-400" },
-  fuchsia: { bg: "bg-fuchsia-500/10", border: "border-fuchsia-500/30", glow: "shadow-fuchsia-500/20", text: "text-fuchsia-400" },
+// Brand color mapping using swarp colors
+const colorMap: Record<string, { bg: string; border: string; glow: string; text: string; gradient: string }> = {
+  cyan: { 
+    bg: "bg-swarp-blue/10", 
+    border: "border-swarp-blue/30", 
+    glow: "shadow-swarp-blue/20", 
+    text: "text-swarp-blue",
+    gradient: "from-swarp-blue to-swarp-cyan"
+  },
+  purple: { 
+    bg: "bg-swarp-purple/10", 
+    border: "border-swarp-purple/30", 
+    glow: "shadow-swarp-purple/20", 
+    text: "text-swarp-purple",
+    gradient: "from-swarp-purple to-swarp-blue"
+  },
 };
 
 function ServiceCard({ 
@@ -239,7 +242,7 @@ function ServiceCard({
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
             <span className={cn(
-              "font-semibold truncate transition-colors",
+              "font-semibold truncate transition-colors text-sm",
               isSelected ? "text-white" : "text-gray-200 group-hover:text-white"
             )}>
               {service.title}
@@ -341,9 +344,9 @@ function ServicePreview({ service }: { service: Service | null }) {
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          className="w-32 h-32 rounded-3xl bg-gradient-to-br from-cyan-500/20 to-purple-500/20 border border-white/10 flex items-center justify-center mb-6"
+          className="w-32 h-32 rounded-3xl bg-gradient-to-br from-swarp-blue/20 to-swarp-purple/20 border border-white/10 flex items-center justify-center mb-6"
         >
-          <Sparkles className="w-12 h-12 text-cyan-400" />
+          <Sparkles className="w-12 h-12 text-swarp-blue" />
         </motion.div>
 
         <motion.h3 
@@ -370,7 +373,7 @@ function ServicePreview({ service }: { service: Service | null }) {
           transition={{ delay: 0.3 }}
           className="mt-8 flex items-center gap-2 text-sm text-gray-500"
         >
-          <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+          <span className="w-2 h-2 rounded-full bg-swarp-blue animate-pulse" />
           <span>{SERVICES.filter(s => s.hasContent).length} interactive previews available</span>
         </motion.div>
       </div>
@@ -444,12 +447,11 @@ export default function ServicesPage() {
             animate={{ opacity: 1, y: 0 }}
             className="text-center mb-12"
           >
-
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
               <span className="bg-gradient-to-r from-white via-white to-gray-400 bg-clip-text text-transparent">
                 Engineering
               </span>
-              <span className="bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-swarp-blue to-swarp-purple bg-clip-text text-transparent">
                 {" "}Excellence
               </span>
             </h1>
@@ -494,11 +496,11 @@ export default function ServicesPage() {
                 "relative min-h-[600px] rounded-3xl overflow-hidden",
                 "backdrop-blur-xl border border-white/10",
                 "bg-gradient-to-b from-white/[0.08] to-white/[0.02]",
-                "shadow-[0_0_60px_-20px_rgba(0,255,240,0.15),inset_0_1px_0_rgba(255,255,255,0.1)]"
+                "shadow-[0_0_60px_-20px_rgba(0,212,255,0.15),inset_0_1px_0_rgba(255,255,255,0.1)]"
               )}
             >
               {/* Top glow */}
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-px bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent" />
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-px bg-gradient-to-r from-transparent via-swarp-blue/50 to-transparent" />
 
               {/* Corner accents */}
               <div className="absolute top-4 left-4 w-8 h-8 border-l-2 border-t-2 border-white/20 rounded-tl-lg" />
