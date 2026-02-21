@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
+import { useTranslations } from "next-intl";
 import { useIntervalWhenVisible } from "@/components/services/service-content-wrapper";
 import {
   Terminal,
@@ -589,6 +590,7 @@ const DevToolsTab = () => {
 
 // Release Pipeline Tab
 const ReleasePipelineTab = () => {
+  const t = useTranslations("servicesContent.softwareTools.terminalDemo");
   return (
     <div className="h-full flex items-center justify-center p-8 relative overflow-hidden bg-[#0c0e12]">
       <div
@@ -597,7 +599,7 @@ const ReleasePipelineTab = () => {
       />
 
       <div className="flex items-center gap-4 relative z-10">
-        {["Build", "Test", "Sign", "Deploy"].map((step, i) => (
+        {[t("init"), "Test", "Sign", t("deploy")].map((step, i) => (
           <div key={i} className="flex items-center">
             <div className="flex flex-col items-center gap-3 group">
               <div
@@ -617,7 +619,7 @@ const ReleasePipelineTab = () => {
                   i === 3 ? "text-emerald-500" : "text-gray-600"
                 }`}
               >
-                {step}
+                {i === 3 ? t("success") : step}
               </span>
             </div>
             {i < 3 && <div className="w-16 h-0.5 bg-gray-800 relative mx-4 rounded-full overflow-hidden" />}
@@ -630,6 +632,7 @@ const ReleasePipelineTab = () => {
 
 // Main Component
 export function SoftwareToolsContent() {
+  const t = useTranslations("servicesContent.softwareTools");
   const [config, setConfig] = useState<ConfigState>({
     type: "meeting",
     platform: "desktop",
@@ -659,7 +662,7 @@ export function SoftwareToolsContent() {
         {/* Header */}
         <ServiceHeader
           icon={<Wrench className="w-5 h-5" />}
-          title="Software Tools"
+          title={t("badge")}
           subtitle="CLI & Desktop Apps"
           accentColor="purple"
         />
@@ -668,7 +671,7 @@ export function SoftwareToolsContent() {
         <div className="mt-6 space-y-6">
           {/* Description */}
           <p className="text-sm text-gray-400">
-            Internal business tools, desktop apps, private meeting rooms, and developer tooling.
+            {t("description")}
           </p>
 
           {/* Chips */}
@@ -773,7 +776,7 @@ export function SoftwareToolsContent() {
           {/* Configurator + Pipeline */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Configurator */}
-            <ServiceCard accentColor="purple" title="Configurator" icon={<Settings className="w-4 h-4" />}>
+            <ServiceCard accentColor="purple" title={t("title")} icon={<Settings className="w-4 h-4" />}>
               <p className="text-gray-400 text-xs mb-4">Define your requirements. We build to spec.</p>
 
               <div className="space-y-4">
@@ -852,16 +855,20 @@ export function SoftwareToolsContent() {
             {/* Release Pipeline */}
             <div>
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-bold text-white">Release Pipeline</h2>
+                <h2 className="text-lg font-bold text-white">{t("terminalDemo.title")}</h2>
                 <div className="flex gap-1">
-                  {(["installer", "devtools", "release"] as const).map((tab) => (
+                  {([
+                    { id: "installer" as const, label: t("terminalDemo.install") },
+                    { id: "devtools" as const, label: "Devtools" },
+                    { id: "release" as const, label: "Release" },
+                  ] as const).map((tab) => (
                     <ServiceTab
-                      key={tab}
-                      isActive={activeTab === tab}
-                      onClick={() => setActiveTab(tab)}
+                      key={tab.id}
+                      isActive={activeTab === tab.id}
+                      onClick={() => setActiveTab(tab.id)}
                       accentColor="purple"
                     >
-                      {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                      {tab.label}
                     </ServiceTab>
                   ))}
                 </div>

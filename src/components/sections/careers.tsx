@@ -4,44 +4,49 @@ import Link from "next/link";
 import { ArrowRight, MapPin, Clock, DollarSign } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
+import { useTranslations } from "next-intl";
 
-const openRoles = [
-  {
-    title: "Senior Solana Engineer",
-    department: "Engineering",
-    location: "Remote",
-    type: "Full-time",
-    salary: "$150k - $220k",
-    description: "Build next-gen DeFi protocols and infrastructure on Solana.",
-  },
-  {
-    title: "AI/ML Engineer",
-    department: "Engineering",
-    location: "Remote / Hybrid",
-    type: "Full-time",
-    salary: "$140k - $200k",
-    description: "Develop AI models for trading, analytics, and automation.",
-  },
-  {
-    title: "Smart Contract Auditor",
-    department: "Security",
-    location: "Remote",
-    type: "Full-time",
-    salary: "$130k - $190k",
-    description: "Audit smart contracts and identify security vulnerabilities.",
-  },
-];
-
-const perks = [
-  "🌍 Fully Remote",
-  "💰 Competitive Salary + Equity",
-  "🏥 Health & Dental Insurance",
-  "🏖️ Unlimited PTO",
-  "📚 Learning Budget",
-  "💻 Latest Tech Stack",
-];
+const perksIcons = ["🌍", "💰", "🏥", "🏖️", "📚", "💻"];
 
 export function Careers() {
+  const t = useTranslations("sections.careers");
+
+  const openRoles = [
+    {
+      title: t("roles.0.title"),
+      department: t("roles.0.department"),
+      location: t("roles.0.location"),
+      type: t("roles.0.type"),
+      salary: t("roles.0.salary"),
+      description: t("roles.0.description"),
+    },
+    {
+      title: t("roles.1.title"),
+      department: t("roles.1.department"),
+      location: t("roles.1.location"),
+      type: t("roles.1.type"),
+      salary: t("roles.1.salary"),
+      description: t("roles.1.description"),
+    },
+    {
+      title: t("roles.2.title"),
+      department: t("roles.2.department"),
+      location: t("roles.2.location"),
+      type: t("roles.2.type"),
+      salary: t("roles.2.salary"),
+      description: t("roles.2.description"),
+    },
+  ];
+
+  const perks = [
+    t("perks.0"),
+    t("perks.1"),
+    t("perks.2"),
+    t("perks.3"),
+    t("perks.4"),
+    t("perks.5"),
+  ];
+
   return (
     <section id="careers" className="relative py-24 md:py-32 overflow-hidden">
       {/* Background */}
@@ -52,21 +57,21 @@ export function Careers() {
         {/* Section Header */}
         <div className="max-w-3xl mx-auto text-center mb-16">
           <div className="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-swarp-accent/10 border border-swarp-accent/20 mb-6">
-            <span className="text-sm text-swarp-accent font-medium">We&apos;re Hiring!</span>
+            <span className="text-sm text-swarp-accent font-medium">{t("eyebrow")}</span>
           </div>
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            <span className="text-white">Join the</span>{" "}
-            <span className="text-gradient">Lab</span>
+            <span className="text-white">{t("title")}</span>{" "}
+            <span className="text-gradient">{t("titleAccent")}</span>
           </h2>
           <p className="text-lg text-gray-400">
-            Work with cutting-edge technology, solve complex problems, and shape the future of blockchain and AI.
+            {t("description")}
           </p>
         </div>
 
         <div className="grid lg:grid-cols-3 gap-8 mb-12">
           {/* Left: Open Roles */}
           <div className="lg:col-span-2 space-y-6">
-            <h3 className="text-2xl font-bold text-white mb-6">Open Positions</h3>
+            <h3 className="text-2xl font-bold text-white mb-6">{t("openPositionsTitle")}</h3>
             {openRoles.map((role) => (
               <Card key={role.title} hover>
                 <CardHeader>
@@ -99,7 +104,7 @@ export function Careers() {
                   </div>
                   <Link href="#contact">
                     <Button variant="outline" size="sm" className="group">
-                      Apply Now
+                      {t("applyNow")}
                       <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                     </Button>
                   </Link>
@@ -111,10 +116,10 @@ export function Careers() {
           {/* Right: Perks & Culture */}
           <div className="space-y-6">
             <div className="p-6 rounded-xl bg-swarp-dark/50 backdrop-blur-sm border border-swarp-blue/20">
-              <h3 className="text-xl font-bold text-white mb-4">Why Swarp?</h3>
+              <h3 className="text-xl font-bold text-white mb-4">{t("whySwarpTitle")}</h3>
               <div className="space-y-3">
-                {perks.map((perk) => (
-                  <div key={perk} className="flex items-center text-sm text-gray-300">
+                {perks.map((perk, index) => (
+                  <div key={index} className="flex items-center text-sm text-gray-300">
                     <div className="w-1.5 h-1.5 rounded-full bg-swarp-cyan mr-2" />
                     {perk}
                   </div>
@@ -123,13 +128,13 @@ export function Careers() {
             </div>
 
             <div className="p-6 rounded-xl bg-gradient-to-br from-swarp-blue/10 to-swarp-purple/10 border border-swarp-blue/20">
-              <h3 className="text-xl font-bold text-white mb-2">Our Culture</h3>
+              <h3 className="text-xl font-bold text-white mb-2">{t("cultureTitle")}</h3>
               <p className="text-sm text-gray-400 mb-4">
-                We&apos;re a team of builders who value innovation, ownership, and continuous learning. Work from anywhere, collaborate globally.
+                {t("cultureDescription")}
               </p>
               <Link href="#about">
                 <Button variant="ghost" size="sm" className="group">
-                  Learn More About Us
+                  {t("learnMore")}
                   <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Link>
@@ -139,10 +144,10 @@ export function Careers() {
 
         {/* CTA */}
         <div className="text-center">
-          <p className="text-gray-400 mb-4">Don&apos;t see a role that fits? We&apos;re always looking for talented people.</p>
+          <p className="text-gray-400 mb-4">{t("generalApplyText")}</p>
           <Link href="#contact">
             <Button size="lg" variant="outline">
-              Send Us Your Resume
+              {t("sendResume")}
             </Button>
           </Link>
         </div>

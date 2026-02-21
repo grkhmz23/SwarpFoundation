@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useTranslations } from "next-intl";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Users, User, Code2, Palette, Cpu, Database, Globe, Shield,
@@ -42,6 +43,7 @@ interface Project {
 
 // Team Pod Builder
 function TeamBuilder() {
+  const t = useTranslations("servicesContent.engineering");
   const [team, setTeam] = useState<TeamMember[]>([
     { id: "1", name: "Alex Chen", role: "Tech Lead", skills: ["System Design", "Node.js", "AWS"], level: "lead", availability: 80, avatar: "AC", projects: 3 },
     { id: "2", name: "Sarah Miller", role: "Senior Frontend", skills: ["React", "TypeScript", "UI/UX"], level: "senior", availability: 100, avatar: "SM", projects: 2 },
@@ -52,11 +54,11 @@ function TeamBuilder() {
   const [selectedRole, setSelectedRole] = useState<string | null>(null);
 
   const roles = [
-    { type: "Frontend", icon: Code2, color: "blue", count: team.filter(t => t.role.includes("Frontend")).length },
-    { type: "Backend", icon: Database, color: "emerald", count: team.filter(t => t.role.includes("Backend")).length },
-    { type: "DevOps", icon: Cpu, color: "purple", count: team.filter(t => t.role.includes("DevOps")).length },
+    { type: t("teamDemo.frontend"), icon: Code2, color: "blue", count: team.filter(member => member.role.includes(t("teamDemo.frontend"))).length },
+    { type: t("teamDemo.backend"), icon: Database, color: "emerald", count: team.filter(member => member.role.includes(t("teamDemo.backend"))).length },
+    { type: t("teamDemo.devops"), icon: Cpu, color: "purple", count: team.filter(member => member.role.includes(t("teamDemo.devops"))).length },
     { type: "Design", icon: Palette, color: "pink", count: team.filter(t => t.role.includes("Design")).length },
-    { type: "PM", icon: Briefcase, color: "orange", count: team.filter(t => t.role.includes("PM")).length },
+    { type: t("teamDemo.pm"), icon: Briefcase, color: "orange", count: team.filter(member => member.role.includes(t("teamDemo.pm"))).length },
   ];
 
   const addMember = (role: string) => {
@@ -423,6 +425,7 @@ function TeamComms() {
 
 // Main Component
 export function EngineeringContent() {
+  const t = useTranslations("servicesContent.engineering");
   const [activeTab, setActiveTab] = useState<"team" | "projects" | "skills">("team");
 
   const engagementModels = [
@@ -438,8 +441,8 @@ export function EngineeringContent() {
         {/* Header */}
         <ServiceHeader
           icon={<Users className="w-5 h-5" />}
-          title="Engineering"
-          subtitle="Dedicated Teams"
+          title={t("badge")}
+          subtitle={t("title")}
           accentColor="purple"
         >
           {/* Tabs */}
@@ -493,7 +496,7 @@ export function EngineeringContent() {
 
               {/* Engagement Models */}
               <ServiceCard accentColor="purple" className="flex-1">
-                <h4 className="text-sm font-bold text-white mb-3">Engagement Models</h4>
+                <h4 className="text-sm font-bold text-white mb-3">{t("teamDemo.title")}</h4>
                 <div className="grid grid-cols-2 gap-2">
                   {engagementModels.map((model, i) => (
                     <motion.div

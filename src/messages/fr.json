@@ -853,6 +853,489 @@
     "projects": "projects",
     "hoverToExplore": "Hover to explore"
   },
+  "sections": {
+    "capabilitiesTimeline": {
+      "eyebrow": "Notre Processus",
+      "title": "Du Concept à la",
+      "titleAccent": "Production",
+      "description": "Une méthodologie éprouvée qui transforme votre idée en lancement avec des délais prévisibles et des garanties de qualité.",
+      "deliverablesLabel": "Livrables :",
+      "phases": [
+        {
+          "title": "Découverte",
+          "description": "Analyse approfondie de vos besoins, étude de marché et évaluation de la faisabilité technique.",
+          "deliverables": ["Document d'Exigences", "Spécification Technique", "Feuille de Route"]
+        },
+        {
+          "title": "Conception",
+          "description": "Design UI/UX, architecture système et création du schéma de base de données avec validation des parties prenantes.",
+          "deliverables": ["Maquettes", "Diagramme d'Architecture", "Design System"]
+        },
+        {
+          "title": "Développement",
+          "description": "Développement agile avec sprints hebdomadaires, revues de code et intégration continue.",
+          "deliverables": ["Code de Production", "Tests Unitaires", "Documentation API"]
+        },
+        {
+          "title": "Déploiement",
+          "description": "Déploiement progressif avec tests complets, configuration du monitoring et support au lancement.",
+          "deliverables": ["Environnement Staging", "Déploiement Production", "Tableau de Bord"]
+        },
+        {
+          "title": "Maintenance",
+          "description": "Surveillance 24/7, conformité SLA, mises à jour de sécurité et améliorations fonctionnelles.",
+          "deliverables": ["SLA Uptime 99,9%", "Correctifs Sécurité", "Rapports Performance"]
+        }
+      ]
+    },
+    "caseStudies": {
+      "eyebrow": "Histoires de Succès",
+      "title": "Résultats",
+      "titleAccent": "Prouvés",
+      "description": "Des projets réels, des résultats réels. Découvrez comment nous avons aidé nos clients à évoluer, optimiser et innover.",
+      "challengeLabel": "DÉFI",
+      "solutionLabel": "SOLUTION",
+      "keyResultsLabel": "RÉSULTATS CLÉS",
+      "viewAll": "Voir Tous les Cas Clients",
+      "studies": [
+        {
+          "title": "Scale-Up Protocole DeFi",
+          "client": "Plateforme DeFi Leader",
+          "challenge": "Gérer une croissance de volume de transactions 100x",
+          "solution": "Smart contracts optimisés et mise à l'échelle de l'infrastructure",
+          "tags": ["Solana", "DeFi", "Smart Contracts"],
+          "results": [
+            { "metric": "85%", "label": "Coûts Gas Réduits" },
+            { "metric": "300ms", "label": "Temps Réponse Moyen" },
+            { "metric": "$2M+", "label": "Économies Annuelles" }
+          ]
+        },
+        {
+          "title": "Plateforme Trading IA",
+          "client": "Exchange Crypto",
+          "challenge": "Analyse marché temps réel et trading automatisé",
+          "solution": "Modèles ML sur mesure avec exécution sub-seconde",
+          "tags": ["AI/ML", "Trading", "Infrastructure"],
+          "results": [
+            { "metric": "40%", "label": "Latence Réduite" },
+            { "metric": "50K", "label": "Capacité TPS" },
+            { "metric": "15%", "label": "Meilleur ROI" }
+          ]
+        },
+        {
+          "title": "Passerelle Paiements Enterprise",
+          "client": "Géant E-commerce",
+          "challenge": "Intégrer paiements crypto sans friction",
+          "solution": "Intégration SwarpPay avec on-ramps fiat",
+          "tags": ["Paiements", "Intégration", "SwarpPay"],
+          "results": [
+            { "metric": "60%", "label": "Frais Réduits" },
+            { "metric": "Instantané", "label": "Settlement" },
+            { "metric": "$10M+", "label": "Volume Mensuel" }
+          ]
+        }
+      ]
+    },
+    "services": {
+      "title": "Ce Que Nous Construisons",
+      "items": [
+        {
+          "title": "Smart Contracts",
+          "description": "Programmes blockchain, intégrations DEX"
+        },
+        {
+          "title": "IA & Automatisation",
+          "description": "LLM personnalisés, agents de trading"
+        },
+        {
+          "title": "Audits Sécurité",
+          "description": "Revues de code, analyse d'attaques"
+        },
+        {
+          "title": "Outils Dev",
+          "description": "SDKs, outils CLI, frameworks"
+        }
+      ]
+    },
+    "security": {
+      "eyebrow": "Sécurité Enterprise",
+      "title": "Sécurité par",
+      "titleAccent": "Design",
+      "description": "Infrastructure de sécurité bancaire protégeant des milliards en actifs numériques avec zéro violation.",
+      "features": [
+        {
+          "title": "Sécurité Multi-Couches",
+          "description": "Architecture defense-in-depth avec chiffrement au repos et en transit, modules de sécurité matériels et contrôles d'accès stricts."
+        },
+        {
+          "title": "Surveillance 24/7",
+          "description": "Détection des menaces en temps réel, alertes automatisées et surveillance continue sur toute l'infrastructure."
+        },
+        {
+          "title": "Conformité Ready",
+          "description": "SOC 2, GDPR et cadres de conformité standard intégrés dans notre processus de développement."
+        },
+        {
+          "title": "Réponse aux Incidents",
+          "description": "Équipe sécurité dédiée avec procédures documentées et SLA 15 minutes."
+        },
+        {
+          "title": "Audits Réguliers",
+          "description": "Audits trimestriels par des firmes leaders, tests d'intrusion et évaluations vulnérabilité continues."
+        },
+        {
+          "title": "Audits Smart Contracts",
+          "description": "Tous les contrats audités par plusieurs firmes indépendantes avant déploiement avec rapports publics."
+        }
+      ],
+      "auditSection": {
+        "title": "Audités & Certifiés",
+        "description": "Vérifiés par les meilleures firmes de sécurité"
+      },
+      "auditBadges": [
+        { "name": "CertiK", "status": "Audité" },
+        { "name": "Quantstamp", "status": "Audité" },
+        { "name": "Trail of Bits", "status": "Audité" },
+        { "name": "SOC 2", "status": "Certifié" }
+      ],
+      "stats": [
+        { "value": "0", "label": "Violations Sécurité" },
+        { "value": "100%", "label": "Couverture Chiffrement" },
+        { "value": "15min", "label": "SLA Réponse Incident" }
+      ]
+    },
+    "ecosystemPartners": {
+      "eyebrow": "Intégrations",
+      "title": "Écosystème",
+      "titleAccent": "& Partenaires",
+      "description": "Intégré aux plateformes et protocoles leaders de l'industrie pour offrir des solutions de classe mondiale.",
+      "categories": [
+        {
+          "title": "Réseaux Blockchain",
+          "partners": ["Solana", "Ethereum", "Polygon", "BSC"]
+        },
+        {
+          "title": "Wallets & Custody",
+          "partners": ["Phantom", "MetaMask", "Ledger", "Fireblocks"]
+        },
+        {
+          "title": "Analytics & Données",
+          "partners": ["The Graph", "Dune Analytics", "Messari", "Nansen"]
+        },
+        {
+          "title": "Sécurité & Conformité",
+          "partners": ["CertiK", "Quantstamp", "Chainalysis", "Elliptic"]
+        }
+      ],
+      "stats": [
+        { "value": "50+", "label": "Intégrations" },
+        { "value": "10+", "label": "Blockchains" },
+        { "value": "100%", "label": "Uptime" },
+        { "value": "24/7", "label": "Support" }
+      ]
+    },
+    "careers": {
+      "eyebrow": "Nous Recrutons!",
+      "title": "Rejoignez le",
+      "titleAccent": "Lab",
+      "description": "Travaillez avec des technologies de pointe, résolvez des problèmes complexes et façonnez l'avenir de la blockchain et de l'IA.",
+      "openPositionsTitle": "Postes Ouverts",
+      "applyNow": "Postuler",
+      "whySwarpTitle": "Pourquoi Swarp?",
+      "perks": [
+        "🌍 Full Remote",
+        "💰 Salaire Compétitif + Equity",
+        "🏥 Assurance Santé et Dentaire",
+        "🏖️ Congés Illimités",
+        "📚 Budget Formation",
+        "💻 Tech Stack Dernière Génération"
+      ],
+      "cultureTitle": "Notre Culture",
+      "cultureDescription": "Nous sommes une équipe de builders qui valorisent l'innovation, la propriété et l'apprentissage continu. Travaillez de n'importe où, collaborez globalement.",
+      "learnMore": "En Savoir Plus",
+      "generalApplyText": "Vous ne trouvez pas de poste qui vous convient? Nous recherchons toujours des talents.",
+      "sendResume": "Envoyez-nous votre CV"
+    },
+    "swarpPaySpotlight": {
+      "eyebrow": "Produit en Vedette",
+      "title": "SwarpPay",
+      "subtitle": "Infrastructure de Paiement Next-Gen",
+      "description": "Acceptez les paiements crypto et fiat avec une infrastructure enterprise. Construit sur Solana pour des règlements instantanés et des frais minimes.",
+      "getStarted": "Commencer",
+      "viewDocs": "Voir la Documentation",
+      "features": [
+        {
+          "title": "Support Multi-Devises",
+          "description": "Acceptez les paiements en crypto et fiat avec règlement instantané"
+        },
+        {
+          "title": "Ultra Rapide",
+          "description": "Finalité transaction sub-seconde propulsée par Solana"
+        },
+        {
+          "title": "Sécurité Enterprise",
+          "description": "Chiffrement bancaire et prêt pour la conformité"
+        },
+        {
+          "title": "Portée Globale",
+          "description": "Support pour 150+ pays et multiples langues"
+        }
+      ],
+      "demo": {
+        "poweredBy": "Propulsé par",
+        "live": "EN DIRECT",
+        "transactionAmount": "Montant de la Transaction",
+        "payWith": "Payer avec",
+        "fee": "Frais : $0.01",
+        "settlement": "Règlement : Instantané"
+      }
+    },
+    "bentoGrid": {
+      "products": {
+        "swarppay": {
+          "badge": "Plateforme Core",
+          "title": "SwarpPay",
+          "description": "Une plateforme de trading en custody qui rend l'achat et la vente de crypto aussi simple que l'utilisation d'une application bancaire. Connectez votre compte bancaire, achetez des crypto avec votre devise locale et tradez des tokens curatés sur Solana. Pas de clés privées à gérer, pas de configuration complexe. Accès direct aux actifs numériques avec la sécurité attendue d'une institution financière.",
+          "features": ["Fiat", "2FA", "24/7"],
+          "featureLabels": ["On/Off Ramp", "Sécurité", "Trading"]
+        },
+        "swarplaunch": {
+          "badge": "Fair Launch",
+          "title": "SwarpLaunch",
+          "description": "Un launchpad curé où chaque participant est un individu vérifié, pas un bot. Chaque personne ne peut acheter que sa part équitable, donc les nouveaux lancements de tokens sont réellement accessibles à tous."
+        },
+        "swarpid": {
+          "badge": "Identité",
+          "title": "SwarpID",
+          "description": "Un compte par personne réelle. SwarpID combine vérification d'identité avec détection anti-duplicats pour garder la plateforme honnête et le terrain de jeu nivelé."
+        },
+        "psol": {
+          "badge": "Confidentialité",
+          "title": "pSOL Protocol",
+          "description": "La confidentialité financière ne devrait pas être un luxe. pSOL utilise la cryptographie zero-knowledge pour vous permettre de déplacer des actifs sur Solana sans exposer votre historique de transactions au monde. Votre argent, vos affaires.",
+          "specs": ["GROTH16 ZK PROOFS", "MULTI-ASSET SHIELDED POOL", "Vérification On-chain"]
+        },
+        "humanrail": {
+          "badge": "Responsabilité",
+          "title": "HumanRail",
+          "description": "Alors que les agents IA deviennent plus capables, quelqu'un doit s'assurer qu'ils sont responsables. HumanRail est un protocole d'identité et de vérification qui lie les actions IA à des humains réels et vérifiés, créant une couche de confiance pour l'ère du logiciel autonome."
+        }
+      }
+    }
+  },
+  "servicesContent": {
+    "common": {
+      "interactiveDemo": "Démo Interactive",
+      "learnMore": "En Savoir Plus",
+      "getStarted": "Commencer",
+      "contactUs": "Contactez-nous",
+      "features": "Fonctionnalités",
+      "techStack": "Stack Technique",
+      "deliverables": "Livrables",
+      "timeline": "Calendrier"
+    },
+    "aiSystems": {
+      "badge": "Systèmes IA",
+      "title": "IA & Machine Learning",
+      "description": "LLM personnalisés, interfaces chat et automatisation intelligente.",
+      "tabs": {
+        "assistant": "Assistant",
+        "knowledge": "Connaissance",
+        "ops": "Opérations"
+      },
+      "assistantDemo": {
+        "title": "Démo Assistant IA",
+        "subtitle": "Mode + Connaissance Optionnelle + Guardrails",
+        "modes": {
+          "support": "Support",
+          "analyst": "Analyste",
+          "dev": "Dev"
+        },
+        "pipeline": {
+          "intent": "Intention",
+          "retrieve": "Récupérer",
+          "generate": "Générer",
+          "guardrails": "Guardrails",
+          "logs": "Logs"
+        },
+        "controls": {
+          "knowledge": "Connaissance",
+          "guardrails": "Guardrails",
+          "on": "ON",
+          "off": "OFF"
+        },
+        "thinking": "réflexion…",
+        "citations": "Citations",
+        "send": "Envoyer",
+        "placeholders": {
+          "support": "Demandez : \"Rédigez une réponse de remboursement pour un abonnement\"",
+          "analyst": "Demandez : \"Résumez les KPI et les changements par rapport au mois dernier\"",
+          "dev": "Demandez : \"Comment rendre RAG rapide + débogable ?\""
+        }
+      },
+      "knowledgeDemo": {
+        "title": "Recherche Connaissance (RAG)",
+        "subtitle": "Rechercher docs → récupérer top-K → (optionnel) rerank → citer sources",
+        "searchPlaceholder": "Rechercher dans la base de connaissances…",
+        "topK": "top-K",
+        "rerank": "Rerank",
+        "retrieved": "Récupérés",
+        "noMatches": "Aucune correspondance — essayez \"RAG citations\", \"guardrails\" ou \"observability\".",
+        "source": "source",
+        "answerPreview": "Aperçu de la réponse (avec citations)",
+        "answerDescription": "Voici comment l'assistant répond lorsque la Connaissance est activée.",
+        "tip": "Conseil : nous pouvons l'intégrer à vos documents, centre d'aide, tickets, CRM ou outils internes."
+      },
+      "opsDemo": {
+        "title": "Tableau de Bord Opérations",
+        "liveMetrics": "Métriques en Direct",
+        "config": "Configuration",
+        "metrics": {
+          "latency": "Latence",
+          "cost": "Coût",
+          "grounding": "Grounding",
+          "errorRate": "Taux d'Erreur",
+          "tps": "TPS"
+        },
+        "toggles": {
+          "fallback": "Fallback",
+          "cache": "Cache",
+          "pii": "Masquage PII",
+          "jailbreak": "Filtre Jailbreak"
+        }
+      }
+    },
+    "webMobile": {
+      "badge": "Web & Mobile",
+      "title": "Développement Web & Mobile",
+      "description": "Applications haute échelle avec UI/UX de qualité produit.",
+      "interactiveDemo": "Aperçu Interactif",
+      "features": {
+        "responsive": "Design Responsive",
+        "performance": "Haute Performance",
+        "pwa": "Support PWA",
+        "offline": "Offline First"
+      }
+    },
+    "softwareTools": {
+      "badge": "Outils Logiciels",
+      "title": "Developer Tools & CLI",
+      "description": "Outils CLI, SDK et logiciels pour développeurs.",
+      "terminalDemo": {
+        "title": "Démo Terminal",
+        "install": "Installer",
+        "init": "Initialiser",
+        "deploy": "Déployer",
+        "success": "Succès !"
+      }
+    },
+    "blockchain": {
+      "badge": "Blockchain",
+      "title": "Blockchain & Smart Contracts",
+      "description": "Smart contracts sécurisés et protocoles DeFi sur Solana.",
+      "features": {
+        "audited": "Code Audité",
+        "gas": "Gas Optimisé",
+        "multichain": "Multi-chain"
+      }
+    },
+    "security": {
+      "badge": "Sécurité",
+      "title": "Audits de Sécurité",
+      "description": "Audits de sécurité complets et tests de pénétration.",
+      "auditDemo": {
+        "title": "Rapport d'Audit",
+        "critical": "Critique",
+        "high": "Élevé",
+        "medium": "Moyen",
+        "low": "Faible",
+        "passed": "Réussi",
+        "checks": "Contrôles Sécurité"
+      }
+    },
+    "hardware": {
+      "badge": "Matériel",
+      "title": "Hardware & IoT",
+      "description": "Conception matérielle personnalisée et solutions IoT.",
+      "specs": {
+        "processor": "Processeur",
+        "memory": "Mémoire",
+        "storage": "Stockage",
+        "connectivity": "Connectivité"
+      }
+    },
+    "cloudDevOps": {
+      "badge": "Cloud & DevOps",
+      "title": "Infrastructure Cloud & DevOps",
+      "description": "Infrastructure évolutive sur AWS, GCP et Kubernetes.",
+      "infraDemo": {
+        "title": "Visualiseur d'Infrastructure",
+        "clusters": "Clusters",
+        "pods": "Pods",
+        "services": "Services",
+        "ingress": "Ingress",
+        "scaling": "Auto-scaling"
+      }
+    },
+    "engineering": {
+      "badge": "Engineering",
+      "title": "Équipes d'Ingénierie Dédiées",
+      "description": "Renforcez votre équipe avec des ingénieurs seniors.",
+      "teamDemo": {
+        "title": "Structure de l'Équipe",
+        "frontend": "Frontend",
+        "backend": "Backend",
+        "devops": "DevOps",
+        "pm": "Product Manager"
+      }
+    },
+    "integrations": {
+      "badge": "Intégrations",
+      "title": "API & Intégrations",
+      "description": "Développement API robuste et intégrations tierces.",
+      "apiDemo": {
+        "title": "API Playground",
+        "request": "Requête",
+        "response": "Réponse",
+        "status": "Statut",
+        "latency": "Latence"
+      }
+    },
+    "dataAnalytics": {
+      "badge": "Données & Analytics",
+      "title": "Data Pipelines & BI",
+      "description": "Data stack moderne avec analyses en temps réel.",
+      "dashboardDemo": {
+        "title": "Tableau de Bord Analytics",
+        "realtime": "Temps réel",
+        "reports": "Rapports",
+        "exports": "Exportations"
+      }
+    },
+    "qaTesting": {
+      "badge": "QA & Testing",
+      "title": "Assurance Qualité",
+      "description": "Tests end-to-end et site reliability engineering.",
+      "testDemo": {
+        "title": "Résultats des Tests",
+        "passed": "Réussi",
+        "failed": "Échoué",
+        "pending": "En Attente",
+        "coverage": "Couverture"
+      }
+    },
+    "uiuxDesign": {
+      "badge": "UI/UX Design",
+      "title": "Design Systems & Prototypage",
+      "description": "Design systems complets et UI kits accessibles.",
+      "designDemo": {
+        "title": "Design System",
+        "components": "Composants",
+        "tokens": "Tokens",
+        "guidelines": "Guidelines"
+      }
+    }
+  },
   "legalLayout": {
     "back": "Back",
     "close": "Close",

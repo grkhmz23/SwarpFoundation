@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import { useTranslations } from "next-intl";
 import { useIntervalWhenVisible } from "@/components/services/service-content-wrapper";
 import Link from "next/link";
 import {
@@ -344,6 +345,7 @@ const SPECS = {
 // MAIN COMPONENT
 // ============================================================================
 export function HardwareContent() {
+  const t = useTranslations("servicesContent.hardware");
   const [config, setConfig] = useState<ConfigType>({
     formFactor: "mini",
     compute: "gpu",
@@ -373,8 +375,8 @@ export function HardwareContent() {
     <ServiceContentLayout accentColor="purple">
       <ServiceHeader
         icon={<Cpu className="w-5 h-5 text-white" />}
-        title="Hardware"
-        subtitle="Devices & IoT"
+        title={t("badge")}
+        subtitle={t("title")}
         accentColor="purple"
       />
 
@@ -486,8 +488,8 @@ export function HardwareContent() {
 
               {/* CTA */}
               <ServiceCTA
-                title="Start Hardware Project"
-                description="Custom devices, IoT solutions, and edge computing hardware"
+                title={t("ctaTitle")}
+                description={t("description")}
                 accentColor="purple"
                 onClick={() => window.location.href = "/contact"}
               />
@@ -598,13 +600,13 @@ export function HardwareContent() {
                 </div>
                 <div className="space-y-1 mb-2">
                   <div className="flex justify-between">
-                    <span className="text-gray-500">CORE</span>
+                    <span className="text-gray-500">{t("specs.processor")}</span>
                     <span className="text-gray-300">
                       <ScrambleText text={SPECS.compute[config.compute as keyof typeof SPECS.compute].name} trigger={config} />
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-500">TDP</span>
+                    <span className="text-gray-500">{t("specs.memory")}</span>
                     <span className="text-gray-300">
                       <ScrambleText text={SPECS.compute[config.compute as keyof typeof SPECS.compute].power} trigger={config} />
                     </span>

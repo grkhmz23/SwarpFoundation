@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useTranslations } from "next-intl";
 import { useIntervalWhenVisible } from "@/components/services/service-content-wrapper";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -224,6 +225,7 @@ function IntegrationMesh() {
 
 // API Playground
 function ApiPlayground() {
+  const t = useTranslations("servicesContent.integrations");
   const [method, setMethod] = useState<"GET" | "POST" | "PUT" | "DELETE">("GET");
   const [endpoint, setEndpoint] = useState("/api/v1/users");
   const [response, setResponse] = useState<any>(null);
@@ -274,7 +276,7 @@ function ApiPlayground() {
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <Code2 className="w-5 h-5 text-swarp-blue" />
-          <h4 className="text-sm font-bold text-white">API Playground</h4>
+          <h4 className="text-sm font-bold text-white">{t("apiDemo.title")}</h4>
         </div>
         <div className="flex items-center gap-1 text-[10px] text-gray-500">
           <div className="w-2 h-2 rounded-full bg-emerald-500" />
@@ -325,12 +327,12 @@ function ApiPlayground() {
       {/* Response Area */}
       <div className="flex-1 bg-[#09090b] rounded-lg border border-white/10 p-3 overflow-hidden flex flex-col">
         <div className="flex items-center justify-between mb-2 text-[10px] text-gray-500 border-b border-white/10 pb-2">
-          <span>response</span>
+          <span>{t("apiDemo.response")}</span>
           {response && (
             <span className={cn(
               response.status < 300 ? "text-emerald-400" : response.status < 400 ? "text-amber-400" : "text-red-400"
             )}>
-              Status: {response.status} • {history[0]?.duration}ms
+              {t("apiDemo.status")}: {response.status} • {history[0]?.duration}ms
             </span>
           )}
         </div>
@@ -519,6 +521,7 @@ function ApiMetrics() {
 
 // Main Component
 export function IntegrationsContent() {
+  const t = useTranslations("servicesContent.integrations");
   const [activeTab, setActiveTab] = useState<"mesh" | "playground" | "webhooks">("mesh");
 
   const supportedIntegrations = [
@@ -542,8 +545,8 @@ export function IntegrationsContent() {
     <ServiceContentLayout accentColor="cyan">
       <ServiceHeader
         icon={<Plug className="w-5 h-5" />}
-        title="Integrations"
-        subtitle="APIs & Middleware"
+        title={t("badge")}
+        subtitle={t("description")}
         accentColor="cyan"
       >
         {/* Tabs */}
@@ -561,6 +564,11 @@ export function IntegrationsContent() {
           ))}
         </div>
       </ServiceHeader>
+
+      {/* Main Title */}
+      <div className="px-4 pt-4 pb-2">
+        <h1 className="text-xl font-bold text-white">{t("title")}</h1>
+      </div>
 
       {/* Content */}
       <div className="flex-1 overflow-hidden p-4">

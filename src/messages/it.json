@@ -853,6 +853,219 @@
     "projects": "projects",
     "hoverToExplore": "Hover to explore"
   },
+  "servicesContent": {
+    "common": {
+      "interactiveDemo": "Demo Interattiva",
+      "learnMore": "Scopri di Più",
+      "getStarted": "Inizia Ora",
+      "contactUs": "Contattaci",
+      "features": "Funzionalità",
+      "techStack": "Stack Tecnologico",
+      "deliverables": "Risultati",
+      "timeline": "Timeline"
+    },
+    "aiSystems": {
+      "badge": "Sistemi AI",
+      "title": "AI & Machine Learning",
+      "description": "LLM personalizzati, interfacce chat e automazione intelligente per la tua azienda.",
+      "tabs": {
+        "assistant": "Assistente",
+        "knowledge": "Conoscenza",
+        "ops": "Operazioni"
+      },
+      "assistantDemo": {
+        "title": "Demo Assistente AI",
+        "subtitle": "Modalità + Conoscenza Opzionale + Guardrails",
+        "modes": {
+          "support": "Supporto",
+          "analyst": "Analista",
+          "dev": "Dev"
+        },
+        "pipeline": {
+          "intent": "Intent",
+          "retrieve": "Recupera",
+          "generate": "Genera",
+          "guardrails": "Guardrails",
+          "logs": "Log"
+        },
+        "controls": {
+          "knowledge": "Conoscenza",
+          "guardrails": "Guardrails",
+          "on": "ON",
+          "off": "OFF"
+        },
+        "thinking": "riflettendo…",
+        "citations": "Citazioni",
+        "send": "Invia",
+        "placeholders": {
+          "support": "Chiedi: \"Bozza una risposta per rimborso su abbonamento\"",
+          "analyst": "Chiedi: \"Riassumi KPI e cosa è cambiato rispetto al mese scorso\"",
+          "dev": "Chiedi: \"Come rendiamo RAG veloce + debuggabile?\""
+        }
+      },
+      "knowledgeDemo": {
+        "title": "Ricerca Conoscenza (RAG)",
+        "subtitle": "Cerca documenti → recupera top-K → (opzionale) rerank → cita fonti",
+        "searchPlaceholder": "Cerca nella knowledge base…",
+        "topK": "top-K",
+        "rerank": "Rerank",
+        "retrieved": "Recuperati",
+        "noMatches": "Nessuna corrispondenza — prova \"RAG citations\", \"guardrails\" o \"observability\".",
+        "source": "fonte",
+        "answerPreview": "Anteprima risposta (con citazioni)",
+        "answerDescription": "Ecco come risponde l'assistente quando Conoscenza è attiva.",
+        "tip": "Suggerimento: possiamo integrarlo nei tuoi documenti, help center, ticket, CRM o strumenti interni."
+      },
+      "opsDemo": {
+        "title": "Dashboard Operazioni",
+        "liveMetrics": "Metriche Live",
+        "config": "Configurazione",
+        "metrics": {
+          "latency": "Latenza",
+          "cost": "Costo",
+          "grounding": "Grounding",
+          "errorRate": "Tasso Errore",
+          "tps": "TPS"
+        },
+        "toggles": {
+          "fallback": "Fallback",
+          "cache": "Cache",
+          "pii": "Redazione PII",
+          "jailbreak": "Filtro Jailbreak"
+        }
+      }
+    },
+    "webMobile": {
+      "badge": "Web & Mobile",
+      "title": "Sviluppo Web & Mobile",
+      "description": "Applicazioni ad alta scalabilità con UI/UX di qualità.",
+      "interactiveDemo": "Anteprima Interattiva",
+      "features": {
+        "responsive": "Design Responsive",
+        "performance": "Alte Prestazioni",
+        "pwa": "Supporto PWA",
+        "offline": "Offline First"
+      }
+    },
+    "softwareTools": {
+      "badge": "Strumenti Software",
+      "title": "Developer Tools & CLI",
+      "description": "Strumenti CLI, SDK e software per sviluppatori.",
+      "terminalDemo": {
+        "title": "Demo Terminale",
+        "install": "Installa",
+        "init": "Inizializza",
+        "deploy": "Deploy",
+        "success": "Successo!"
+      }
+    },
+    "blockchain": {
+      "badge": "Blockchain",
+      "title": "Blockchain & Smart Contract",
+      "description": "Smart contract sicuri e protocolli DeFi su Solana.",
+      "features": {
+        "audited": "Codice Auditato",
+        "gas": "Gas Ottimizzato",
+        "multichain": "Multi-chain"
+      }
+    },
+    "security": {
+      "badge": "Sicurezza",
+      "title": "Audit di Sicurezza",
+      "description": "Audit di sicurezza completi e penetration testing.",
+      "auditDemo": {
+        "title": "Report Audit",
+        "critical": "Critico",
+        "high": "Alto",
+        "medium": "Medio",
+        "low": "Basso",
+        "passed": "Superato",
+        "checks": "Controlli Sicurezza"
+      }
+    },
+    "hardware": {
+      "badge": "Hardware",
+      "title": "Hardware & IoT",
+      "description": "Progettazione hardware personalizzata e soluzioni IoT.",
+      "specs": {
+        "processor": "Processore",
+        "memory": "Memoria",
+        "storage": "Archiviazione",
+        "connectivity": "Connettività"
+      }
+    },
+    "cloudDevOps": {
+      "badge": "Cloud & DevOps",
+      "title": "Infrastruttura Cloud & DevOps",
+      "description": "Infrastruttura scalabile su AWS, GCP e Kubernetes.",
+      "infraDemo": {
+        "title": "Visualizzatore Infrastruttura",
+        "clusters": "Cluster",
+        "pods": "Pod",
+        "services": "Servizi",
+        "ingress": "Ingress",
+        "scaling": "Auto-scaling"
+      }
+    },
+    "engineering": {
+      "badge": "Engineering",
+      "title": "Team di Sviluppo Dedicati",
+      "description": "Rafforza il tuo team con ingegneri senior.",
+      "teamDemo": {
+        "title": "Struttura Team",
+        "frontend": "Frontend",
+        "backend": "Backend",
+        "devops": "DevOps",
+        "pm": "Product Manager"
+      }
+    },
+    "integrations": {
+      "badge": "Integrazioni",
+      "title": "API & Integrazioni",
+      "description": "Sviluppo API robusto e integrazioni di terze parti.",
+      "apiDemo": {
+        "title": "API Playground",
+        "request": "Richiesta",
+        "response": "Risposta",
+        "status": "Stato",
+        "latency": "Latenza"
+      }
+    },
+    "dataAnalytics": {
+      "badge": "Dati & Analytics",
+      "title": "Data Pipeline & BI",
+      "description": "Modern data stack con analisi in tempo reale.",
+      "dashboardDemo": {
+        "title": "Dashboard Analytics",
+        "realtime": "Real-time",
+        "reports": "Report",
+        "exports": "Esportazioni"
+      }
+    },
+    "qaTesting": {
+      "badge": "QA & Testing",
+      "title": "Quality Assurance",
+      "description": "Testing end-to-end e site reliability engineering.",
+      "testDemo": {
+        "title": "Risultati Test",
+        "passed": "Superato",
+        "failed": "Fallito",
+        "pending": "In Attesa",
+        "coverage": "Copertura"
+      }
+    },
+    "uiuxDesign": {
+      "badge": "UI/UX Design",
+      "title": "Design System & Prototipazione",
+      "description": "Design system completi e UI kit accessibili.",
+      "designDemo": {
+        "title": "Design System",
+        "components": "Componenti",
+        "tokens": "Token",
+        "guidelines": "Linee Guida"
+      }
+    }
+  },
   "legalLayout": {
     "back": "Back",
     "close": "Close",

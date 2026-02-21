@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useTranslations } from "next-intl";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Palette, Type, Layout, Smartphone, Monitor, Tablet,
@@ -32,7 +33,7 @@ interface ComponentItem {
 }
 
 // Design System Viewer
-function DesignSystem() {
+function DesignSystem({ title }: { title: string }) {
   const [selectedComponent, setSelectedComponent] = useState("button");
   const [copied, setCopied] = useState(false);
 
@@ -69,7 +70,7 @@ function DesignSystem() {
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <Component className="w-5 h-5 text-swarp-purple" />
-          <h4 className="text-sm font-bold text-white">Design System</h4>
+          <h4 className="text-sm font-bold text-white">{title}</h4>
         </div>
         <div className="flex gap-1">
           {Object.keys(components).map((key) => (
@@ -490,6 +491,7 @@ function AccessibilityCheck() {
 
 // Main Component
 export function UIUXDesignContent() {
+  const t = useTranslations("servicesContent.uiuxDesign");
   const [activeTab, setActiveTab] = useState<"components" | "tokens" | "responsive">("components");
 
   const tools = [
@@ -505,16 +507,16 @@ export function UIUXDesignContent() {
         {/* Header */}
         <ServiceHeader
           icon={<Palette className="w-5 h-5" />}
-          title="UI/UX Design"
-          subtitle="Systems & Prototyping"
+          title={t("badge")}
+          subtitle={t("title")}
           accentColor="purple"
         >
           {/* Tabs */}
           <div className="flex bg-black/40 p-1 rounded-lg border border-white/10">
             {[
-              { id: "components", label: "Components", icon: Component },
-              { id: "tokens", label: "Tokens", icon: Grid3X3 },
-              { id: "responsive", label: "Layout", icon: Layout },
+              { id: "components", label: t("designDemo.components"), icon: Component },
+              { id: "tokens", label: t("designDemo.tokens"), icon: Grid3X3 },
+              { id: "responsive", label: t("designDemo.guidelines"), icon: Layout },
             ].map((tab) => (
               <ServiceTab
                 key={tab.id}
@@ -534,7 +536,7 @@ export function UIUXDesignContent() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 h-full">
             {/* Left Column */}
             <div className="h-full overflow-y-auto custom-scrollbar space-y-4">
-              {activeTab === "components" && <DesignSystem />}
+              {activeTab === "components" && <DesignSystem title={t("designDemo.title")} />}
               {activeTab === "tokens" && (
                 <>
                   <ColorSystem />
@@ -551,7 +553,7 @@ export function UIUXDesignContent() {
 
             {/* Right Column */}
             <div className="space-y-4 flex flex-col h-full">
-              {activeTab !== "components" && <DesignSystem />}
+              {activeTab !== "components" && <DesignSystem title={t("designDemo.title")} />}
               {activeTab === "components" && (
                 <>
                   <ColorSystem />
@@ -592,8 +594,8 @@ export function UIUXDesignContent() {
 
               {/* CTA */}
               <ServiceCTA
-                title="Design System Audit"
-                description="Complete in 2-4 weeks"
+                title={t("cta.title")}
+                description={t("cta.description")}
                 accentColor="purple"
               />
             </div>

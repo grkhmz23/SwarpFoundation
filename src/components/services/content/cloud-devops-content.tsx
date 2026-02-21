@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
+import { useTranslations } from "next-intl";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Cloud, Server, Container, Database, Globe, Cpu, Activity, Layers,
@@ -92,7 +93,7 @@ const ProgressBar = ({ value, max = 100, color = "cyan", size = "sm" }: { value:
 
 // ==================== KUBERNETES CLUSTER ====================
 
-function K8sCluster() {
+function K8sCluster({ t }: { t: (key: string) => string }) {
   const [nodes, setNodes] = useState<Node[]>([
     { id: "master-1", name: "control-plane-1", type: "master", status: "healthy", cpu: 42, memory: 58, region: "us-east-1", pods: 12 },
     { id: "worker-1", name: "worker-node-1", type: "worker", status: "healthy", cpu: 35, memory: 48, region: "us-east-1", pods: 18 },
@@ -170,7 +171,7 @@ function K8sCluster() {
             <Layers className="w-4 h-4 text-swarp-blue" />
           </div>
           <div>
-            <h4 className="text-sm font-bold text-white">Kubernetes Cluster</h4>
+            <h4 className="text-sm font-bold text-white">{t("infraDemo.title")}</h4>
             <p className="text-[10px] text-gray-500">Live cluster visualization</p>
           </div>
         </div>
@@ -943,6 +944,7 @@ spec:
 // ==================== MAIN COMPONENT ====================
 
 export function CloudDevOpsContent() {
+  const t = useTranslations("servicesContent.cloudDevOps");
   const [activeView, setActiveView] = useState<"cluster" | "pipeline" | "metrics">("cluster");
 
   const services = [
@@ -969,8 +971,8 @@ export function CloudDevOpsContent() {
       {/* Header with View Tabs */}
       <ServiceHeader
         icon={<Cloud className="w-5 h-5" />}
-        title="Cloud & DevOps"
-        subtitle="AWS/GCP & K8s"
+        title={t("badge")}
+        subtitle={t("title")}
         accentColor="cyan"
       >
         <div className="flex bg-black/40 p-1 rounded-xl border border-white/10">
@@ -1002,7 +1004,7 @@ export function CloudDevOpsContent() {
                 transition={{ duration: 0.2 }}
                 className="h-full"
               >
-                {activeView === "cluster" && <K8sCluster />}
+                {activeView === "cluster" && <K8sCluster t={t} />}
                 {activeView === "pipeline" && <CICDPipeline />}
                 {activeView === "metrics" && <InfraMetrics />}
               </motion.div>

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useTranslations } from "next-intl";
 import { useIntervalWhenVisible } from "@/components/services/service-content-wrapper";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -41,7 +42,7 @@ interface Bug {
 }
 
 // Test Runner Dashboard
-function TestRunner() {
+function TestRunner({ passedLabel, coverageLabel }: { passedLabel: string; coverageLabel: string }) {
   const [suites, setSuites] = useState<TestSuite[]>([
     { id: "1", name: "Unit Tests", tests: 156, passed: 148, failed: 2, skipped: 6, duration: 45, status: "passed" },
     { id: "2", name: "Integration Tests", tests: 89, passed: 85, failed: 4, skipped: 0, duration: 120, status: "failed" },
@@ -115,11 +116,11 @@ function TestRunner() {
         </div>
         <div className="p-2 rounded-lg bg-black/40 text-center">
           <div className="text-lg font-bold text-emerald-400">{totalPassed}</div>
-          <div className="text-[9px] text-gray-500">Passed</div>
+          <div className="text-[9px] text-gray-500">{passedLabel}</div>
         </div>
         <div className="p-2 rounded-lg bg-black/40 text-center">
           <div className="text-lg font-bold text-swarp-blue">{coverage}%</div>
-          <div className="text-[9px] text-gray-500">Coverage</div>
+          <div className="text-[9px] text-gray-500">{coverageLabel}</div>
         </div>
       </div>
 
@@ -472,6 +473,7 @@ function SREDashboard() {
 
 // Main Component
 export function QATestingContent() {
+  const t = useTranslations("servicesContent.qaTesting");
   const [activeTab, setActiveTab] = useState<"tests" | "bugs" | "load">("tests");
 
   const tools = [
@@ -487,8 +489,8 @@ export function QATestingContent() {
         {/* Header */}
         <ServiceHeader
           icon={<Bug className="w-5 h-5" />}
-          title="QA & Testing"
-          subtitle="Automation & SRE"
+          title={t("badge")}
+          subtitle={t("title")}
           accentColor="cyan"
         >
           {/* Tabs */}
@@ -499,7 +501,7 @@ export function QATestingContent() {
               accentColor="cyan"
             >
               <FileCode className="w-3.5 h-3.5" />
-              Tests
+              {t("testDemo.title")}
             </ServiceTab>
             <ServiceTab
               isActive={activeTab === "bugs"}
@@ -507,7 +509,7 @@ export function QATestingContent() {
               accentColor="cyan"
             >
               <Bug className="w-3.5 h-3.5" />
-              Bugs
+              {t("testDemo.failed")}
             </ServiceTab>
             <ServiceTab
               isActive={activeTab === "load"}
@@ -515,7 +517,7 @@ export function QATestingContent() {
               accentColor="cyan"
             >
               <Gauge className="w-3.5 h-3.5" />
-              Load
+              {t("testDemo.pending")}
             </ServiceTab>
           </div>
         </ServiceHeader>
@@ -525,7 +527,7 @@ export function QATestingContent() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 h-full">
             {/* Left Column */}
             <div className="h-full">
-              {activeTab === "tests" && <TestRunner />}
+              {activeTab === "tests" && <TestRunner passedLabel={t("testDemo.passed")} coverageLabel={t("testDemo.coverage")} />}
               {activeTab === "bugs" && <BugTracker />}
               {activeTab === "load" && <LoadTesting />}
             </div>
@@ -533,7 +535,7 @@ export function QATestingContent() {
             {/* Right Column */}
             <div className="space-y-4 flex flex-col h-full">
               {activeTab !== "load" && <LoadTesting />}
-              {activeTab === "load" && <TestRunner />}
+              {activeTab === "load" && <TestRunner passedLabel={t("testDemo.passed")} coverageLabel={t("testDemo.coverage")} />}
               <SREDashboard />
 
               {/* Tools Grid - Using ServiceCard */}
@@ -559,7 +561,7 @@ export function QATestingContent() {
                 {/* Stats */}
                 <div className="mt-4 grid grid-cols-3 gap-2">
                   {[
-                    { label: "Coverage", value: "87%", color: "emerald" },
+                    { label: t("testDemo.coverage"), value: "87%", color: "emerald" },
                     { label: "Tests", value: "291", color: "swarp-blue" },
                     { label: "Uptime", value: "99.9%", color: "swarp-cyan" },
                   ].map((stat) => (
@@ -575,7 +577,7 @@ export function QATestingContent() {
 
               {/* CTA - Using ServiceCTA */}
               <ServiceCTA
-                title="Zero Bug Policy"
+                title={t("description")}
                 description="Ship with confidence"
                 accentColor="cyan"
               />

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useTranslations } from "next-intl";
 import { useIntervalWhenVisible } from "@/components/services/service-content-wrapper";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -414,6 +415,7 @@ function WarehouseSchema() {
 
 // Main Component
 export function DataAnalyticsContent() {
+  const t = useTranslations("servicesContent.dataAnalytics");
   const [activeTab, setActiveTab] = useState<"pipeline" | "warehouse" | "queries">("pipeline");
 
   const tools = [
@@ -435,8 +437,8 @@ export function DataAnalyticsContent() {
         {/* Header */}
         <ServiceHeader
           icon={<BarChart3 className="w-5 h-5" />}
-          title="Data & Analytics"
-          subtitle="Pipelines & BI"
+          title={t("badge")}
+          subtitle={t("title")}
           accentColor="purple"
         >
           {/* Tabs */}
@@ -476,7 +478,7 @@ export function DataAnalyticsContent() {
               )}
 
               {/* Tools Grid */}
-              <ServiceCard accentColor="purple" title="Data Stack" className="flex-1">
+              <ServiceCard accentColor="purple" title={t("dashboardDemo.title")} className="flex-1">
                 <div className="grid grid-cols-2 gap-2">
                   {tools.map((tool) => (
                     <motion.div
@@ -508,8 +510,8 @@ export function DataAnalyticsContent() {
 
               {/* CTA */}
               <ServiceCTA
-                title="Unlock Your Data"
-                description="Modern data stack in 2 weeks"
+                title={t("dashboardDemo.realtime")}
+                description={t("description")}
                 accentColor="purple"
               />
             </div>

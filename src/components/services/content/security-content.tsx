@@ -2,6 +2,7 @@
 
 import React, { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTranslations } from "next-intl";
 import { useIntervalWhenVisible } from "@/components/services/service-content-wrapper";
 import {
   Shield, ShieldAlert, ShieldCheck, Terminal, Search, Bug, Lock, Unlock,
@@ -39,7 +40,7 @@ interface Threat {
 }
 
 // Live Threat Radar Component
-function ThreatRadar() {
+function ThreatRadar({ t }: { t: (key: string) => string }) {
   const [threats, setThreats] = useState<Threat[]>([]);
   const [isScanning, setIsScanning] = useState(true);
 
@@ -97,7 +98,7 @@ function ThreatRadar() {
         {[
           { label: "Blocked", value: "1,284", color: "emerald" },
           { label: "Active", value: "3", color: "red" },
-          { label: "Severity", value: "High", color: "orange" },
+          { label: "Severity", value: t("auditDemo.high"), color: "orange" },
         ].map((stat) => (
           <div key={stat.label} className="bg-black/40 rounded-lg p-2 text-center border border-white/5">
             <div className={cn("text-lg font-bold", `text-${stat.color}-400`)}>{stat.value}</div>
@@ -130,7 +131,7 @@ function ThreatRadar() {
               </div>
               <div className="flex items-center gap-1">
                 <span className="text-[8px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-                  BLOCKED
+                  {t("auditDemo.passed")}
                 </span>
               </div>
             </motion.div>
@@ -148,7 +149,7 @@ function ThreatRadar() {
 }
 
 // Vulnerability Scanner
-function VulnScanner() {
+function VulnScanner({ t }: { t: (key: string) => string }) {
   const [scanning, setScanning] = useState(false);
   const [progress, setProgress] = useState(0);
   const [vulns, setVulns] = useState<Vulnerability[]>([
@@ -247,7 +248,7 @@ function VulnScanner() {
                 </div>
               </div>
               <span className={cn("text-[9px] px-2 py-0.5 rounded border uppercase font-bold", getSeverityColor(vuln.severity))}>
-                {vuln.severity}
+                {t(`auditDemo.${vuln.severity}`)}
               </span>
             </div>
           </motion.div>
@@ -257,9 +258,9 @@ function VulnScanner() {
       {/* Summary */}
       <div className="mt-4 pt-3 border-t border-white/10 grid grid-cols-4 gap-2">
         {[
-          { label: "Critical", value: "1", color: "red" },
-          { label: "High", value: "1", color: "orange" },
-          { label: "Medium", value: "2", color: "yellow" },
+          { label: t("auditDemo.critical"), value: "1", color: "red" },
+          { label: t("auditDemo.high"), value: "1", color: "orange" },
+          { label: t("auditDemo.medium"), value: "2", color: "yellow" },
           { label: "Fixed", value: "1", color: "emerald" },
         ].map((item) => (
           <div key={item.label} className="text-center">
@@ -348,7 +349,7 @@ function PentestTerminal() {
 }
 
 // Security Score Card
-function SecurityScore() {
+function SecurityScore({ t }: { t: (key: string) => string }) {
   const [score, setScore] = useState(0);
   const targetScore = 87;
 
@@ -375,7 +376,7 @@ function SecurityScore() {
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <ShieldCheck className="w-5 h-5 text-cyan-400" />
-          <h4 className="text-sm font-bold text-white">Security Score</h4>
+          <h4 className="text-sm font-bold text-white">{t("auditDemo.checks")}</h4>
         </div>
         <div className="text-2xl font-bold text-cyan-400">{score}<span className="text-sm text-gray-500">/100</span></div>
       </div>
@@ -432,6 +433,7 @@ function SecurityScore() {
 
 // Main Component
 export function SecurityContent() {
+  const t = useTranslations("servicesContent.security");
   const [activeTab, setActiveTab] = useState<"overview" | "pentest" | "compliance">("overview");
 
   const services = [
@@ -453,7 +455,7 @@ export function SecurityContent() {
         {/* Header with Tabs */}
         <ServiceHeader
           icon={<ShieldAlert className="w-5 h-5" />}
-          title="Security"
+          title={t("badge")}
           subtitle="Audit & Pen-testing"
           accentColor="cyan"
         >
@@ -480,9 +482,9 @@ export function SecurityContent() {
             <div className="space-y-4 overflow-y-auto custom-scrollbar">
               {activeTab === "overview" && (
                 <>
-                  <ThreatRadar />
+                  <ThreatRadar t={t} />
                   <div className="grid grid-cols-2 gap-4">
-                    <SecurityScore />
+                    <SecurityScore t={t} />
                     <ServiceCard accentColor="cyan">
                       <h4 className="text-sm font-bold text-white mb-3">OWASP Coverage</h4>
                       <div className="space-y-2">
@@ -516,7 +518,7 @@ export function SecurityContent() {
 
             {/* Right Column */}
             <div className="space-y-4">
-              <VulnScanner />
+              <VulnScanner t={t} />
 
               {/* Services Grid */}
               <ServiceCard accentColor="cyan" title="Our Services">
@@ -537,7 +539,7 @@ export function SecurityContent() {
 
               {/* CTA */}
               <ServiceCTA
-                title="Request Security Audit"
+                title={t("auditDemo.title")}
                 description="Get detailed report in 2-4 weeks"
                 accentColor="cyan"
               />

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useTranslations } from "next-intl";
 import VectorPad from "@/components/ui/vector-pad";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
@@ -68,6 +69,7 @@ function BlockchainServiceCard({ title, icon, description, lightSource, index }:
 
 // Main Blockchain Content
 export function BlockchainContent() {
+  const t = useTranslations("servicesContent.blockchain");
   const [lightSource, setLightSource] = useState({ x: 50, y: 50 });
   const [isLocked, setIsLocked] = useState(false);
 
@@ -121,7 +123,7 @@ export function BlockchainContent() {
           <div className="pt-12 pb-8 px-6 text-center pointer-events-auto">
             <ServiceHeader
               icon={<Blocks className="w-5 h-5" />}
-              title="Blockchain"
+              title={t("badge")}
               subtitle="DeFi & Smart Contracts"
               accentColor="purple"
             />
@@ -137,16 +139,15 @@ export function BlockchainContent() {
             </div>
 
             <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-b from-white via-swarp-blue/80 to-swarp-blue/20 drop-shadow-[0_0_30px_rgba(0,212,255,0.3)] mb-4">
-              BLOCKCHAIN & WEB3
+              {t("title")}
             </h1>
 
             <p className="text-sm text-swarp-blue/60 max-w-lg mx-auto leading-relaxed mb-6">
-              We architect high-performance DApps, smart contracts, and Web3 dashboards.
-              Interact with the controller to calibrate your requirements.
+              {t("description")}
             </p>
 
             <div className="flex items-center justify-center gap-3">
-              {["Audited Code", "Gas Optimized", "Multi-chain"].map((badge) => (
+              {[t("features.audited"), t("features.gas"), t("features.multichain")].map((badge) => (
                 <span
                   key={badge}
                   className="px-3 py-1 rounded-full border border-swarp-blue/30 bg-swarp-blue/10 text-[10px] text-swarp-blue font-mono"

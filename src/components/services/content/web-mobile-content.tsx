@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import {
@@ -139,6 +140,7 @@ function Switch({ checked, onCheckedChange }: { checked: boolean; onCheckedChang
 
 // --- Main Content ---
 export function WebMobileContent() {
+  const t = useTranslations("servicesContent.webMobile");
   const [features, setFeatures] = useState({
     auth: true,
     payments: true,
@@ -163,14 +165,14 @@ export function WebMobileContent() {
         {/* Header */}
         <ServiceHeader
           icon={<Globe className="w-5 h-5" />}
-          title="Web & Mobile"
-          subtitle="High-scale applications"
+          title={t("badge")}
+          subtitle={t("description")}
           accentColor="cyan"
         />
 
         <div className="text-center mb-8 mt-6">
-          <h1 className="text-2xl font-bold text-white mb-2">Interactive Previews</h1>
-          <p className="text-xs text-gray-400">Scroll inside browser or hover on phone</p>
+          <h1 className="text-2xl font-bold text-white mb-2">{t("title")}</h1>
+          <p className="text-xs text-gray-400">{t("interactiveDemo")}</p>
         </div>
 
         <div className="flex items-center justify-center gap-6 mb-10">
@@ -201,10 +203,10 @@ export function WebMobileContent() {
           <h2 className="text-lg font-bold text-white mb-4 text-center">What We Deliver</h2>
           <div className="grid grid-cols-2 gap-3">
             {[
-              { icon: LayoutTemplate, text: "UI/UX Design System" },
-              { icon: Smartphone, text: "iOS & Android Apps" },
-              { icon: Server, text: "Scalable Backend" },
-              { icon: Zap, text: "Deploy & Monitor" },
+              { icon: LayoutTemplate, text: t("features.responsive") },
+              { icon: Smartphone, text: t("features.performance") },
+              { icon: Server, text: t("features.pwa") },
+              { icon: Zap, text: t("features.offline") },
             ].map((item, i) => (
               <ServiceCard key={i} accentColor="cyan" className="flex items-center gap-2 !p-3">
                 <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/5">

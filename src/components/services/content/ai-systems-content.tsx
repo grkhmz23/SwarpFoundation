@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 import { useIntervalWhenVisible } from "@/components/services/service-content-wrapper";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -257,10 +258,12 @@ function PipelineBar({
   stages,
   activeIdx,
   status,
+  t,
 }: {
-  stages: { id: PipelineStage; label: string }[];
+  stages: { id: PipelineStage; labelKey: string }[];
   activeIdx: number;
   status: "idle" | "running" | "done";
+  t: (key: string) => string;
 }) {
   return (
     <div className="flex flex-wrap items-center gap-2">
@@ -292,7 +295,7 @@ function PipelineBar({
             ) : (
               <span className="h-2 w-2 rounded-full bg-white/20" />
             )}
-            {s.label}
+            {t(s.labelKey)}
           </div>
         );
       })}
@@ -317,8 +320,11 @@ function useClipboardToast() {
 /** Assistant demo: mode + optional KB + guardrails + realistic pipeline steps */
 function AssistantDemo({
   kbQuerySeed,
+  t,
 }: {
   kbQuerySeed: string;
+  t: (key: string) => string;
+  tc: (key: string) => string;
 }) {
   const [mode, setMode] = useState<AgentMode>("support");
   const [useKB, setUseKB] = useState(true);
@@ -336,11 +342,11 @@ function AssistantDemo({
 
   const stages = useMemo(
     () => [
-      { id: "intent" as const, label: "Intent" },
-      { id: "retrieve" as const, label: "Retrieve" },
-      { id: "generate" as const, label: "Generate" },
-      { id: "guardrails" as const, label: "Guardrails" },
-      { id: "log" as const, label: "Logs" },
+      { id: "intent" as const, labelKey: "assistantDemo.pipeline.intent" },
+      { id: "retrieve" as const, labelKey: "assistantDemo.pipeline.retrieve" },
+      { id: "generate" as const, labelKey: "assistantDemo.pipeline.generate" },
+      { id: "guardrails" as const, labelKey: "assistantDemo.pipeline.guardrails" },
+      { id: "log" as const, labelKey: "assistantDemo.pipeline.logs" },
     ],
     []
   );
@@ -378,10 +384,10 @@ function AssistantDemo({
 
     const modePrefix =
       mode === "support"
-        ? "Support"
+        ? t("assistantDemo.modes.support")
         : mode === "analyst"
-        ? "Analyst"
-        : "Dev";
+        ? t("assistantDemo.modes.analyst")
+        : t("assistantDemo.modes.dev");
 
     const base = (() => {
       const lower = trimmed.toLowerCase();
@@ -441,11 +447,11 @@ function AssistantDemo({
     const totalSteps = stages.length;
 
     let idx = 0;
-    const t = window.setInterval(() => {
+    const timer = window.setInterval(() => {
       idx += 1;
       setPipelineIdx(clamp(idx, 0, totalSteps - 1));
       if (idx >= totalSteps - 1) {
-        window.clearInterval(t);
+        window.clearInterval(timer);
         window.setTimeout(() => {
           setPipelineStatus("done");
         }, 180);
@@ -500,6 +506,21 @@ function AssistantDemo({
     el.scrollTop = el.scrollHeight;
   }, [messages, typing]);
 
+  const modeLabels: Record<AgentMode, string> = {
+    support: t("assistantDemo.modes.support"),
+    analyst: t("assistantDemo.modes.analyst"),
+    dev: t("assistantDemo.modes.dev"),
+  };
+
+  const knowledgeLabel = `${t("assistantDemo.controls.knowledge")}: ${useKB ? t("assistantDemo.controls.on") : t("assistantDemo.controls.off")}`;
+  const guardrailsLabel = `${t("assistantDemo.controls.guardrails")}: ${guardrails ? t("assistantDemo.controls.on") : t("assistantDemo.controls.off")}`;
+
+  const placeholderText = mode === "support"
+    ? t("assistantDemo.placeholders.support")
+    : mode === "analyst"
+    ? t("assistantDemo.placeholders.analyst")
+    : t("assistantDemo.placeholders.dev");
+
   return (
     <div className="h-full rounded-xl border border-swarp-blue/20 bg-[#0c0e12] overflow-hidden">
       {/* Header */}
@@ -510,10 +531,10 @@ function AssistantDemo({
           </div>
           <div className="min-w-0">
             <div className="text-sm font-semibold text-white leading-tight">
-              AI Assistant Demo
+              {t("assistantDemo.title")}
             </div>
             <div className="text-[10px] text-swarp-blue/80">
-              Mode + optional Knowledge + Guardrails
+              {t("assistantDemo.subtitle")}
             </div>
           </div>
         </div>
@@ -521,19 +542,19 @@ function AssistantDemo({
         <div className="flex items-center gap-2 shrink-0">
           <Pill
             icon={<Sparkles className="h-3.5 w-3.5" />}
-            label="Support"
+            label={modeLabels.support}
             active={mode === "support"}
             onClick={() => setMode("support")}
           />
           <Pill
             icon={<LineChart className="h-3.5 w-3.5" />}
-            label="Analyst"
+            label={modeLabels.analyst}
             active={mode === "analyst"}
             onClick={() => setMode("analyst")}
           />
           <Pill
             icon={<Settings className="h-3.5 w-3.5" />}
-            label="Dev"
+            label={modeLabels.dev}
             active={mode === "dev"}
             onClick={() => setMode("dev")}
           />
@@ -547,17 +568,18 @@ function AssistantDemo({
             stages={stages}
             activeIdx={pipelineIdx}
             status={pipelineStatus}
+            t={t}
           />
           <div className="flex items-center gap-2">
             <Pill
               icon={<Database className="h-3.5 w-3.5" />}
-              label={useKB ? "Knowledge: ON" : "Knowledge: OFF"}
+              label={knowledgeLabel}
               active={useKB}
               onClick={() => setUseKB((v) => !v)}
             />
             <Pill
               icon={<Shield className="h-3.5 w-3.5" />}
-              label={guardrails ? "Guardrails: ON" : "Guardrails: OFF"}
+              label={guardrailsLabel}
               active={guardrails}
               onClick={() => setGuardrails((v) => !v)}
             />
@@ -614,7 +636,7 @@ function AssistantDemo({
               {m.citations && m.citations.length > 0 && (
                 <div className="mt-2 pt-2 border-t border-white/10">
                   <div className="text-[10px] font-semibold text-swarp-blue/90">
-                    Citations
+                    {t("assistantDemo.citations")}
                   </div>
                   <div className="mt-1 space-y-1">
                     {m.citations.map((c, idx) => (
@@ -670,7 +692,7 @@ function AssistantDemo({
                 transition={{ duration: 0.7, repeat: Infinity, delay: 0.24 }}
               />
               <span className="ml-1 text-[10px] text-swarp-blue/80">
-                thinking…
+                {t("assistantDemo.thinking")}
               </span>
             </div>
           </motion.div>
@@ -687,13 +709,7 @@ function AssistantDemo({
               onKeyDown={(e) => {
                 if (e.key === "Enter") send();
               }}
-              placeholder={
-                mode === "support"
-                  ? 'Ask: "Draft a refund reply for a subscription charge"'
-                  : mode === "analyst"
-                  ? 'Ask: "Summarize KPIs and what changed vs last month"'
-                  : 'Ask: "How do we make RAG fast + debuggable?"'
-              }
+              placeholder={placeholderText}
               className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-xs text-white placeholder:text-gray-600 focus:outline-none focus:border-swarp-blue/35"
             />
           </div>
@@ -702,7 +718,7 @@ function AssistantDemo({
             className="inline-flex items-center gap-1.5 rounded-lg border border-swarp-blue/25 bg-swarp-blue/15 px-3 py-2 text-xs font-semibold text-swarp-blue hover:bg-swarp-blue/20 transition-colors"
           >
             <Send className="h-4 w-4" />
-            Send
+            {t("assistantDemo.send")}
           </button>
         </div>
       </div>
@@ -711,7 +727,7 @@ function AssistantDemo({
 }
 
 /** Knowledge demo: search + topK + rerank + doc viewer */
-function KnowledgeDemo() {
+function KnowledgeDemo({ t }: { t: (key: string) => string }) {
   const [query, setQuery] = useState("How do you ship guardrails in production?");
   const [topK, setTopK] = useState(3);
   const [rerank, setRerank] = useState(true);
@@ -762,6 +778,8 @@ function KnowledgeDemo() {
     [selectedId]
   );
 
+  const rerankLabel = `${t("knowledgeDemo.rerank")}: ${rerank ? t("assistantDemo.controls.on") : t("assistantDemo.controls.off")}`;
+
   return (
     <div className="h-full rounded-xl border border-swarp-blue/20 bg-[#0c0e12] overflow-hidden">
       {/* Header */}
@@ -770,21 +788,21 @@ function KnowledgeDemo() {
           <div className="min-w-0">
             <div className="text-sm font-semibold text-white flex items-center gap-2">
               <Database className="h-4 w-4 text-swarp-blue" />
-              Knowledge Search (RAG)
+              {t("knowledgeDemo.title")}
             </div>
             <div className="text-[10px] text-gray-500">
-              Search docs → retrieve top-K → (optional) rerank → cite sources
+              {t("knowledgeDemo.subtitle")}
             </div>
           </div>
           <div className="flex items-center gap-2 shrink-0">
             <Pill
               icon={<CheckCircle2 className="h-3.5 w-3.5" />}
-              label={`top-K: ${topK}`}
+              label={`${t("knowledgeDemo.topK")}: ${topK}`}
               active
             />
             <Pill
               icon={<Zap className="h-3.5 w-3.5" />}
-              label={rerank ? "Rerank: ON" : "Rerank: OFF"}
+              label={rerankLabel}
               active={rerank}
               onClick={() => setRerank((v) => !v)}
             />
@@ -798,7 +816,7 @@ function KnowledgeDemo() {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               className="w-full rounded-lg border border-white/10 bg-white/5 pl-9 pr-3 py-2 text-xs text-white placeholder:text-gray-600 focus:outline-none focus:border-swarp-blue/35"
-              placeholder="Search the knowledge base…"
+              placeholder={t("knowledgeDemo.searchPlaceholder")}
             />
           </div>
 
@@ -827,12 +845,12 @@ function KnowledgeDemo() {
         <div className="border-r border-white/10 overflow-y-auto custom-scrollbar">
           <div className="p-3">
             <div className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider">
-              Retrieved
+              {t("knowledgeDemo.retrieved")}
             </div>
             <div className="mt-2 space-y-2">
               {results.length === 0 ? (
                 <div className="rounded-lg border border-white/10 bg-white/5 p-3 text-xs text-gray-400">
-                  No matches yet — try &quot;RAG citations&quot;, &quot;guardrails&quot;, or &quot;observability&quot;.
+                  {t("knowledgeDemo.noMatches")}
                 </div>
               ) : (
                 results.map((r) => {
@@ -863,12 +881,12 @@ function KnowledgeDemo() {
                         {r.note}
                       </div>
                       <div className="mt-2 flex flex-wrap gap-1.5">
-                        {r.doc.tags.slice(0, 3).map((t) => (
+                        {r.doc.tags.slice(0, 3).map((tag) => (
                           <span
-                            key={`${r.doc.id}-${t}`}
+                            key={`${r.doc.id}-${tag}`}
                             className="rounded-full border border-white/10 bg-black/20 px-2 py-0.5 text-[9px] text-gray-400"
                           >
-                            {t}
+                            {tag}
                           </span>
                         ))}
                       </div>
@@ -894,7 +912,7 @@ function KnowledgeDemo() {
               </div>
               <span className="inline-flex items-center gap-1.5 rounded-lg border border-swarp-blue/25 bg-swarp-blue/12 px-2.5 py-1 text-[10px] font-semibold text-swarp-blue">
                 <FileText className="h-3.5 w-3.5" />
-                source
+                {t("knowledgeDemo.source")}
               </span>
             </div>
 
@@ -904,10 +922,10 @@ function KnowledgeDemo() {
 
             <div className="mt-4 rounded-xl border border-white/10 bg-black/25 p-3">
               <div className="text-xs font-semibold text-white">
-                Answer preview (with citations)
+                {t("knowledgeDemo.answerPreview")}
               </div>
               <div className="mt-1 text-[10px] text-gray-500">
-                This is how the assistant answers when Knowledge is enabled.
+                {t("knowledgeDemo.answerDescription")}
               </div>
 
               <div className="mt-3 rounded-lg border border-swarp-blue/20 bg-swarp-blue/10 p-3">
@@ -917,7 +935,7 @@ function KnowledgeDemo() {
                   guardrails and keep audit logs so you can reproduce answers.
                 </div>
                 <div className="mt-2 text-[10px] font-semibold text-swarp-blue">
-                  Citations
+                  {t("assistantDemo.citations")}
                 </div>
                 <div className="mt-1 space-y-1">
                   {[selected, ...KB_DOCS.filter((d) => d.id !== selected.id).slice(0, 1)].map(
@@ -939,7 +957,7 @@ function KnowledgeDemo() {
               </div>
 
               <div className="mt-3 text-[9px] text-gray-600">
-                Tip: we can plug this into your docs, help center, tickets, CRM, or internal tools.
+                {t("knowledgeDemo.tip")}
               </div>
             </div>
           </div>
@@ -950,7 +968,7 @@ function KnowledgeDemo() {
 }
 
 /** Ops demo: live metrics + config toggles (router, fallback, budgets, SLO) */
-function OpsDemo() {
+function OpsDemo({ t }: { t: (key: string) => string }) {
   const [live, setLive] = useState(true);
 
   const [fallback, setFallback] = useState(true);
@@ -1006,6 +1024,8 @@ function OpsDemo() {
 
   const { copied, copy } = useClipboardToast();
 
+  const liveLabel = `Live: ${live ? t("assistantDemo.controls.on") : t("assistantDemo.controls.off")}`;
+
   return (
     <div className="h-full rounded-xl border border-swarp-blue/20 bg-[#0c0e12] overflow-hidden">
       {/* Header */}
@@ -1014,7 +1034,7 @@ function OpsDemo() {
           <div className="min-w-0">
             <div className="text-sm font-semibold text-white flex items-center gap-2">
               <LineChart className="h-4 w-4 text-swarp-blue" />
-              Production Ops
+              {t("opsDemo.title")}
             </div>
             <div className="text-[10px] text-gray-500">
               Monitoring, routing, cost controls, and safe deploy patterns.
@@ -1023,7 +1043,7 @@ function OpsDemo() {
           <div className="flex items-center gap-2 shrink-0">
             <Pill
               icon={<Play className="h-3.5 w-3.5" />}
-              label={live ? "Live: ON" : "Live: OFF"}
+              label={liveLabel}
               active={live}
               onClick={() => setLive((v) => !v)}
             />
@@ -1048,7 +1068,7 @@ function OpsDemo() {
         <div className="p-4 border-r border-white/10 overflow-y-auto custom-scrollbar space-y-3">
           <div className="grid grid-cols-2 gap-2">
             <div className="rounded-xl border border-white/10 bg-white/5 p-3">
-              <div className="text-[10px] text-gray-500">p95 latency</div>
+              <div className="text-[10px] text-gray-500">{t("opsDemo.metrics.latency")}</div>
               <div className="mt-1 flex items-end justify-between gap-2">
                 <div className="text-xl font-bold text-white">
                   {lat}
@@ -1064,7 +1084,7 @@ function OpsDemo() {
             </div>
 
             <div className="rounded-xl border border-white/10 bg-white/5 p-3">
-              <div className="text-[10px] text-gray-500">unit cost / request</div>
+              <div className="text-[10px] text-gray-500">{t("opsDemo.metrics.cost")}</div>
               <div className="mt-1 text-xl font-bold text-white">
                 ${cost.toFixed(3)}
               </div>
@@ -1074,7 +1094,7 @@ function OpsDemo() {
             </div>
 
             <div className="rounded-xl border border-white/10 bg-white/5 p-3">
-              <div className="text-[10px] text-gray-500">grounding score</div>
+              <div className="text-[10px] text-gray-500">{t("opsDemo.metrics.grounding")}</div>
               <div className="mt-1 text-xl font-bold text-white">
                 {(ground * 100).toFixed(0)}
                 <span className="text-[10px] text-gray-500 ml-1">/100</span>
@@ -1085,7 +1105,7 @@ function OpsDemo() {
             </div>
 
             <div className="rounded-xl border border-white/10 bg-white/5 p-3">
-              <div className="text-[10px] text-gray-500">error rate</div>
+              <div className="text-[10px] text-gray-500">{t("opsDemo.metrics.errorRate")}</div>
               <div className="mt-1 text-xl font-bold text-white">
                 {err.toFixed(1)}
                 <span className="text-[10px] text-gray-500 ml-1">%</span>
@@ -1120,29 +1140,29 @@ function OpsDemo() {
           <div className="rounded-xl border border-white/10 bg-white/5 p-3">
             <div className="text-xs font-semibold text-white flex items-center gap-2">
               <Shield className="h-4 w-4 text-swarp-blue" />
-              Production switches
+              {t("opsDemo.config")}
             </div>
             <div className="mt-3 space-y-2">
               <ToggleRow
-                label="Fallback model"
+                label={t("opsDemo.toggles.fallback")}
                 desc="Auto-route on timeouts or tool failures"
                 enabled={fallback}
                 onChange={setFallback}
               />
               <ToggleRow
-                label="Prompt caching"
+                label={t("opsDemo.toggles.cache")}
                 desc="Reduce cost for repeat requests"
                 enabled={cache}
                 onChange={setCache}
               />
               <ToggleRow
-                label="PII redaction"
+                label={t("opsDemo.toggles.pii")}
                 desc="Mask sensitive data before logging"
                 enabled={pii}
                 onChange={setPii}
               />
               <ToggleRow
-                label="Jailbreak filter"
+                label={t("opsDemo.toggles.jailbreak")}
                 desc="Block prompt-injection patterns"
                 enabled={jailbreak}
                 onChange={setJailbreak}
@@ -1241,6 +1261,14 @@ function OpsDemo() {
 
 export function AISystemsContent() {
   const [tab, setTab] = useState<Tab>("assistant");
+  const t = useTranslations("servicesContent.aiSystems");
+  const tc = useTranslations("servicesContent.common");
+
+  const tabLabels = {
+    assistant: t("tabs.assistant"),
+    knowledge: t("tabs.knowledge"),
+    ops: t("tabs.ops"),
+  };
 
   return (
     <ServiceContentLayout accentColor="cyan">
@@ -1248,8 +1276,8 @@ export function AISystemsContent() {
         {/* Top header */}
         <ServiceHeader
           icon={<Bot className="h-5 w-5" />}
-          title="AI Systems"
-          subtitle="LLM & Chat Interfaces"
+          title={t("badge")}
+          subtitle={t("title")}
           accentColor="cyan"
         >
           <div className="flex items-center gap-2 rounded-lg border border-white/10 bg-black/35 p-1">
@@ -1259,7 +1287,7 @@ export function AISystemsContent() {
               accentColor="cyan"
             >
               <Bot className="h-3.5 w-3.5" />
-              Assistant
+              {tabLabels.assistant}
             </ServiceTab>
             <ServiceTab
               isActive={tab === "knowledge"}
@@ -1267,7 +1295,7 @@ export function AISystemsContent() {
               accentColor="cyan"
             >
               <Database className="h-3.5 w-3.5" />
-              Knowledge
+              {tabLabels.knowledge}
             </ServiceTab>
             <ServiceTab
               isActive={tab === "ops"}
@@ -1275,7 +1303,7 @@ export function AISystemsContent() {
               accentColor="cyan"
             >
               <LineChart className="h-3.5 w-3.5" />
-              Ops
+              {tabLabels.ops}
             </ServiceTab>
           </div>
         </ServiceHeader>
@@ -1294,7 +1322,7 @@ export function AISystemsContent() {
                     exit={{ opacity: 0, y: -8 }}
                     className="h-full"
                   >
-                    <AssistantDemo kbQuerySeed="rag citations guardrails observability" />
+                    <AssistantDemo kbQuerySeed="rag citations guardrails observability" t={t} tc={tc} />
                   </motion.div>
                 )}
                 {tab === "knowledge" && (
@@ -1305,7 +1333,7 @@ export function AISystemsContent() {
                     exit={{ opacity: 0, y: -8 }}
                     className="h-full"
                   >
-                    <KnowledgeDemo />
+                    <KnowledgeDemo t={t} />
                   </motion.div>
                 )}
                 {tab === "ops" && (
@@ -1316,7 +1344,7 @@ export function AISystemsContent() {
                     exit={{ opacity: 0, y: -8 }}
                     className="h-full"
                   >
-                    <OpsDemo />
+                    <OpsDemo t={t} />
                   </motion.div>
                 )}
               </AnimatePresence>
