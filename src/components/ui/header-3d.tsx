@@ -22,6 +22,7 @@ const navItems: NavItem[] = [
   { key: "works", href: "/works" },
   { key: "about", href: "/about" },
   { key: "contact", href: "/contact" },
+  { key: "dashboard", href: "/dashboard" },
   { key: "swarpAi", href: "/swarp-ai", badgeKey: "beta" },
 ];
 

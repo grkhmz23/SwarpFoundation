@@ -29,7 +29,8 @@
       "works": "الأعمال",
       "about": "من نحن",
       "contact": "اتصل بنا",
-      "swarpAi": "Swarp AI"
+      "swarpAi": "Swarp AI",
+      "dashboard": "لوحة التحكم"
     },
     "beta": "تجريبي"
   },
@@ -864,27 +865,47 @@
         {
           "title": "الاكتشاف",
           "description": "الغوص العميق في متطلباتك، وتحليل السوق، وتقييم الجدوى الفنية.",
-          "deliverables": ["وثيقة المتطلبات", "المواصفات التقنية", "خارطة طريق المشروع"]
+          "deliverables": [
+            "وثيقة المتطلبات",
+            "المواصفات التقنية",
+            "خارطة طريق المشروع"
+          ]
         },
         {
           "title": "التصميم",
           "description": "تصميم واجهة المستخدم/تجربة المستخدم، وهندسة النظام، وإنشاء مخطط قاعدة البيانات مع موافقة أصحاب المصلحة.",
-          "deliverables": ["النماذج الأولية", "مخطط الهندسة المعمارية", "نظام التصميم"]
+          "deliverables": [
+            "النماذج الأولية",
+            "مخطط الهندسة المعمارية",
+            "نظام التصميم"
+          ]
         },
         {
           "title": "البناء",
           "description": "التطوير الرشيق مع سباقات أسبوعية، ومراجعة الكود، والتكامل المستمر.",
-          "deliverables": ["كود الإنتاج", "اختبارات الوحدة", "توثيق واجهة برمجة التطبيقات"]
+          "deliverables": [
+            "كود الإنتاج",
+            "اختبارات الوحدة",
+            "توثيق واجهة برمجة التطبيقات"
+          ]
         },
         {
           "title": "النشر",
           "description": "الإطلاق التدريجي مع اختبار شامل، وإعداد المراقبة، ودعم الإطلاق.",
-          "deliverables": ["بيئة التجهيز", "نشر الإنتاج", "لوحة مراقبة"]
+          "deliverables": [
+            "بيئة التجهيز",
+            "نشر الإنتاج",
+            "لوحة مراقبة"
+          ]
         },
         {
           "title": "الصيانة",
           "description": "المراقبة على مدار الساعة طوال أيام الأسبوع، والالتزام باتفاقية مستوى الخدمة، وتحديثات الأمان، وتحسينات الميزات.",
-          "deliverables": ["اتفاقية مستوى خدمة uptime 99.9%", "تصحيحات الأمان", "تقارير الأداء"]
+          "deliverables": [
+            "اتفاقية مستوى خدمة uptime 99.9%",
+            "تصحيحات الأمان",
+            "تقارير الأداء"
+          ]
         }
       ]
     },
@@ -903,11 +924,24 @@
           "client": "منصة DeFi الرائدة",
           "challenge": "التعامل مع نمو حجم المعاملات 100x",
           "solution": "تحسين العقود الذكية وتوسيع البنية التحتية",
-          "tags": ["Solana", "DeFi", "Smart Contracts"],
+          "tags": [
+            "Solana",
+            "DeFi",
+            "Smart Contracts"
+          ],
           "results": [
-            { "metric": "85%", "label": "تخفيض تكاليف الغاز" },
-            { "metric": "300ms", "label": "متوسط وقت الاستجابة" },
-            { "metric": "$2M+", "label": "توفير سنوي" }
+            {
+              "metric": "85%",
+              "label": "تخفيض تكاليف الغاز"
+            },
+            {
+              "metric": "300ms",
+              "label": "متوسط وقت الاستجابة"
+            },
+            {
+              "metric": "$2M+",
+              "label": "توفير سنوي"
+            }
           ]
         },
         {
@@ -915,11 +949,24 @@
           "client": "منصة تداول العملات المشفرة",
           "challenge": "تحليل السوق في الوقت الفعلي والتداول الآلي",
           "solution": "نماذج ML مخصصة مع تنفيذ أقل من الثانية",
-          "tags": ["AI/ML", "Trading", "Infrastructure"],
+          "tags": [
+            "AI/ML",
+            "Trading",
+            "Infrastructure"
+          ],
           "results": [
-            { "metric": "40%", "label": "تقليل زمن الاستجابة" },
-            { "metric": "50K", "label": "سعة TPS" },
-            { "metric": "15%", "label": "عائد استثمار أفضل" }
+            {
+              "metric": "40%",
+              "label": "تقليل زمن الاستجابة"
+            },
+            {
+              "metric": "50K",
+              "label": "سعة TPS"
+            },
+            {
+              "metric": "15%",
+              "label": "عائد استثمار أفضل"
+            }
           ]
         },
         {
@@ -927,11 +974,24 @@
           "client": "عملاق التجارة الإلكترونية",
           "challenge": "دمج مدفوعات العملات المشفرة بسلاسة",
           "solution": "تكامل SwarpPay مع on-ramps التقليدية",
-          "tags": ["Payments", "Integration", "SwarpPay"],
+          "tags": [
+            "Payments",
+            "Integration",
+            "SwarpPay"
+          ],
           "results": [
-            { "metric": "60%", "label": "تخفيض الرسوم" },
-            { "metric": "فوري", "label": "التسوية" },
-            { "metric": "$10M+", "label": "الحجم الشهري" }
+            {
+              "metric": "60%",
+              "label": "تخفيض الرسوم"
+            },
+            {
+              "metric": "فوري",
+              "label": "التسوية"
+            },
+            {
+              "metric": "$10M+",
+              "label": "الحجم الشهري"
+            }
           ]
         }
       ]
@@ -993,15 +1053,36 @@
         "description": "تم التحقق منه من قبل أفضل شركات الأمان"
       },
       "auditBadges": [
-        { "name": "CertiK", "status": "مدقق" },
-        { "name": "Quantstamp", "status": "مدقق" },
-        { "name": "Trail of Bits", "status": "مدقق" },
-        { "name": "SOC 2", "status": "معتمد" }
+        {
+          "name": "CertiK",
+          "status": "مدقق"
+        },
+        {
+          "name": "Quantstamp",
+          "status": "مدقق"
+        },
+        {
+          "name": "Trail of Bits",
+          "status": "مدقق"
+        },
+        {
+          "name": "SOC 2",
+          "status": "معتمد"
+        }
       ],
       "stats": [
-        { "value": "0", "label": "خروقات الأمان" },
-        { "value": "100%", "label": "تغطية التشفير" },
-        { "value": "15min", "label": "اتفاقية استجابة الحوادث" }
+        {
+          "value": "0",
+          "label": "خروقات الأمان"
+        },
+        {
+          "value": "100%",
+          "label": "تغطية التشفير"
+        },
+        {
+          "value": "15min",
+          "label": "اتفاقية استجابة الحوادث"
+        }
       ]
     },
     "ecosystemPartners": {
@@ -1012,26 +1093,58 @@
       "categories": [
         {
           "title": "شبكات Blockchain",
-          "partners": ["Solana", "Ethereum", "Polygon", "BSC"]
+          "partners": [
+            "Solana",
+            "Ethereum",
+            "Polygon",
+            "BSC"
+          ]
         },
         {
           "title": "المحافظ والحفظ",
-          "partners": ["Phantom", "MetaMask", "Ledger", "Fireblocks"]
+          "partners": [
+            "Phantom",
+            "MetaMask",
+            "Ledger",
+            "Fireblocks"
+          ]
         },
         {
           "title": "التحليلات والبيانات",
-          "partners": ["The Graph", "Dune Analytics", "Messari", "Nansen"]
+          "partners": [
+            "The Graph",
+            "Dune Analytics",
+            "Messari",
+            "Nansen"
+          ]
         },
         {
           "title": "الأمان والامتثال",
-          "partners": ["CertiK", "Quantstamp", "Chainalysis", "Elliptic"]
+          "partners": [
+            "CertiK",
+            "Quantstamp",
+            "Chainalysis",
+            "Elliptic"
+          ]
         }
       ],
       "stats": [
-        { "value": "50+", "label": "التكاملات" },
-        { "value": "10+", "label": "شبكات Blockchain" },
-        { "value": "100%", "label": "ال uptime" },
-        { "value": "24/7", "label": "الدعم" }
+        {
+          "value": "50+",
+          "label": "التكاملات"
+        },
+        {
+          "value": "10+",
+          "label": "شبكات Blockchain"
+        },
+        {
+          "value": "100%",
+          "label": "ال uptime"
+        },
+        {
+          "value": "24/7",
+          "label": "الدعم"
+        }
       ]
     },
     "careers": {
@@ -1096,8 +1209,16 @@
           "badge": "المنصة الأساسية",
           "title": "SwarpPay",
           "description": "منصة تداول حجزية تجعل شراء وبيع العملات المشفرة بسيطة مثل استخدام أي تطبيق مصرفي. اربط حسابك البنكي، واشترِ العملات المشفرة بعملتك المحلية، وتداول الرموز المختارة على Solana. لا مفاتيح خاصة لإدارتها، ولا إعداد معقد. وصول مباشر إلى الأصول الرقمية مع الأمان الذي تتوقعه من مؤسسة مالية.",
-          "features": ["Fiat", "2FA", "24/7"],
-          "featureLabels": ["On/Off Ramp", "الأمان", "التداول"]
+          "features": [
+            "Fiat",
+            "2FA",
+            "24/7"
+          ],
+          "featureLabels": [
+            "On/Off Ramp",
+            "الأمان",
+            "التداول"
+          ]
         },
         "swarplaunch": {
           "badge": "إطلاق عادل",
@@ -1113,7 +1234,11 @@
           "badge": "الخصوصية",
           "title": "pSOL Protocol",
           "description": "الخصوصية المالية يجب ألا تكون رفاهية. pSOL يستخدم التشفير ذو المعرفة الصفرية للسماح لك بنقل الأصول على Solana دون كشف سجل معاملاتك بالكامل للعالم. أموالك، شأنك.",
-          "specs": ["GROTH16 ZK PROOFS", "MULTI-ASSET SHIELDED POOL", "التحقق On-chain"]
+          "specs": [
+            "GROTH16 ZK PROOFS",
+            "MULTI-ASSET SHIELDED POOL",
+            "التحقق On-chain"
+          ]
         },
         "humanrail": {
           "badge": "المحاسبة",

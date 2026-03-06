@@ -29,7 +29,8 @@
       "works": "Proyectos",
       "about": "Nosotros",
       "contact": "Contacto",
-      "swarpAi": "Swarp AI"
+      "swarpAi": "Swarp AI",
+      "dashboard": "Panel"
     },
     "beta": "Beta"
   },
@@ -864,27 +865,47 @@
         {
           "title": "Descubrimiento",
           "description": "Inmersión profunda en tus requisitos, análisis de mercado y evaluación de viabilidad técnica.",
-          "deliverables": ["Documento de Requisitos", "Especificación Técnica", "Hoja de Ruta"]
+          "deliverables": [
+            "Documento de Requisitos",
+            "Especificación Técnica",
+            "Hoja de Ruta"
+          ]
         },
         {
           "title": "Diseño",
           "description": "Diseño UI/UX, arquitectura de sistema y creación del esquema de base de datos con aprobación de stakeholders.",
-          "deliverables": ["Wireframes", "Diagrama de Arquitectura", "Sistema de Diseño"]
+          "deliverables": [
+            "Wireframes",
+            "Diagrama de Arquitectura",
+            "Sistema de Diseño"
+          ]
         },
         {
           "title": "Desarrollo",
           "description": "Desarrollo ágil con sprints semanales, revisiones de código e integración continua.",
-          "deliverables": ["Código de Producción", "Tests Unitarios", "Documentación API"]
+          "deliverables": [
+            "Código de Producción",
+            "Tests Unitarios",
+            "Documentación API"
+          ]
         },
         {
           "title": "Despliegue",
           "description": "Lanzamiento por etapas con pruebas exhaustivas, configuración de monitoreo y soporte de lanzamiento.",
-          "deliverables": ["Entorno Staging", "Despliegue Producción", "Panel de Monitoreo"]
+          "deliverables": [
+            "Entorno Staging",
+            "Despliegue Producción",
+            "Panel de Monitoreo"
+          ]
         },
         {
           "title": "Mantenimiento",
           "description": "Monitoreo 24/7, cumplimiento de SLA, actualizaciones de seguridad y mejoras de funciones.",
-          "deliverables": ["SLA Uptime 99,9%", "Parches Seguridad", "Reportes de Rendimiento"]
+          "deliverables": [
+            "SLA Uptime 99,9%",
+            "Parches Seguridad",
+            "Reportes de Rendimiento"
+          ]
         }
       ]
     },
@@ -903,11 +924,24 @@
           "client": "Plataforma DeFi Líder",
           "challenge": "Manejar un crecimiento de volumen de transacciones de 100x",
           "solution": "Contratos inteligentes optimizados y escalamiento de infraestructura",
-          "tags": ["Solana", "DeFi", "Smart Contracts"],
+          "tags": [
+            "Solana",
+            "DeFi",
+            "Smart Contracts"
+          ],
           "results": [
-            { "metric": "85%", "label": "Costos Gas Reducidos" },
-            { "metric": "300ms", "label": "Tiempo Respuesta Promedio" },
-            { "metric": "$2M+", "label": "Ahorro Anual" }
+            {
+              "metric": "85%",
+              "label": "Costos Gas Reducidos"
+            },
+            {
+              "metric": "300ms",
+              "label": "Tiempo Respuesta Promedio"
+            },
+            {
+              "metric": "$2M+",
+              "label": "Ahorro Anual"
+            }
           ]
         },
         {
@@ -915,11 +949,24 @@
           "client": "Exchange Crypto",
           "challenge": "Análisis de mercado en tiempo real y trading automatizado",
           "solution": "Modelos ML personalizados con ejecución sub-segundo",
-          "tags": ["AI/ML", "Trading", "Infraestructura"],
+          "tags": [
+            "AI/ML",
+            "Trading",
+            "Infraestructura"
+          ],
           "results": [
-            { "metric": "40%", "label": "Latencia Reducida" },
-            { "metric": "50K", "label": "Capacidad TPS" },
-            { "metric": "15%", "label": "Mejor ROI" }
+            {
+              "metric": "40%",
+              "label": "Latencia Reducida"
+            },
+            {
+              "metric": "50K",
+              "label": "Capacidad TPS"
+            },
+            {
+              "metric": "15%",
+              "label": "Mejor ROI"
+            }
           ]
         },
         {
@@ -927,11 +974,24 @@
           "client": "Gigante E-commerce",
           "challenge": "Integrar pagos crypto sin fricción",
           "solution": "Integración SwarpPay con on-ramps fiat",
-          "tags": ["Pagos", "Integración", "SwarpPay"],
+          "tags": [
+            "Pagos",
+            "Integración",
+            "SwarpPay"
+          ],
           "results": [
-            { "metric": "60%", "label": "Comisiones Reducidas" },
-            { "metric": "Instantáneo", "label": "Settlement" },
-            { "metric": "$10M+", "label": "Volumen Mensual" }
+            {
+              "metric": "60%",
+              "label": "Comisiones Reducidas"
+            },
+            {
+              "metric": "Instantáneo",
+              "label": "Settlement"
+            },
+            {
+              "metric": "$10M+",
+              "label": "Volumen Mensual"
+            }
           ]
         }
       ]
@@ -993,15 +1053,36 @@
         "description": "Verificados por las mejores firmas de seguridad"
       },
       "auditBadges": [
-        { "name": "CertiK", "status": "Auditado" },
-        { "name": "Quantstamp", "status": "Auditado" },
-        { "name": "Trail of Bits", "status": "Auditado" },
-        { "name": "SOC 2", "status": "Certificado" }
+        {
+          "name": "CertiK",
+          "status": "Auditado"
+        },
+        {
+          "name": "Quantstamp",
+          "status": "Auditado"
+        },
+        {
+          "name": "Trail of Bits",
+          "status": "Auditado"
+        },
+        {
+          "name": "SOC 2",
+          "status": "Certificado"
+        }
       ],
       "stats": [
-        { "value": "0", "label": "Violaciones Seguridad" },
-        { "value": "100%", "label": "Cobertura Cifrado" },
-        { "value": "15min", "label": "SLA Respuesta Incidente" }
+        {
+          "value": "0",
+          "label": "Violaciones Seguridad"
+        },
+        {
+          "value": "100%",
+          "label": "Cobertura Cifrado"
+        },
+        {
+          "value": "15min",
+          "label": "SLA Respuesta Incidente"
+        }
       ]
     },
     "ecosystemPartners": {
@@ -1012,26 +1093,58 @@
       "categories": [
         {
           "title": "Redes Blockchain",
-          "partners": ["Solana", "Ethereum", "Polygon", "BSC"]
+          "partners": [
+            "Solana",
+            "Ethereum",
+            "Polygon",
+            "BSC"
+          ]
         },
         {
           "title": "Wallets & Custodia",
-          "partners": ["Phantom", "MetaMask", "Ledger", "Fireblocks"]
+          "partners": [
+            "Phantom",
+            "MetaMask",
+            "Ledger",
+            "Fireblocks"
+          ]
         },
         {
           "title": "Analytics & Datos",
-          "partners": ["The Graph", "Dune Analytics", "Messari", "Nansen"]
+          "partners": [
+            "The Graph",
+            "Dune Analytics",
+            "Messari",
+            "Nansen"
+          ]
         },
         {
           "title": "Seguridad & Cumplimiento",
-          "partners": ["CertiK", "Quantstamp", "Chainalysis", "Elliptic"]
+          "partners": [
+            "CertiK",
+            "Quantstamp",
+            "Chainalysis",
+            "Elliptic"
+          ]
         }
       ],
       "stats": [
-        { "value": "50+", "label": "Integraciones" },
-        { "value": "10+", "label": "Blockchains" },
-        { "value": "100%", "label": "Uptime" },
-        { "value": "24/7", "label": "Soporte" }
+        {
+          "value": "50+",
+          "label": "Integraciones"
+        },
+        {
+          "value": "10+",
+          "label": "Blockchains"
+        },
+        {
+          "value": "100%",
+          "label": "Uptime"
+        },
+        {
+          "value": "24/7",
+          "label": "Soporte"
+        }
       ]
     },
     "careers": {
@@ -1096,8 +1209,16 @@
           "badge": "Plataforma Core",
           "title": "SwarpPay",
           "description": "Una plataforma de trading en custodia que hace que comprar y vender crypto sea tan simple como usar una app bancaria. Conecta tu cuenta bancaria, compra crypto con tu moneda local y opera tokens curados en Solana. Sin claves privadas que gestionar, sin configuración complicada. Acceso directo a activos digitales con la seguridad que esperas de una institución financiera.",
-          "features": ["Fiat", "2FA", "24/7"],
-          "featureLabels": ["On/Off Ramp", "Seguridad", "Trading"]
+          "features": [
+            "Fiat",
+            "2FA",
+            "24/7"
+          ],
+          "featureLabels": [
+            "On/Off Ramp",
+            "Seguridad",
+            "Trading"
+          ]
         },
         "swarplaunch": {
           "badge": "Fair Launch",
@@ -1113,7 +1234,11 @@
           "badge": "Privacidad",
           "title": "pSOL Protocol",
           "description": "La privacidad financiera no debería ser un lujo. pSOL usa criptografía zero-knowledge para permitirte mover activos en Solana sin exponer tu historial de transacciones al mundo. Tu dinero, tu negocio.",
-          "specs": ["GROTH16 ZK PROOFS", "MULTI-ASSET SHIELDED POOL", "Verificación On-chain"]
+          "specs": [
+            "GROTH16 ZK PROOFS",
+            "MULTI-ASSET SHIELDED POOL",
+            "Verificación On-chain"
+          ]
         },
         "humanrail": {
           "badge": "Responsabilidad",

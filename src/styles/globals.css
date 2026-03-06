@@ -1,7 +1,0 @@
-@media (prefers-reduced-motion: reduce) {
-  .animate-pulse,
-  .animate-float,
-  .scan-line::after {
-    animation: none !important;
-  }
-}

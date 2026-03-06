@@ -29,7 +29,8 @@
       "works": "Works",
       "about": "About",
       "contact": "Contact",
-      "swarpAi": "Swarp AI"
+      "swarpAi": "Swarp AI",
+      "dashboard": "Dashboard"
     },
     "beta": "Beta"
   },
@@ -864,27 +865,47 @@
         {
           "title": "Discover",
           "description": "Deep dive into your requirements, market analysis, and technical feasibility assessment.",
-          "deliverables": ["Requirements Doc", "Technical Spec", "Project Roadmap"]
+          "deliverables": [
+            "Requirements Doc",
+            "Technical Spec",
+            "Project Roadmap"
+          ]
         },
         {
           "title": "Design",
           "description": "UI/UX design, system architecture, and database schema creation with stakeholder approval.",
-          "deliverables": ["Wireframes", "Architecture Diagram", "Design System"]
+          "deliverables": [
+            "Wireframes",
+            "Architecture Diagram",
+            "Design System"
+          ]
         },
         {
           "title": "Build",
           "description": "Agile development with weekly sprints, code reviews, and continuous integration.",
-          "deliverables": ["Production Code", "Unit Tests", "API Documentation"]
+          "deliverables": [
+            "Production Code",
+            "Unit Tests",
+            "API Documentation"
+          ]
         },
         {
           "title": "Deploy",
           "description": "Staged rollout with comprehensive testing, monitoring setup, and launch support.",
-          "deliverables": ["Staging Environment", "Production Deploy", "Monitoring Dashboard"]
+          "deliverables": [
+            "Staging Environment",
+            "Production Deploy",
+            "Monitoring Dashboard"
+          ]
         },
         {
           "title": "Maintain",
           "description": "24/7 monitoring, SLA compliance, security updates, and feature enhancements.",
-          "deliverables": ["99.9% Uptime SLA", "Security Patches", "Performance Reports"]
+          "deliverables": [
+            "99.9% Uptime SLA",
+            "Security Patches",
+            "Performance Reports"
+          ]
         }
       ]
     },
@@ -903,11 +924,24 @@
           "client": "Leading DeFi Platform",
           "challenge": "Handle 100x transaction volume growth",
           "solution": "Optimized smart contracts and infrastructure scaling",
-          "tags": ["Solana", "DeFi", "Smart Contracts"],
+          "tags": [
+            "Solana",
+            "DeFi",
+            "Smart Contracts"
+          ],
           "results": [
-            { "metric": "85%", "label": "Lower Gas Costs" },
-            { "metric": "300ms", "label": "Avg Response Time" },
-            { "metric": "$2M+", "label": "Saved Annually" }
+            {
+              "metric": "85%",
+              "label": "Lower Gas Costs"
+            },
+            {
+              "metric": "300ms",
+              "label": "Avg Response Time"
+            },
+            {
+              "metric": "$2M+",
+              "label": "Saved Annually"
+            }
           ]
         },
         {
@@ -915,11 +949,24 @@
           "client": "Crypto Exchange",
           "challenge": "Real-time market analysis and automated trading",
           "solution": "Custom ML models with sub-second execution",
-          "tags": ["AI/ML", "Trading", "Infrastructure"],
+          "tags": [
+            "AI/ML",
+            "Trading",
+            "Infrastructure"
+          ],
           "results": [
-            { "metric": "40%", "label": "Reduced Latency" },
-            { "metric": "50K", "label": "TPS Capacity" },
-            { "metric": "15%", "label": "Better ROI" }
+            {
+              "metric": "40%",
+              "label": "Reduced Latency"
+            },
+            {
+              "metric": "50K",
+              "label": "TPS Capacity"
+            },
+            {
+              "metric": "15%",
+              "label": "Better ROI"
+            }
           ]
         },
         {
@@ -927,11 +974,24 @@
           "client": "E-commerce Giant",
           "challenge": "Integrate crypto payments seamlessly",
           "solution": "SwarpPay integration with fiat on-ramps",
-          "tags": ["Payments", "Integration", "SwarpPay"],
+          "tags": [
+            "Payments",
+            "Integration",
+            "SwarpPay"
+          ],
           "results": [
-            { "metric": "60%", "label": "Lower Fees" },
-            { "metric": "Instant", "label": "Settlement" },
-            { "metric": "$10M+", "label": "Monthly Volume" }
+            {
+              "metric": "60%",
+              "label": "Lower Fees"
+            },
+            {
+              "metric": "Instant",
+              "label": "Settlement"
+            },
+            {
+              "metric": "$10M+",
+              "label": "Monthly Volume"
+            }
           ]
         }
       ]
@@ -993,15 +1053,36 @@
         "description": "Verified by industry-leading security firms"
       },
       "auditBadges": [
-        { "name": "CertiK", "status": "Audited" },
-        { "name": "Quantstamp", "status": "Audited" },
-        { "name": "Trail of Bits", "status": "Audited" },
-        { "name": "SOC 2", "status": "Certified" }
+        {
+          "name": "CertiK",
+          "status": "Audited"
+        },
+        {
+          "name": "Quantstamp",
+          "status": "Audited"
+        },
+        {
+          "name": "Trail of Bits",
+          "status": "Audited"
+        },
+        {
+          "name": "SOC 2",
+          "status": "Certified"
+        }
       ],
       "stats": [
-        { "value": "0", "label": "Security Breaches" },
-        { "value": "100%", "label": "Encryption Coverage" },
-        { "value": "15min", "label": "Incident Response SLA" }
+        {
+          "value": "0",
+          "label": "Security Breaches"
+        },
+        {
+          "value": "100%",
+          "label": "Encryption Coverage"
+        },
+        {
+          "value": "15min",
+          "label": "Incident Response SLA"
+        }
       ]
     },
     "ecosystemPartners": {
@@ -1012,26 +1093,58 @@
       "categories": [
         {
           "title": "Blockchain Networks",
-          "partners": ["Solana", "Ethereum", "Polygon", "BSC"]
+          "partners": [
+            "Solana",
+            "Ethereum",
+            "Polygon",
+            "BSC"
+          ]
         },
         {
           "title": "Wallets & Custody",
-          "partners": ["Phantom", "MetaMask", "Ledger", "Fireblocks"]
+          "partners": [
+            "Phantom",
+            "MetaMask",
+            "Ledger",
+            "Fireblocks"
+          ]
         },
         {
           "title": "Analytics & Data",
-          "partners": ["The Graph", "Dune Analytics", "Messari", "Nansen"]
+          "partners": [
+            "The Graph",
+            "Dune Analytics",
+            "Messari",
+            "Nansen"
+          ]
         },
         {
           "title": "Security & Compliance",
-          "partners": ["CertiK", "Quantstamp", "Chainalysis", "Elliptic"]
+          "partners": [
+            "CertiK",
+            "Quantstamp",
+            "Chainalysis",
+            "Elliptic"
+          ]
         }
       ],
       "stats": [
-        { "value": "50+", "label": "Integrations" },
-        { "value": "10+", "label": "Blockchains" },
-        { "value": "100%", "label": "Uptime" },
-        { "value": "24/7", "label": "Support" }
+        {
+          "value": "50+",
+          "label": "Integrations"
+        },
+        {
+          "value": "10+",
+          "label": "Blockchains"
+        },
+        {
+          "value": "100%",
+          "label": "Uptime"
+        },
+        {
+          "value": "24/7",
+          "label": "Support"
+        }
       ]
     },
     "careers": {
@@ -1096,8 +1209,16 @@
           "badge": "Core Platform",
           "title": "SwarpPay",
           "description": "A custodial trading platform that makes buying and selling crypto as simple as using any banking app. Connect your bank account, purchase crypto with your local currency, and trade curated tokens on Solana. No private keys to manage, no complicated wallet setup. Just straightforward access to digital assets with the security you would expect from a financial institution.",
-          "features": ["Fiat", "2FA", "24/7"],
-          "featureLabels": ["On/Off Ramp", "Security", "Trading"]
+          "features": [
+            "Fiat",
+            "2FA",
+            "24/7"
+          ],
+          "featureLabels": [
+            "On/Off Ramp",
+            "Security",
+            "Trading"
+          ]
         },
         "swarplaunch": {
           "badge": "Fair Launch",
@@ -1113,7 +1234,11 @@
           "badge": "Privacy",
           "title": "pSOL Protocol",
           "description": "Financial privacy should not be a luxury. pSOL uses zero-knowledge cryptography to let you move assets on Solana without exposing your entire transaction history to the world. Your money, your business.",
-          "specs": ["GROTH16 ZK PROOFS", "MULTI-ASSET SHIELDED POOL", "On-chain Verification"]
+          "specs": [
+            "GROTH16 ZK PROOFS",
+            "MULTI-ASSET SHIELDED POOL",
+            "On-chain Verification"
+          ]
         },
         "humanrail": {
           "badge": "Accountability",

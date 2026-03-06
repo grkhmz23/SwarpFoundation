@@ -1,4 +1,4 @@
-run = "npm run dev -- -p 5000"
+run = "rm -rf .next && npm run dev -- -p 5000"
 modules = ["nodejs-20", "python-3.11"]
 
 [[ports]]
@@ -26,7 +26,7 @@ run = ["npm", "run", "start", "--", "-p", "5000"]
 expertMode = true
 
 [nix]
-packages = ["zip", "tree", "unzipNLS", "file"]
+packages = ["zip", "tree", "unzipNLS", "file", "lsof"]
 
 [workflows]
 runButton = "Project"
@@ -49,5 +49,5 @@ outputType = "webview"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "npm run dev -- -p 5000"
+args = "rm -rf .next && npm run dev -- -p 5000"
 waitForPort = 5000
