@@ -91,14 +91,15 @@ export function IdeaSection() {
     };
 
     update();
-    const ro = new ResizeObserver(update);
-    ro.observe(host);
-    ro.observe(lampEl);
+    const supportsResizeObserver = typeof window !== "undefined" && "ResizeObserver" in window;
+    const ro = supportsResizeObserver ? new ResizeObserver(update) : null;
+    ro?.observe(host);
+    ro?.observe(lampEl);
     window.addEventListener("scroll", update, { passive: true });
     window.addEventListener("resize", update);
 
     return () => {
-      ro.disconnect();
+      ro?.disconnect();
       window.removeEventListener("scroll", update);
       window.removeEventListener("resize", update);
     };

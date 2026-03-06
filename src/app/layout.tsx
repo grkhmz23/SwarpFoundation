@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import dynamic from "next/dynamic";
 import { Header3D } from "@/components/ui/header-3d";
@@ -14,7 +14,11 @@ const AetherBackground = dynamic(
   { ssr: false }
 );
 
-const inter = Inter({ subsets: ["latin"] });
+const geist = localFont({
+  src: "./fonts/GeistVF.woff",
+  variable: "--font-geist",
+  weight: "100 900",
+});
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("metadata");
@@ -40,7 +44,7 @@ export default async function RootLayout({
 
   return (
     <html lang={locale} dir={isRtl ? "rtl" : "ltr"}>
-      <body className={inter.className}>
+      <body className={geist.className}>
         <NextIntlClientProvider locale={locale} messages={messages}>
           <AetherBackground>
             <LegalModalProvider>
