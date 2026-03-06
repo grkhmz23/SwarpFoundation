@@ -20,16 +20,7 @@ export default function HomePage() {
       </SectionErrorBoundary>
       <div className="relative">
         <div className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-cyan-400/8 to-transparent" />
-        <SectionErrorBoundary
-          fallback={
-            <section className="px-4 py-10 text-center text-slate-100 sm:px-6">
-              <div className="mx-auto max-w-4xl rounded-2xl border border-cyan-300/20 bg-[#081326]/80 p-6">
-                <h2 className="text-2xl font-semibold">SWARP Token Presale</h2>
-                <p className="mt-2 text-slate-300">Presale purchase flow opens soon on swarppay.com.</p>
-              </div>
-            </section>
-          }
-        >
+        <SectionErrorBoundary fallback={<div className="py-8" />}>
           <SwarpPresale />
         </SectionErrorBoundary>
       </div>

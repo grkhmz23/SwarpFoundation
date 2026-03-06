@@ -3,7 +3,6 @@
 import { ArrowRight, ShieldCheck, Sparkles, Wifi } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useTranslations } from "next-intl";
 
 const signalChips = [
   { icon: Wifi, label: "Solana SPL" },
@@ -30,8 +29,6 @@ const PRESALE_HREF = "/presale";
 const TOKENOMICS_HREF = "/tokenomics";
 
 export function SwarpPresale() {
-  const t = useTranslations("presale");
-
   return (
     <section className="relative isolate overflow-hidden py-16 md:py-24">
       <div className="pointer-events-none absolute inset-0 -z-20 bg-[radial-gradient(ellipse_at_top,rgba(0,255,240,0.18),transparent_42%),radial-gradient(ellipse_at_78%_70%,rgba(0,110,255,0.16),transparent_50%)]" />
@@ -107,8 +104,9 @@ export function SwarpPresale() {
                   <div className="relative flex h-20 w-20 items-center justify-center overflow-hidden rounded-full border border-white/20 bg-[#08162f] sm:h-24 sm:w-24">
                     <Image
                       src="/logo_transparent_original.png"
-                      alt={t("alt")}
-                      fill
+                      alt="SWARP token logo"
+                      width={96}
+                      height={96}
                       sizes="96px"
                       className="object-contain p-3.5"
                     />
