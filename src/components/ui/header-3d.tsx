@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { motion, useSpring, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-import { Menu, X } from "lucide-react";
+import { LogIn, Menu, X } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { usePathname } from "next/navigation";
@@ -552,6 +552,21 @@ export function Header3D() {
     >
       <div className={`container mx-auto px-4 flex items-center justify-center relative ${isRtl ? "flex-row-reverse" : ""}`}>
         <NavPill3D />
+        <Link
+          href="/auth/signin?callbackUrl=/dashboard"
+          className={`absolute top-1/2 -translate-y-1/2 inline-flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-semibold tracking-wide text-white transition-colors hover:text-[#00D4FF] ${
+            isRtl ? "right-4 md:right-auto md:left-44" : "left-4 md:left-auto md:right-44"
+          }`}
+          style={{
+            background: "rgba(10, 14, 39, 0.95)",
+            backdropFilter: "blur(12px)",
+            border: "1px solid rgba(0, 212, 255, 0.2)",
+          }}
+        >
+          <LogIn className="h-3.5 w-3.5" />
+          <span className="hidden sm:inline">Sign In</span>
+          <span className="sm:hidden">Login</span>
+        </Link>
         <div className={`absolute top-1/2 -translate-y-1/2 ${isRtl ? "left-4" : "right-4"} hidden md:block`}>
           <LanguageSwitcher />
         </div>
