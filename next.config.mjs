@@ -11,6 +11,20 @@ export default withBundleAnalyzer(withNextIntl({
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
+  async redirects() {
+    return [
+      {
+        source: '/:locale(en|it|fr|es|de|ar)',
+        destination: '/',
+        permanent: false,
+      },
+      {
+        source: '/:locale(en|it|fr|es|de|ar)/:path*',
+        destination: '/:path*',
+        permanent: false,
+      },
+    ];
+  },
   images: {
     remotePatterns: [
       {

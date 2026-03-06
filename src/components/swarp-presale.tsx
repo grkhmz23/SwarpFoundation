@@ -1,8 +1,7 @@
 "use client";
 
-import { ArrowRight, ShieldCheck, Sparkles, Wifi } from "lucide-react";
+import { ExternalLink, ShieldCheck, Sparkles, Wifi } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 
 const signalChips = [
   { icon: Wifi, label: "Solana SPL" },
@@ -14,26 +13,27 @@ const metrics = [
   { label: "Token Network", value: "Solana (SPL)" },
   { label: "Initial Price", value: "~$0.03" },
   { label: "Total Supply", value: "1,000,000,000" },
-  { label: "Access Status", value: "Opening Soon" },
+  { label: "Access", value: "SwarpPay.com" },
 ];
 
 const allocation = [
-  { label: "Ecosystem & Rewards", value: "30%" },
-  { label: "Liquidity Reserve", value: "20%" },
-  { label: "Product & Treasury", value: "25%" },
-  { label: "Team & Advisors", value: "15%" },
-  { label: "Community Growth", value: "10%" },
+  { label: "Team", value: "12%" },
+  { label: "Investors (Seed + Strategic)", value: "15%" },
+  { label: "Advisors and Partners", value: "3%" },
+  { label: "Ecosystem Rewards", value: "28%" },
+  { label: "Treasury and Reserve", value: "17%" },
+  { label: "DEX Liquidity", value: "5%" },
+  { label: "CEX Liquidity Reserve", value: "3%" },
+  { label: "Community and Public Float", value: "17%" },
 ];
 
-const PRESALE_HREF = "/presale";
-const TOKENOMICS_HREF = "/tokenomics";
+const SWARPPAY_HREF = "https://swarppay.com";
 
 export function SwarpPresale() {
   return (
     <section className="relative isolate overflow-hidden py-16 md:py-24">
       <div className="pointer-events-none absolute inset-0 -z-20 bg-[radial-gradient(ellipse_at_top,rgba(0,255,240,0.18),transparent_42%),radial-gradient(ellipse_at_78%_70%,rgba(0,110,255,0.16),transparent_50%)]" />
       <div className="pointer-events-none absolute inset-0 -z-20 bg-[linear-gradient(rgba(0,212,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(0,212,255,0.05)_1px,transparent_1px)] bg-[size:46px_46px] [mask-image:radial-gradient(circle_at_center,black_42%,transparent_90%)]" />
-      <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-52 bg-gradient-to-b from-cyan-300/10 via-cyan-200/5 to-transparent" />
 
       <div className="relative mx-auto w-full max-w-6xl px-4 sm:px-6">
         <div className="relative overflow-hidden rounded-[30px] border border-cyan-200/25 bg-[linear-gradient(145deg,rgba(5,8,24,0.96),rgba(6,16,38,0.92)_48%,rgba(4,8,24,0.96))] p-5 shadow-[0_30px_100px_rgba(2,8,22,0.82)] md:p-10">
@@ -51,11 +51,11 @@ export function SwarpPresale() {
 
               <div className="space-y-4">
                 <h2 className="text-balance text-3xl font-semibold leading-tight text-white md:text-[3.2rem] md:leading-[1.04]">
-                  SWARP Presale Interface with High-Trust Trading Aesthetics
+                  SWARP Presale Terminal
                 </h2>
                 <p className="max-w-2xl text-pretty text-sm leading-relaxed text-slate-300 md:text-base">
-                  Precision visuals, premium depth, and branded signal language. SWARP purchase flow will open on
-                  SwarpPay, while this terminal gives live product context and token structure.
+                  Premium interface, verified tokenomics context, and direct access to the live platform.
+                  SWARP purchase flow opens on SwarpPay.
                 </p>
               </div>
 
@@ -80,19 +80,24 @@ export function SwarpPresale() {
               </div>
 
               <div className="flex flex-wrap gap-3">
-                <Link
-                  href={PRESALE_HREF}
+                <a
+                  href={SWARPPAY_HREF}
+                  target="_blank"
+                  rel="noreferrer"
                   className="inline-flex items-center gap-2 rounded-xl border border-cyan-100/40 bg-gradient-to-r from-cyan-300/25 to-blue-300/20 px-5 py-2.5 text-sm font-semibold text-cyan-50 transition hover:from-cyan-300/35 hover:to-blue-300/30"
                 >
                   Join Presale
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-                <Link
-                  href={TOKENOMICS_HREF}
-                  className="rounded-xl border border-white/20 bg-white/5 px-5 py-2.5 text-sm font-semibold text-slate-100 transition hover:bg-white/10"
+                  <ExternalLink className="h-4 w-4" />
+                </a>
+                <a
+                  href={SWARPPAY_HREF}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 rounded-xl border border-white/20 bg-white/5 px-5 py-2.5 text-sm font-semibold text-slate-100 transition hover:bg-white/10"
                 >
                   Read Tokenomics
-                </Link>
+                  <ExternalLink className="h-4 w-4" />
+                </a>
               </div>
             </div>
 
@@ -138,23 +143,8 @@ export function SwarpPresale() {
               </div>
 
               <div className="mt-5 rounded-xl border border-cyan-200/20 bg-gradient-to-r from-cyan-300/[0.08] to-blue-300/[0.07] p-4">
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <p className="text-[10px] uppercase tracking-[0.2em] text-slate-400">Launch Readiness</p>
-                    <p className="mt-1 text-sm font-semibold text-white">Presale purchase opens soon on SwarpPay</p>
-                  </div>
-                  <div className="inline-flex items-center gap-2 text-xs text-cyan-100">
-                    <span className="relative flex h-2 w-2">
-                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-cyan-300/70" />
-                      <span className="relative inline-flex h-2 w-2 rounded-full bg-cyan-200" />
-                    </span>
-                    Active
-                  </div>
-                </div>
-
-                <div className="mt-3 rounded-lg border border-cyan-200/20 bg-[#061226] px-3 py-2 text-xs text-slate-300">
-                  Real purchase flow is hosted on <span className="font-semibold text-cyan-100">swarppay.com</span>.
-                </div>
+                <p className="text-[10px] uppercase tracking-[0.2em] text-slate-400">Live Purchase Notice</p>
+                <p className="mt-1 text-sm font-semibold text-white">Real SWARP purchase flow is on swarppay.com.</p>
               </div>
 
               <div className="mt-5 rounded-xl border border-cyan-300/15 bg-[#051028]/75 p-4">
