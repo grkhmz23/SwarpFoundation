@@ -34,5 +34,19 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
-next-env.d.ts
-.codex/
+
+# Replit specific
+.replit
+.upm
+.cache/
+.config/
+.local/
+.agents/
+
+# Reports & Audits (development only)
+AUDIT.md
+DEAD_CODE_REPORT.md
+*.log
+
+# attached assets (if any large files)
+attached_assets/
