@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { RefreshCcw } from "lucide-react";
+import { RefreshCcw, Bot, FolderKanban } from "lucide-react";
+import { AIStatusPanel } from "./ai-status-panel";
 
 type ProjectStatus = "funding_pending" | "funds_received" | "in_progress" | "delivered";
 
@@ -17,6 +18,8 @@ type ProjectRequest = {
   createdAtISO: string;
   updatedAtISO: string;
 };
+
+type TabId = "projects" | "ai";
 
 const STATUS_OPTIONS: ProjectStatus[] = [
   "funding_pending",
@@ -41,6 +44,7 @@ function formatDate(iso: string) {
 }
 
 export function AdminDashboard() {
+  const [activeTab, setActiveTab] = useState<TabId>("projects");
   const [projects, setProjects] = useState<ProjectRequest[]>([]);
   const [loading, setLoading] = useState(true);
   const [notice, setNotice] = useState("");
@@ -99,16 +103,36 @@ export function AdminDashboard() {
         <div className="flex items-center justify-between gap-4">
           <div>
             <p className="text-xs uppercase tracking-[0.2em] text-cyan-200/70">Admin Console</p>
-            <h1 className="mt-2 text-2xl font-bold text-white sm:text-3xl">Project Status Management</h1>
-            <p className="mt-2 text-sm text-slate-300">Review project requests and update lifecycle status.</p>
+            <h1 className="mt-2 text-2xl font-bold text-white sm:text-3xl">Admin Dashboard</h1>
+            <p className="mt-2 text-sm text-slate-300">Manage projects and AI configuration.</p>
           </div>
+        </div>
+
+        {/* Tab Navigation */}
+        <div className="mt-6 flex flex-wrap items-center gap-2 border-t border-white/10 pt-4">
           <button
             type="button"
-            onClick={() => void loadProjects()}
-            className="inline-flex items-center gap-2 rounded-lg border border-white/20 bg-white/5 px-3 py-2 text-xs font-semibold text-white/80 hover:bg-white/10"
+            onClick={() => setActiveTab("projects")}
+            className={`inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition ${
+              activeTab === "projects"
+                ? "border border-cyan-200/30 bg-cyan-300/20 text-cyan-100"
+                : "border border-white/10 bg-white/5 text-white/70 hover:bg-white/10"
+            }`}
           >
-            <RefreshCcw className="h-3.5 w-3.5" />
-            Refresh
+            <FolderKanban className="h-4 w-4" />
+            Projects
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab("ai")}
+            className={`inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition ${
+              activeTab === "ai"
+                ? "border border-cyan-200/30 bg-cyan-300/20 text-cyan-100"
+                : "border border-white/10 bg-white/5 text-white/70 hover:bg-white/10"
+            }`}
+          >
+            <Bot className="h-4 w-4" />
+            AI Configuration
           </button>
         </div>
       </section>
@@ -119,55 +143,81 @@ export function AdminDashboard() {
         </div>
       ) : null}
 
-      <section className="mt-6 space-y-3">
-        {loading ? (
-          <div className="rounded-xl border border-dashed border-white/20 bg-white/5 p-6 text-center text-slate-200">Loading projects...</div>
-        ) : projects.length === 0 ? (
-          <div className="rounded-xl border border-dashed border-white/20 bg-white/5 p-6 text-center text-slate-200">No project requests found.</div>
-        ) : (
-          projects.map((project) => (
-            <article key={project.projectId} className="rounded-xl border border-white/10 bg-[#081326]/70 p-4">
-              <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                <div>
-                  <p className="text-xs uppercase tracking-[0.16em] text-cyan-200/80">{project.projectId}</p>
-                  <h2 className="mt-1 text-lg font-semibold text-white">{project.projectName}</h2>
-                  <p className="mt-1 text-sm text-slate-300">{project.userName} ({project.userEmail})</p>
-                  <p className="mt-2 text-sm text-slate-300">{project.wishes}</p>
-                  <p className="mt-2 text-xs text-slate-400">Created {formatDate(project.createdAtISO)} • Updated {formatDate(project.updatedAtISO)}</p>
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    {project.services.map((service) => (
-                      <span key={service} className="rounded-full border border-white/15 bg-white/5 px-2.5 py-1 text-xs text-slate-200">
-                        {service}
-                      </span>
-                    ))}
-                  </div>
-                </div>
+      {/* Projects Tab */}
+      {activeTab === "projects" && (
+        <section className="mt-6 space-y-3">
+          <div className="mb-4 flex items-center justify-between">
+            <h2 className="text-lg font-semibold text-white">Project Status Management</h2>
+            <button
+              type="button"
+              onClick={() => void loadProjects()}
+              className="inline-flex items-center gap-2 rounded-lg border border-white/20 bg-white/5 px-3 py-2 text-xs font-semibold text-white/80 hover:bg-white/10"
+            >
+              <RefreshCcw className="h-3.5 w-3.5" />
+              Refresh
+            </button>
+          </div>
 
-                <div className="min-w-[230px] rounded-lg border border-white/10 bg-white/5 p-3">
-                  <p className="text-xs uppercase tracking-[0.16em] text-slate-300">Status</p>
-                  <div className="mt-2 grid gap-2">
-                    {STATUS_OPTIONS.map((status) => (
-                      <button
-                        key={status}
-                        type="button"
-                        disabled={updatingId === project.projectId || project.status === status}
-                        onClick={() => void updateStatus(project.projectId, status)}
-                        className={`rounded-lg border px-3 py-2 text-left text-xs font-semibold transition ${
-                          project.status === status
-                            ? "border-cyan-200/40 bg-cyan-300/20 text-cyan-100"
-                            : "border-white/15 bg-white/5 text-slate-200 hover:bg-white/10"
-                        } disabled:cursor-not-allowed disabled:opacity-70`}
-                      >
-                        {statusLabel(status)}
-                      </button>
-                    ))}
+          {loading ? (
+            <div className="rounded-xl border border-dashed border-white/20 bg-white/5 p-6 text-center text-slate-200">Loading projects...</div>
+          ) : projects.length === 0 ? (
+            <div className="rounded-xl border border-dashed border-white/20 bg-white/5 p-6 text-center text-slate-200">No project requests found.</div>
+          ) : (
+            projects.map((project) => (
+              <article key={project.projectId} className="rounded-xl border border-white/10 bg-[#081326]/70 p-4">
+                <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.16em] text-cyan-200/80">{project.projectId}</p>
+                    <h2 className="mt-1 text-lg font-semibold text-white">{project.projectName}</h2>
+                    <p className="mt-1 text-sm text-slate-300">{project.userName} ({project.userEmail})</p>
+                    <p className="mt-2 text-sm text-slate-300">{project.wishes}</p>
+                    <p className="mt-2 text-xs text-slate-400">Created {formatDate(project.createdAtISO)} • Updated {formatDate(project.updatedAtISO)}</p>
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      {project.services.map((service) => (
+                        <span key={service} className="rounded-full border border-white/15 bg-white/5 px-2.5 py-1 text-xs text-slate-200">
+                          {service}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="min-w-[230px] rounded-lg border border-white/10 bg-white/5 p-3">
+                    <p className="text-xs uppercase tracking-[0.16em] text-slate-300">Status</p>
+                    <div className="mt-2 grid gap-2">
+                      {STATUS_OPTIONS.map((status) => (
+                        <button
+                          key={status}
+                          type="button"
+                          disabled={updatingId === project.projectId || project.status === status}
+                          onClick={() => void updateStatus(project.projectId, status)}
+                          className={`rounded-lg border px-3 py-2 text-left text-xs font-semibold transition ${
+                            project.status === status
+                              ? "border-cyan-200/40 bg-cyan-300/20 text-cyan-100"
+                              : "border-white/15 bg-white/5 text-slate-200 hover:bg-white/10"
+                          } disabled:cursor-not-allowed disabled:opacity-70`}
+                        >
+                          {statusLabel(status)}
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 </div>
-              </div>
-            </article>
-          ))
-        )}
-      </section>
+              </article>
+            ))
+          )}
+        </section>
+      )}
+
+      {/* AI Configuration Tab */}
+      {activeTab === "ai" && (
+        <section className="mt-6">
+          <div className="mb-4">
+            <h2 className="text-lg font-semibold text-white">Swarp AI Configuration</h2>
+            <p className="text-sm text-slate-400">Manage LLM provider and model settings.</p>
+          </div>
+          <AIStatusPanel />
+        </section>
+      )}
     </div>
   );
 }

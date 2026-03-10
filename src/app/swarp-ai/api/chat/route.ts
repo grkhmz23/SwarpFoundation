@@ -7,7 +7,8 @@ export const runtime = "nodejs";
 type ChatRole = "user" | "assistant";
 type IncomingMessage = { role: ChatRole; content: string };
 type ChatRouteEnv = {
-  moonshotApiKey: string;
+  apiKey: string;
+  baseUrl: string;
   allowedOrigins: Set<string>;
 };
 
@@ -16,7 +17,9 @@ function jsonError(message: string, status = 400, headers?: HeadersInit) {
 }
 
 function pickModel(): string {
-  return process.env.SWARP_AI_MODEL || "kimi-k2-turbo-preview";
+  // OpenRouter model identifiers
+  // Options: qwen/qwen3-coder:free, qwen/qwen2.5-72b-instruct:free, meta-llama/llama-3.1-8b-instruct:free
+  return process.env.SWARP_AI_MODEL || "qwen/qwen3-coder:free";
 }
 
 function parseOrigin(raw: string): string | null {
@@ -49,13 +52,36 @@ let envCache: ChatRouteEnv | null = null;
 function getEnv(): ChatRouteEnv {
   if (envCache) return envCache;
 
-  const moonshotApiKey = process.env.MOONSHOT_API_KEY?.trim();
-  if (!moonshotApiKey) {
-    throw new Error("MOONSHOT_API_KEY must be set");
+  // Support multiple providers: OpenRouter, Groq, Together, or direct Qwen
+  const provider = process.env.SWARP_AI_PROVIDER || "openrouter";
+  
+  let apiKey: string;
+  let baseUrl: string;
+
+  switch (provider) {
+    case "groq":
+      apiKey = process.env.GROQ_API_KEY?.trim() || "";
+      baseUrl = "https://api.groq.com/openai/v1";
+      break;
+    case "together":
+      apiKey = process.env.TOGETHER_API_KEY?.trim() || "";
+      baseUrl = "https://api.together.xyz/v1";
+      break;
+    case "openrouter":
+    default:
+      apiKey = process.env.OPENROUTER_API_KEY?.trim() || "";
+      baseUrl = "https://openrouter.ai/api/v1";
+      break;
+  }
+
+  if (!apiKey) {
+    throw new Error(
+      `${provider === "openrouter" ? "OPENROUTER_API_KEY" : provider === "groq" ? "GROQ_API_KEY" : "TOGETHER_API_KEY"} must be set`
+    );
   }
 
   const allowedOrigins = parseAllowedOrigins(process.env.SWARP_AI_ALLOWED_ORIGINS);
-  envCache = { moonshotApiKey, allowedOrigins };
+  envCache = { apiKey, baseUrl, allowedOrigins };
   return envCache;
 }
 
@@ -513,18 +539,23 @@ export async function POST(req: Request) {
   };
 
   try {
-    const upstream = await fetch("https://api.moonshot.ai/v1/chat/completions", {
+    const upstream = await fetch(`${env.baseUrl}/chat/completions`, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${env.moonshotApiKey}`,
+        Authorization: `Bearer ${env.apiKey}`,
         "Content-Type": "application/json",
+        // OpenRouter specific headers for better tracking
+        ...(env.baseUrl.includes("openrouter") && {
+          "HTTP-Referer": req.headers.get("referer") || "https://swarppay.com",
+          "X-Title": "Swarp AI",
+        }),
       },
       body: JSON.stringify(upstreamBody),
     });
 
     if (!upstream.ok) {
       const errorText = await upstream.text().catch(() => "Unknown error");
-      console.error(`Moonshot API error: ${upstream.status}`, errorText);
+      console.error(`LLM API error: ${upstream.status}`, errorText);
 
       if (upstream.status === 429) {
         return jsonError("Rate limit exceeded. Please try again in a moment.", 429);
@@ -545,7 +576,7 @@ export async function POST(req: Request) {
 
     return new Response(upstream.body, { status: 200, headers });
   } catch (error) {
-    console.error("Network error calling Moonshot API:", error);
+    console.error("Network error calling LLM API:", error);
     return jsonError("AI service is temporarily unavailable. Please try again.", 503);
   }
 }

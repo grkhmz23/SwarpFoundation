@@ -4,6 +4,9 @@ generator client {
 
 datasource db {
   provider = "sqlite"
+  // For Vercel: database is in /tmp (ephemeral, resets on deploy)
+  // For local development: database is in prisma/dev.db
+  // For production with persistent storage: use PostgreSQL instead
   url      = env("DATABASE_URL")
 }
 
