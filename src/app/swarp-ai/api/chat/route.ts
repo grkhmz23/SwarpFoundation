@@ -144,9 +144,12 @@ function getClientIp(req: Request): string {
   return req.headers.get("x-real-ip")?.trim() || "unknown";
 }
 
+// Rate limit: 50 requests per minute per IP
+// This is more lenient to avoid hitting limits during normal use
+// OpenRouter free tier allows 20 req/min, so we match that
 const rateLimiter = createInMemoryRateLimiter({
-  capacity: 20,
-  refillPerSecond: 20 / 60,
+  capacity: 50,
+  refillPerSecond: 50 / 60,
   ttlMs: 10 * 60 * 1000,
   maxEntries: 5000,
 });
@@ -558,7 +561,16 @@ export async function POST(req: Request) {
       console.error(`LLM API error: ${upstream.status}`, errorText);
 
       if (upstream.status === 429) {
-        return jsonError("Rate limit exceeded. Please try again in a moment.", 429);
+        // Check if it's OpenRouter's rate limit or our rate limit
+        const isOpenRouter = env.baseUrl.includes("openrouter");
+        const message = isOpenRouter 
+          ? "OpenRouter rate limit exceeded. Free tier: 20 req/min. Please try again shortly."
+          : "Rate limit exceeded. Please try again in a moment.";
+        return jsonError(message, 429);
+      }
+
+      if (upstream.status === 401) {
+        return jsonError("AI service authentication failed. Please check API key configuration.", 502);
       }
 
       return jsonError("AI service is temporarily unavailable. Please try again.", 502);
