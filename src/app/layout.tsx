@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { Header3D } from "@/components/ui/header-3d";
 import { Footer } from "@/components/ui/footer";
 import { LegalModalProvider } from "@/components/ui/legal-modal";
+import { AuthSessionProvider } from "@/components/providers/session-provider";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages, getTranslations } from "next-intl/server";
 import { Locale, rtlLocales } from "@/i18n/config";
@@ -45,15 +46,17 @@ export default async function RootLayout({
   return (
     <html lang={locale} dir={isRtl ? "rtl" : "ltr"}>
       <body className={geist.className}>
-        <NextIntlClientProvider locale={locale} messages={messages}>
-          <AetherBackground>
-            <LegalModalProvider>
-              <Header3D />
-              {children}
-              <Footer />
-            </LegalModalProvider>
-          </AetherBackground>
-        </NextIntlClientProvider>
+        <AuthSessionProvider>
+          <NextIntlClientProvider locale={locale} messages={messages}>
+            <AetherBackground>
+              <LegalModalProvider>
+                <Header3D />
+                {children}
+                <Footer />
+              </LegalModalProvider>
+            </AetherBackground>
+          </NextIntlClientProvider>
+        </AuthSessionProvider>
       </body>
     </html>
   );

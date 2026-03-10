@@ -3,12 +3,14 @@ import GoogleProvider from "next-auth/providers/google";
 
 const googleClientId = process.env.GOOGLE_CLIENT_ID;
 const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET;
+const nextAuthSecret = process.env.NEXTAUTH_SECRET;
 
 const hasGoogleConfig = Boolean(googleClientId && googleClientSecret);
 
-const useSecureCookies = process.env.NEXTAUTH_URL?.startsWith("https://") ?? 
-  !!process.env.REPLIT_DEV_DOMAIN;
+// Detect if we're on HTTPS (production) or HTTP (development)
+const useSecureCookies = process.env.NEXTAUTH_URL?.startsWith("https://") ?? false;
 
+// Cookie prefix for secure environments
 const cookiePrefix = useSecureCookies ? "__Secure-" : "";
 
 export const authOptions: NextAuthOptions = {
@@ -26,6 +28,14 @@ export const authOptions: NextAuthOptions = {
   },
   session: {
     strategy: "jwt",
+    // Session lasts 30 days
+    maxAge: 30 * 24 * 60 * 60,
+    // Update session every 24 hours
+    updateAge: 24 * 60 * 60,
+  },
+  jwt: {
+    // JWT max age matches session
+    maxAge: 30 * 24 * 60 * 60,
   },
   cookies: {
     sessionToken: {
@@ -35,6 +45,7 @@ export const authOptions: NextAuthOptions = {
         sameSite: "lax",
         path: "/",
         secure: useSecureCookies,
+        // No maxAge - cookie lasts until browser closes or JWT expires
       },
     },
     callbackUrl: {
@@ -61,7 +72,7 @@ export const authOptions: NextAuthOptions = {
         sameSite: "lax",
         path: "/",
         secure: useSecureCookies,
-        maxAge: 60 * 15,
+        maxAge: 60 * 15, // 15 minutes
       },
     },
     state: {
@@ -71,7 +82,7 @@ export const authOptions: NextAuthOptions = {
         sameSite: "lax",
         path: "/",
         secure: useSecureCookies,
-        maxAge: 60 * 15,
+        maxAge: 60 * 15, // 15 minutes
       },
     },
     nonce: {
@@ -91,7 +102,17 @@ export const authOptions: NextAuthOptions = {
       }
       return session;
     },
+    async jwt({ token, account, user }) {
+      // Persist the OAuth access_token to the token right after signin
+      if (account && user) {
+        token.accessToken = account.access_token;
+        token.user = user;
+      }
+      return token;
+    },
   },
+  debug: process.env.NODE_ENV === "development",
+  secret: nextAuthSecret,
 };
 
 export function getAuthSession() {
