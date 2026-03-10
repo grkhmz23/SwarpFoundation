@@ -509,14 +509,16 @@ export async function POST(req: Request) {
     return jsonError("Forbidden.", 403);
   }
 
-  const clientId = getClientIp(req);
-  const rateLimit = rateLimiter.consume(clientId);
-  if (!rateLimit.allowed) {
-    return jsonError("Too many requests. Please try again shortly.", 429, {
-      ...corsHeaders(req, env),
-      "Retry-After": String(rateLimit.retryAfterSec),
-    });
-  }
+  // Rate limiting disabled for Vercel (in-memory doesn't work across instances)
+  // TODO: Implement Redis/Upstash rate limiter for production
+  // const clientId = getClientIp(req);
+  // const rateLimit = rateLimiter.consume(clientId);
+  // if (!rateLimit.allowed) {
+  //   return jsonError("Too many requests. Please try again shortly.", 429, {
+  //     ...corsHeaders(req, env),
+  //     "Retry-After": String(rateLimit.retryAfterSec),
+  //   });
+  // }
 
   let body: unknown;
   try {
@@ -559,21 +561,23 @@ export async function POST(req: Request) {
     if (!upstream.ok) {
       const errorText = await upstream.text().catch(() => "Unknown error");
       console.error(`LLM API error: ${upstream.status}`, errorText);
+      
+      // Log to help debug on Vercel
+      console.error(`Provider: ${env.baseUrl}, Model: ${upstreamBody.model}`);
 
       if (upstream.status === 429) {
-        // Check if it's OpenRouter's rate limit or our rate limit
-        const isOpenRouter = env.baseUrl.includes("openrouter");
-        const message = isOpenRouter 
-          ? "OpenRouter rate limit exceeded. Free tier: 20 req/min. Please try again shortly."
-          : "Rate limit exceeded. Please try again in a moment.";
-        return jsonError(message, 429);
+        return jsonError("OpenRouter rate limit exceeded. Free tier: 20 req/min. Wait 1 minute and try again.", 429);
       }
 
       if (upstream.status === 401) {
-        return jsonError("AI service authentication failed. Please check API key configuration.", 502);
+        return jsonError("AI authentication failed. Check OPENROUTER_API_KEY in Vercel environment variables.", 502);
+      }
+      
+      if (upstream.status === 400) {
+        return jsonError(`AI request error: ${errorText.slice(0, 200)}`, 502);
       }
 
-      return jsonError("AI service is temporarily unavailable. Please try again.", 502);
+      return jsonError(`AI service error (${upstream.status}): ${errorText.slice(0, 100)}`, 502);
     }
 
     // Pass-through SSE stream
