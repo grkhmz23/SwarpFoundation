@@ -543,26 +543,36 @@ function MobileAuthSection({ onClose }: { onClose: () => void }) {
     return (
       <div className="border-t border-white/10 pt-4 mt-4">
         <div className="px-4 py-2 mb-2">
-          <p className="text-xs text-slate-400">Signed in as</p>
+          <p className="text-xs text-slate-400">Connected as</p>
           <p className="text-sm text-cyan-400 truncate">{session.user?.email}</p>
         </div>
         <Link
           href="/dashboard"
           onClick={onClose}
-          className="flex items-center justify-between px-4 py-3 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400"
+          className="flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-semibold tracking-wide text-cyan-400 transition-colors hover:text-cyan-300"
+          style={{
+            background: "rgba(10, 14, 39, 0.95)",
+            backdropFilter: "blur(12px)",
+            border: "1px solid rgba(0, 212, 255, 0.3)",
+          }}
         >
+          <LayoutDashboard className="h-3.5 w-3.5" />
           <span className="font-medium">Dashboard</span>
-          <LayoutDashboard className="h-4 w-4" />
         </Link>
         <button
           onClick={() => {
             signOut({ callbackUrl: "/" });
             onClose();
           }}
-          className="mt-2 flex w-full items-center justify-between px-4 py-3 rounded-xl text-slate-400 hover:text-white hover:bg-white/5"
+          className="mt-2 flex w-full items-center gap-2 rounded-lg px-3 py-2 text-xs font-semibold tracking-wide text-red-400 transition-colors hover:text-red-300"
+          style={{
+            background: "rgba(10, 14, 39, 0.95)",
+            backdropFilter: "blur(12px)",
+            border: "1px solid rgba(239, 68, 68, 0.3)",
+          }}
         >
-          <span>Sign Out</span>
-          <LogOut className="h-4 w-4" />
+          <LogOut className="h-3.5 w-3.5" />
+          <span>Disconnect</span>
         </button>
       </div>
     );
@@ -573,10 +583,15 @@ function MobileAuthSection({ onClose }: { onClose: () => void }) {
       <Link
         href="/auth/signin?callbackUrl=/dashboard"
         onClick={onClose}
-        className="flex items-center justify-between px-4 py-3 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400"
+        className="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-semibold tracking-wide text-white transition-colors hover:text-[#00D4FF]"
+        style={{
+          background: "rgba(10, 14, 39, 0.95)",
+          backdropFilter: "blur(12px)",
+          border: "1px solid rgba(0, 212, 255, 0.2)",
+        }}
       >
-        <span className="font-medium">Sign In</span>
-        <LogIn className="h-4 w-4" />
+        <LogIn className="h-3.5 w-3.5" />
+        <span>Sign In</span>
       </Link>
     </div>
   );
@@ -634,7 +649,7 @@ export function Header3D() {
               }}
             >
               <LogIn className="h-3.5 w-3.5" />
-              <span>Sign In</span>
+              <span>Connect</span>
             </Link>
           )}
         </div>
@@ -646,7 +661,7 @@ export function Header3D() {
           {isAuthenticated ? (
             <Link
               href="/dashboard"
-              className="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-semibold tracking-wide text-cyan-400"
+              className="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-semibold tracking-wide text-cyan-400 transition-colors hover:text-cyan-300"
               style={{
                 background: "rgba(10, 14, 39, 0.95)",
                 backdropFilter: "blur(12px)",
@@ -658,7 +673,7 @@ export function Header3D() {
           ) : (
             <Link
               href="/auth/signin?callbackUrl=/dashboard"
-              className="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-semibold tracking-wide text-white"
+              className="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-semibold tracking-wide text-white transition-colors hover:text-[#00D4FF]"
               style={{
                 background: "rgba(10, 14, 39, 0.95)",
                 backdropFilter: "blur(12px)",

@@ -66,14 +66,6 @@ export async function POST(request: Request) {
       return jsonError("Missing authenticated user email.", 400);
     }
 
-    const smtpHost = process.env.SMTP_HOST;
-    const smtpPort = Number.parseInt(process.env.SMTP_PORT ?? "587", 10);
-    const smtpUser = process.env.SMTP_USER;
-    const smtpPass = process.env.SMTP_PASS;
-    if (!smtpHost || !smtpUser || !smtpPass) {
-      return jsonError("Mail service is not configured. Please try again later.", 503);
-    }
-
     const projectId = generateProjectId();
 
     const created = await db.projectRequest.create({
@@ -88,64 +80,77 @@ export async function POST(request: Request) {
       },
     });
 
-    const transport = nodemailer.createTransport({
-      host: smtpHost,
-      port: Number.isNaN(smtpPort) ? 587 : smtpPort,
-      secure: smtpPort === 465,
-      auth: {
-        user: smtpUser,
-        pass: smtpPass,
-      },
-    });
+    // Try to send emails if SMTP is configured, but don't fail if it's not
+    const smtpHost = process.env.SMTP_HOST;
+    const smtpPort = Number.parseInt(process.env.SMTP_PORT ?? "587", 10);
+    const smtpUser = process.env.SMTP_USER;
+    const smtpPass = process.env.SMTP_PASS;
+    
+    if (smtpHost && smtpUser && smtpPass) {
+      try {
+        const transport = nodemailer.createTransport({
+          host: smtpHost,
+          port: Number.isNaN(smtpPort) ? 587 : smtpPort,
+          secure: smtpPort === 465,
+          auth: {
+            user: smtpUser,
+            pass: smtpPass,
+          },
+        });
 
-    const submittedAt = created.createdAt.toISOString();
+        const submittedAt = created.createdAt.toISOString();
 
-    await Promise.all([
-      transport.sendMail({
-        from: `"Swarp Dashboard" <${smtpUser}>`,
-        replyTo: userEmail,
-        to: REQUEST_INBOX,
-        subject: `[Swarp Dashboard] New Project Request ${projectId}`,
-        text: [
-          `Project ID: ${projectId}`,
-          `Submitted At: ${submittedAt}`,
-          `User: ${userName}`,
-          `User Email: ${userEmail}`,
-          `Project Name: ${projectName}`,
-          `Services: ${services.join(", ")}`,
-          `Budget (USD): ${budgetUsd === null ? "Not specified" : budgetUsd}`,
-          "",
-          "Wishes:",
-          wishes,
-        ].join("\n"),
-      }),
-      transport.sendMail({
-        from: `"Swarp Foundation" <${smtpUser}>`,
-        to: userEmail,
-        subject: `Swarp Project Request Received: ${projectId}`,
-        text: [
-          `Hi ${userName},`,
-          "",
-          "Your project request has been received successfully.",
-          `Project ID: ${projectId}`,
-          `Project Name: ${projectName}`,
-          "Status: funding_pending",
-          "",
-          "Bank transfer instructions:",
-          `Beneficiary: ${bankDetails.beneficiary}`,
-          `Bank Name: ${bankDetails.bankName}`,
-          `IBAN: ${bankDetails.iban}`,
-          `SWIFT/BIC: ${bankDetails.swift}`,
-          `Transfer Reference: ${bankDetails.referencePrefix}-${projectId}`,
-          "",
-          "Important: include the exact reference above so we can match funds to your project.",
-          "",
-          "If you have already transferred, reply to this email with the payment proof.",
-          "",
-          "Swarp Foundation",
-        ].join("\n"),
-      }),
-    ]);
+        await Promise.all([
+          transport.sendMail({
+            from: `"Swarp Dashboard" <${smtpUser}>`,
+            replyTo: userEmail,
+            to: REQUEST_INBOX,
+            subject: `[Swarp Dashboard] New Project Request ${projectId}`,
+            text: [
+              `Project ID: ${projectId}`,
+              `Submitted At: ${submittedAt}`,
+              `User: ${userName}`,
+              `User Email: ${userEmail}`,
+              `Project Name: ${projectName}`,
+              `Services: ${services.join(", ")}`,
+              `Budget (USD): ${budgetUsd === null ? "Not specified" : budgetUsd}`,
+              "",
+              "Wishes:",
+              wishes,
+            ].join("\n"),
+          }),
+          transport.sendMail({
+            from: `"Swarp Foundation" <${smtpUser}>`,
+            to: userEmail,
+            subject: `Swarp Project Request Received: ${projectId}`,
+            text: [
+              `Hi ${userName},`,
+              "",
+              "Your project request has been received successfully.",
+              `Project ID: ${projectId}`,
+              `Project Name: ${projectName}`,
+              "Status: funding_pending",
+              "",
+              "Bank transfer instructions:",
+              `Beneficiary: ${bankDetails.beneficiary}`,
+              `Bank Name: ${bankDetails.bankName}`,
+              `IBAN: ${bankDetails.iban}`,
+              `SWIFT/BIC: ${bankDetails.swift}`,
+              `Transfer Reference: ${bankDetails.referencePrefix}-${projectId}`,
+              "",
+              "Important: include the exact reference above so we can match funds to your project.",
+              "",
+              "If you have already transferred, reply to this email with the payment proof.",
+              "",
+              "Swarp Foundation",
+            ].join("\n"),
+          }),
+        ]);
+      } catch (emailError) {
+        console.error("Failed to send notification emails:", emailError);
+        // Don't fail the request if emails can't be sent
+      }
+    }
 
     return NextResponse.json({ ok: true, project: toDTO(created) });
   } catch (error) {
