@@ -4,10 +4,11 @@ import React, { useState, useRef, useEffect } from "react";
 import { motion, useSpring, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-import { LogIn, Menu, X } from "lucide-react";
+import { LogIn, Menu, X, LayoutDashboard, LogOut } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { usePathname } from "next/navigation";
+import { useSession, signOut } from "next-auth/react";
 
 interface NavItem {
   key: string;
@@ -171,6 +172,8 @@ function MobileMenu({ isOpen, onClose, activeLabel, setActiveLabel }: {
                   </motion.div>
                 );
               })}
+              {/* Mobile Auth Section */}
+              <MobileAuthSection onClose={onClose} />
             </nav>
           </motion.div>
         </>
@@ -531,10 +534,60 @@ export function NavPill3D() {
   );
 }
 
+// Mobile Auth Section Component
+function MobileAuthSection({ onClose }: { onClose: () => void }) {
+  const { data: session, status } = useSession();
+  const isAuthenticated = status === "authenticated" && session?.user;
+
+  if (isAuthenticated) {
+    return (
+      <div className="border-t border-white/10 pt-4 mt-4">
+        <div className="px-4 py-2 mb-2">
+          <p className="text-xs text-slate-400">Signed in as</p>
+          <p className="text-sm text-cyan-400 truncate">{session.user?.email}</p>
+        </div>
+        <Link
+          href="/dashboard"
+          onClick={onClose}
+          className="flex items-center justify-between px-4 py-3 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400"
+        >
+          <span className="font-medium">Dashboard</span>
+          <LayoutDashboard className="h-4 w-4" />
+        </Link>
+        <button
+          onClick={() => {
+            signOut({ callbackUrl: "/" });
+            onClose();
+          }}
+          className="mt-2 flex w-full items-center justify-between px-4 py-3 rounded-xl text-slate-400 hover:text-white hover:bg-white/5"
+        >
+          <span>Sign Out</span>
+          <LogOut className="h-4 w-4" />
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="border-t border-white/10 pt-4 mt-4">
+      <Link
+        href="/auth/signin?callbackUrl=/dashboard"
+        onClick={onClose}
+        className="flex items-center justify-between px-4 py-3 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400"
+      >
+        <span className="font-medium">Sign In</span>
+        <LogIn className="h-4 w-4" />
+      </Link>
+    </div>
+  );
+}
+
 export function Header3D() {
   const [scrolled, setScrolled] = useState(false);
   const locale = useLocale();
   const isRtl = locale === "ar";
+  const { data: session, status } = useSession();
+  const isAuthenticated = status === "authenticated" && session?.user;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -552,21 +605,71 @@ export function Header3D() {
     >
       <div className={`container mx-auto px-4 flex items-center justify-center relative ${isRtl ? "flex-row-reverse" : ""}`}>
         <NavPill3D />
-        <Link
-          href="/auth/signin?callbackUrl=/dashboard"
-          className={`absolute top-1/2 -translate-y-1/2 inline-flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-semibold tracking-wide text-white transition-colors hover:text-[#00D4FF] ${
-            isRtl ? "right-4 md:right-auto md:left-44" : "left-4 md:left-auto md:right-44"
-          }`}
-          style={{
-            background: "rgba(10, 14, 39, 0.95)",
-            backdropFilter: "blur(12px)",
-            border: "1px solid rgba(0, 212, 255, 0.2)",
-          }}
-        >
-          <LogIn className="h-3.5 w-3.5" />
-          <span className="hidden sm:inline">Sign In</span>
-          <span className="sm:hidden">Login</span>
-        </Link>
+        
+        {/* Desktop Auth Button */}
+        <div className={`absolute top-1/2 -translate-y-1/2 hidden md:block ${
+          isRtl ? "right-4 md:right-auto md:left-44" : "left-4 md:left-auto md:right-44"
+        }`}>
+          {isAuthenticated ? (
+            <Link
+              href="/dashboard"
+              className="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-semibold tracking-wide text-cyan-400 transition-colors hover:text-cyan-300"
+              style={{
+                background: "rgba(10, 14, 39, 0.95)",
+                backdropFilter: "blur(12px)",
+                border: "1px solid rgba(0, 212, 255, 0.3)",
+              }}
+            >
+              <LayoutDashboard className="h-3.5 w-3.5" />
+              <span>Dashboard</span>
+            </Link>
+          ) : (
+            <Link
+              href="/auth/signin?callbackUrl=/dashboard"
+              className="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-semibold tracking-wide text-white transition-colors hover:text-[#00D4FF]"
+              style={{
+                background: "rgba(10, 14, 39, 0.95)",
+                backdropFilter: "blur(12px)",
+                border: "1px solid rgba(0, 212, 255, 0.2)",
+              }}
+            >
+              <LogIn className="h-3.5 w-3.5" />
+              <span>Sign In</span>
+            </Link>
+          )}
+        </div>
+
+        {/* Mobile: Show icon only */}
+        <div className={`absolute top-1/2 -translate-y-1/2 md:hidden ${
+          isRtl ? "right-4" : "left-4"
+        }`}>
+          {isAuthenticated ? (
+            <Link
+              href="/dashboard"
+              className="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-semibold tracking-wide text-cyan-400"
+              style={{
+                background: "rgba(10, 14, 39, 0.95)",
+                backdropFilter: "blur(12px)",
+                border: "1px solid rgba(0, 212, 255, 0.3)",
+              }}
+            >
+              <LayoutDashboard className="h-3.5 w-3.5" />
+            </Link>
+          ) : (
+            <Link
+              href="/auth/signin?callbackUrl=/dashboard"
+              className="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-semibold tracking-wide text-white"
+              style={{
+                background: "rgba(10, 14, 39, 0.95)",
+                backdropFilter: "blur(12px)",
+                border: "1px solid rgba(0, 212, 255, 0.2)",
+              }}
+            >
+              <LogIn className="h-3.5 w-3.5" />
+            </Link>
+          )}
+        </div>
+
         <div className={`absolute top-1/2 -translate-y-1/2 ${isRtl ? "left-4" : "right-4"} hidden md:block`}>
           <LanguageSwitcher />
         </div>

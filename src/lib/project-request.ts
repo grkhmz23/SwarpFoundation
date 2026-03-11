@@ -1,4 +1,4 @@
-import { ProjectRequest, ProjectStatus } from "@prisma/client";
+import { ProjectRequest, ProjectStatus, QuoteStatus } from "@prisma/client";
 
 export type ProjectRequestDTO = {
   projectId: string;
@@ -7,6 +7,15 @@ export type ProjectRequestDTO = {
   services: string[];
   budgetUsd: number | null;
   status: ProjectStatus;
+  // Quote fields
+  quotedAmount: number | null;
+  quoteStatus: QuoteStatus;
+  quoteNotes: string | null;
+  quoteValidUntilISO: string | null;
+  // Timeline
+  estimatedWeeks: number | null;
+  startDateISO: string | null;
+  deliveryDateISO: string | null;
   userName: string;
   userEmail: string;
   createdAtISO: string;
@@ -37,6 +46,15 @@ export function toDTO(project: ProjectRequest): ProjectRequestDTO {
     services: parseServices(project.services),
     budgetUsd: project.budgetUsd,
     status: project.status,
+    // Quote fields
+    quotedAmount: project.quotedAmount ?? null,
+    quoteStatus: project.quoteStatus,
+    quoteNotes: project.quoteNotes ?? null,
+    quoteValidUntilISO: project.quoteValidUntil?.toISOString() ?? null,
+    // Timeline
+    estimatedWeeks: project.estimatedWeeks ?? null,
+    startDateISO: project.startDate?.toISOString() ?? null,
+    deliveryDateISO: project.deliveryDate?.toISOString() ?? null,
     userName: project.userName,
     userEmail: project.userEmail,
     createdAtISO: project.createdAt.toISOString(),

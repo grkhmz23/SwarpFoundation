@@ -17,6 +17,13 @@ enum ProjectStatus {
   delivered
 }
 
+enum QuoteStatus {
+  pending
+  sent
+  approved
+  rejected
+}
+
 model ProjectRequest {
   id          String        @id @default(cuid())
   projectId   String        @unique
@@ -25,6 +32,17 @@ model ProjectRequest {
   services    String
   budgetUsd   Int?
   status      ProjectStatus @default(funding_pending)
+
+  // Quote fields
+  quotedAmount   Int?
+  quoteStatus    QuoteStatus @default(pending)
+  quoteNotes     String?
+  quoteValidUntil DateTime?
+  
+  // Timeline
+  estimatedWeeks Int?
+  startDate      DateTime?
+  deliveryDate   DateTime?
 
   userName    String
   userEmail   String
