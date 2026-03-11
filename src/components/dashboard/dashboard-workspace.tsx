@@ -340,7 +340,7 @@ export function DashboardWorkspace({ userName, userEmail }: { userName: string; 
         <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:50px_50px] opacity-30" />
       </div>
 
-      {/* Header */}
+      {/* Header - v2 */}
       <header className="relative z-10 border-b border-white/10 bg-[#0a0d1c]/80 backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-4">

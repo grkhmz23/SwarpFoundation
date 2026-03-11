@@ -8,6 +8,7 @@ const withBundleAnalyzer = bundleAnalyzer({
 const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
 
 export default withBundleAnalyzer(withNextIntl({
+  // Deployment version: 2024-03-11-v2
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
@@ -32,5 +33,18 @@ export default withBundleAnalyzer(withNextIntl({
         hostname: 'images.unsplash.com',
       },
     ],
+  },
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=0, must-revalidate',
+          },
+        ],
+      },
+    ];
   },
 }));
