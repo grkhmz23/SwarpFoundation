@@ -215,13 +215,30 @@ export function DashboardWorkspace({ userName, userEmail }: { userName: string; 
 
   async function loadProjects() {
     setIsLoading(true);
+    setNotice("");
     try {
       const response = await fetch("/dashboard/api/projects", { cache: "no-store" });
-      const data = await response.json();
-      if (!response.ok) throw new Error(typeof data?.error === "string" ? data.error : "Failed loading projects.");
+      
+      // Check if response is valid before parsing
+      if (!response.ok) {
+        const text = await response.text().catch(() => "Unknown error");
+        let errorMessage = "Failed loading projects.";
+        try {
+          const data = JSON.parse(text);
+          if (data?.error) errorMessage = data.error;
+        } catch {
+          // If parsing fails, use status text
+          errorMessage = response.statusText || errorMessage;
+        }
+        throw new Error(errorMessage);
+      }
+      
+      const data = await response.json().catch(() => ({ projects: [] }));
       setRequests(Array.isArray(data?.projects) ? data.projects : []);
     } catch (error) {
+      console.error("Failed to load projects:", error);
       setNotice(error instanceof Error ? error.message : "Unable to load projects.");
+      setRequests([]);
     } finally {
       setIsLoading(false);
     }
@@ -429,9 +446,19 @@ export function DashboardWorkspace({ userName, userEmail }: { userName: string; 
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="mb-6 border border-[#00D4FF]/30 bg-[#00D4FF]/10 p-4 font-mono text-sm text-[#00D4FF]"
+                className={`mb-6 flex items-center justify-between border p-4 font-mono text-sm ${
+                  notice.includes("Failed") || notice.includes("error") || notice.includes("Unable")
+                    ? "border-red-500/30 bg-red-500/10 text-red-400"
+                    : "border-[#00D4FF]/30 bg-[#00D4FF]/10 text-[#00D4FF]"
+                }`}
               >
-                <span className="mr-2">⚡</span> {notice}
+                <span><span className="mr-2">⚡</span> {notice}</span>
+                <button 
+                  onClick={() => setNotice("")}
+                  className="ml-4 text-xs opacity-70 hover:opacity-100"
+                >
+                  ✕ DISMISS
+                </button>
               </motion.div>
             )}
           </AnimatePresence>

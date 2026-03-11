@@ -14,10 +14,18 @@ export async function GET() {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const projects = await db.projectRequest.findMany({
-    where: { userEmail: user.email || "" },
-    orderBy: { createdAt: "desc" },
-  });
+  try {
+    const projects = await db.projectRequest.findMany({
+      where: { userEmail: user.email || "" },
+      orderBy: { createdAt: "desc" },
+    });
 
-  return NextResponse.json({ projects: projects.map(toDTO) });
+    return NextResponse.json({ projects: projects.map(toDTO) });
+  } catch (error) {
+    console.error("Failed to load projects:", error);
+    return NextResponse.json(
+      { error: "Failed to load projects. Please try again." },
+      { status: 500 }
+    );
+  }
 }
