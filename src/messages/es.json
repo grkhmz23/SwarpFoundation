@@ -360,8 +360,8 @@
     },
     "codeLines": {
       "0": "// Inicializando Swarp Foundation...",
-      "1": "import { Web, Mobile, AI, Blockchain, Security } from '@swarp/stack';",
-      "3": "const services = {",
+      "1": "import '{' Web, Mobile, AI, Blockchain, Security '}' from '@swarp/stack';",
+      "3": "const services = '{'",
       "4": "  platforms: ['Web Apps', 'Mobile Apps', 'APIs'],",
       "5": "  intelligence: ['AI Chat', 'ML Models', 'Automation'],",
       "6": "  web3: ['DeFi', 'Smart Contracts', 'Wallets'],",
