@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import localFont from "next/font/local";
 import "./globals.css";
 import dynamic from "next/dynamic";
-import { Header3D } from "@/components/ui/header-3d";
-import { Footer } from "@/components/ui/footer";
 import { LegalModalProvider } from "@/components/ui/legal-modal";
 import { AuthSessionProvider } from "@/components/providers/session-provider";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages, getTranslations } from "next-intl/server";
 import { Locale, rtlLocales } from "@/i18n/config";
+import { SiteChrome } from "@/components/ui/site-chrome";
 
 const AetherBackground = dynamic(
   () => import("@/components/ui/aether-background"),
@@ -39,6 +39,11 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const requestHeaders = headers();
+  const host =
+    requestHeaders.get("x-forwarded-host") ??
+    requestHeaders.get("host") ??
+    "";
   const locale = await getLocale();
   const messages = await getMessages();
   const isRtl = rtlLocales.includes(locale as Locale);
@@ -50,9 +55,7 @@ export default async function RootLayout({
           <NextIntlClientProvider locale={locale} messages={messages}>
             <AetherBackground>
               <LegalModalProvider>
-                <Header3D />
-                {children}
-                <Footer />
+                <SiteChrome host={host}>{children}</SiteChrome>
               </LegalModalProvider>
             </AetherBackground>
           </NextIntlClientProvider>
